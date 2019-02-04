@@ -1,0 +1,13 @@
+[package]
+name = "cwebp"
+version = "0.1.0"
+authors = ["vagrant"]
+edition = "2018"
+
+[dependencies]
+bindgen = "0.47.0"
+
+[workspace]
+members = [
+  "libwebp-sys",
+]
