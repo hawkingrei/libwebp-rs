@@ -1,8 +1,8 @@
-extern crate libwebp_sys as webp;
+extern crate libwebp_sys;
 
 
 use std::default::Default;
 
 fn main() {
-    let wp: *mut webp::WebPPicture = Default::default();
+    let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
 }
