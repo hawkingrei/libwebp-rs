@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 bindgen = "0.47.0"
+cmake = "0.1.35"
 libwebp-sys = { path = "libwebp-sys" }
 
 [workspace]
