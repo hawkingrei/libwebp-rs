@@ -129,6 +129,7 @@ name = "cwebp"
 version = "0.1.0"
 dependencies = [
  "bindgen 0.47.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libwebp-sys 0.1.0",
 ]
 
 [[package]]

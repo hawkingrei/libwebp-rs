@@ -1,3 +1,5 @@
+extern crate libwebp_sys as webp;
+
 fn is_gif(buffer: &[u8]) -> bool {
     buffer.starts_with(b"GIF87a") || buffer.starts_with(b"GIF89a")
 }
