@@ -7,6 +7,7 @@ edition = "2018"
 [dependencies]
 bindgen = "0.47.0"
 libwebp-sys = { path = "libwebp-sys" }
+libc = "0.2.48"
 
 [workspace]
 members = [
