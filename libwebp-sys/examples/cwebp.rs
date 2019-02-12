@@ -4,7 +4,9 @@ use std::default::Default;
 
 fn main() {
     let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+    unsafe {
     libwebp_sys::WebPPictureAlloc(wp);
 
     libwebp_sys::WebPPictureFree(wp);
+    }
 }
