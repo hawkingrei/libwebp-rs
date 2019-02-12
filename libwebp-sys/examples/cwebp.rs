@@ -15,8 +15,8 @@ fn main() {
         match state.decode_file(&path) {
             Ok(image) => match image {
                 lodepng::Image::RGBA(bitmap) => {
-                    wp.height = bitmap.height;
-                    wp.width = bitmap.width;
+                    (*wp).height = bitmap.height as i32;
+                    (*wp).width = bitmap.width as i32;
                     println!("Decoded image {} x {}", bitmap.width, bitmap.height);
                     println!("The first pixel is {}", bitmap.buffer[0]);
                     println!("The raw bytes are {:?}", bitmap.buffer.as_bytes());
