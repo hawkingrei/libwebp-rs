@@ -7,12 +7,24 @@ use std::path::Path;
 use lodepng;
 use rgb::*;
 
+#[inline(always)]
+unsafe fn WebPConfigInit(config: *mut libwebp_sys::WebPConfig) -> libc::c_int {
+    libwebp_sys::WebPConfigInitInternal(
+        config,
+        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+        75.0 as f32,
+        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+    )
+}
+
 fn main() {
     let path = Path::new("in.png");
     let mut state = lodepng::State::new();
     let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+    let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
     unsafe {
         libwebp_sys::WebPPictureAlloc(wp);
+        WebPConfigInit(config);
         match state.decode_file(&path) {
             Ok(image) => match image {
                 lodepng::Image::RGBA(bitmap) => {
@@ -25,7 +37,9 @@ fn main() {
                         bitmap.buffer.as_bytes().as_ptr(),
                         stride as i32,
                     );
+
                     println!("The first pixel is {}", bitmap.buffer[0]);
+                    libwebp_sys::WebPEncode(config, wp);
                     //println!("The raw bytes are {:?}", bitmap.buffer.as_bytes());
                 }
                 x => println!("Decoded some other image format {:?}", x),
