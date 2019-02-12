@@ -1,6 +1,6 @@
 extern crate libwebp_sys as webp;
 
-use webp::*;
+use webp*;
 
 use std::Default;
 
