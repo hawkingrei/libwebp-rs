@@ -16,3 +16,6 @@ members = [
 default-members = [
   "libwebp-sys",
 ]
+
+[profile.bench]
+opt-level = 3
