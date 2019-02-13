@@ -13,7 +13,7 @@ fn generate_bindings() {
         output_path: Path::new(&output_path),
     };
 
-    let headers = ["encode"];
+    let headers = ["encode", "decode", "types", "mux"];
     generator.generate(&headers)
 }
 
@@ -64,7 +64,7 @@ impl<'a> Generator<'a> {
 fn main() {
     generate_bindings();
     println!("cargo:rerun-if-changed=build.rs");
-    println!("cargo:rustc-link-lib=webp");
+    println!("cargo:rustc-link-lib=static=webp");
     println!("cargo:rustc-link-search=native=/usr/local/lib");
     println!("cargo:rustc-link-search=native=/usr/local/include");
     println!("cargo:rustc-link-search=native=/usr/local/include/webp");
