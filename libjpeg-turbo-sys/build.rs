@@ -34,7 +34,7 @@ impl<'a> Generator<'a> {
 
         for name in names {
             let header_path = self.turbo_include_path.join(
-                PathBuf::from("turbo/header.h")
+                PathBuf::from("header.h")
                     .with_file_name(name)
                     .with_extension("h"),
             );
