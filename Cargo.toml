@@ -9,8 +9,10 @@ bindgen = "0.47.0"
 
 [workspace]
 members = [
+  "libjpeg-turbo-sys",
   "libwebp-sys",
 ]
 default-members = [
+  "libjpeg-turbo-sys",
   "libwebp-sys",
 ]
