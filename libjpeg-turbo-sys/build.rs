@@ -2,7 +2,7 @@ use std::env;
 use std::path::Path;
 use std::path::PathBuf;
 
-static TURBO_INCLUDE_DIR: &'static str = "/usr/local/include";
+static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo/include";
 
 fn generate_bindings() {
     let turbo_include_path = env::var("TURBO_INCLUDE").unwrap_or(TURBO_INCLUDE_DIR.to_string());
