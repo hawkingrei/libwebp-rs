@@ -4,11 +4,6 @@ use std::path::PathBuf;
 
 static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo";
 
-extern crate bindgen;
-
-use std::env;
-use std::path::PathBuf;
-
 fn main() {
     // hzy: Don't use SPDK_DIR as environment variable here as SPDK 18.07 rely on this variable to
     // build (i.e. will fail the SPDK build if we use the same environment variable here)
