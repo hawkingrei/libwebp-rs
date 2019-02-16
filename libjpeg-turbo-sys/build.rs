@@ -2,6 +2,10 @@ use std::env;
 use std::path::Path;
 use std::path::PathBuf;
 
+#[cfg(target_os = "macos")]
+static TURBO_INCLUDE_DIR: &'static str = "/usr/local/opt/jpeg-turbo";
+
+#[cfg(target_os = "linux")]
 static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo";
 
 fn main() {
@@ -38,5 +42,9 @@ fn main() {
 
     println!("cargo:rerun-if-changed=./build.rs");
     println!("cargo:rerun-if-changed=src/wrapper.h");
-    println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
+    if cfg!(target_os = "macos") {
+        println!("cargo:rustc-link-search=native=/usr/local/opt/jpeg-turbo/lib");
+    } else {
+        println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
+    }
 }

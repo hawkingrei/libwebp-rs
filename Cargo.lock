@@ -191,7 +191,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "libjpeg-turbo-sys"
 version = "0.1.0"
 dependencies = [
- "bindgen 0.47.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bindgen 0.47.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
