@@ -5,7 +5,7 @@ use std::path::PathBuf;
 static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo";
 
 fn main() {
-     println!("cargo:rustc-link-lib=libjpeg");
+    println!("cargo:rustc-link-lib=libjpeg");
     // hzy: Don't use SPDK_DIR as environment variable here as SPDK 18.07 rely on this variable to
     // build (i.e. will fail the SPDK build if we use the same environment variable here)
 
@@ -22,7 +22,7 @@ fn main() {
         // The input header we would like to generate
         // bindings for.
         .header("wrapper.h")
-        .blacklist_type("IPPORT_.*")   // https://github.com/rust-lang-nursery/rust-bindgen/issues/687
+        .blacklist_type("IPPORT_.*") // https://github.com/rust-lang-nursery/rust-bindgen/issues/687
         .blacklist_type("max_align_t") // https://github.com/rust-lang-nursery/rust-bindgen/issues/550
         .rustfmt_bindings(true)
         // Finish the builder and generate the bindings.
@@ -31,7 +31,7 @@ fn main() {
         .expect("Unable to generate bindings");
 
     // Write the bindings to the $OUT_DIR/bindings.rs file.
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let out_path = Path::new("./src/");
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
