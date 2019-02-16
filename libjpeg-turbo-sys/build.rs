@@ -5,6 +5,7 @@ use std::path::PathBuf;
 static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo";
 
 fn main() {
+     println!("cargo:rustc-link-lib=libjpeg");
     // hzy: Don't use SPDK_DIR as environment variable here as SPDK 18.07 rely on this variable to
     // build (i.e. will fail the SPDK build if we use the same environment variable here)
 
@@ -37,4 +38,5 @@ fn main() {
 
     println!("cargo:rerun-if-changed=./build.rs");
     println!("cargo:rerun-if-changed=src/wrapper.h");
+    println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
 }
