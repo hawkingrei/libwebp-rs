@@ -2,69 +2,44 @@ use std::env;
 use std::path::Path;
 use std::path::PathBuf;
 
-static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo/include";
+static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo";
 
-fn generate_bindings() {
-    let turbo_include_path = env::var("TURBO_INCLUDE").unwrap_or(TURBO_INCLUDE_DIR.to_string());
-    //let output_path = env::var("OUT_DIR").unwrap();
-    let output_path = "./src/";
-    let generator = Generator {
-        turbo_include_path: Path::new(&turbo_include_path),
-        output_path: Path::new(&output_path),
-    };
+extern crate bindgen;
 
-    let headers = ["jconfig","jerror","jpeglib"];
-    generator.generate(&headers)
-}
-
-struct Generator<'a> {
-    turbo_include_path: &'a Path,
-    output_path: &'a Path,
-}
-
-impl<'a> Generator<'a> {
-    fn generate(&self, names: &[&str]) {
-        let mut codegen_config = bindgen::CodegenConfig::empty();
-        codegen_config.set(bindgen::CodegenConfig::FUNCTIONS, true);
-        codegen_config.set(bindgen::CodegenConfig::TYPES, true);
-        codegen_config.set(bindgen::CodegenConfig::CONSTRUCTORS, true);
-        codegen_config.set(bindgen::CodegenConfig::METHODS, true);
-
-        let mut builder = bindgen::builder();
-
-        for name in names {
-            let header_path = self.turbo_include_path.join(
-                PathBuf::from("header.h")
-                    .with_file_name(name)
-                    .with_extension("h"),
-            );
-            builder = builder.header(format!("{}", header_path.display()));
-        }
-
-        let bindings = builder
-            .derive_default(true)
-            .with_codegen_config(codegen_config)
-            .generate_inline_functions(false)
-            // If there are linking errors and the generated bindings have weird looking
-            // #link_names (that start with \u{1}), the make sure to flip that to false.
-            .trust_clang_mangling(false)
-            .rustfmt_bindings(true)
-            .rustfmt_configuration_file(Some(PathBuf::from("../rustfmt.toml")))
-            .layout_tests(false)
-            .ctypes_prefix("libc")
-            .generate()
-            .expect("Unable to generate bindings");
-
-        bindings
-            .write_to_file(self.output_path.join("turbo_bindings.rs"))
-            .expect("Couldn't write bindings!");
-    }
-}
+use std::env;
+use std::path::PathBuf;
 
 fn main() {
-    generate_bindings();
-    println!("cargo:rerun-if-changed=build.rs");
-    println!("cargo:rustc-link-lib=static=turbo");
-    println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/include");
-    println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
+    // hzy: Don't use SPDK_DIR as environment variable here as SPDK 18.07 rely on this variable to
+    // build (i.e. will fail the SPDK build if we use the same environment variable here)
+
+    let turbo_include_path = env::var("TURBO_INCLUDE").unwrap_or(TURBO_INCLUDE_DIR.to_string());
+
+    let include_path_jpeg_dir = format!("-I{}/include", turbo_include_path);
+
+    // The bindgen::Builder is the main entry point
+    // to bindgen, and lets you build up options for
+    // the resulting bindings.
+    let bindings = bindgen::Builder::default()
+        .clang_arg(include_path_jpeg_dir)
+        .derive_default(true)
+        // The input header we would like to generate
+        // bindings for.
+        .header("wrapper.h")
+        .blacklist_type("IPPORT_.*")   // https://github.com/rust-lang-nursery/rust-bindgen/issues/687
+        .blacklist_type("max_align_t") // https://github.com/rust-lang-nursery/rust-bindgen/issues/550
+        .rustfmt_bindings(true)
+        // Finish the builder and generate the bindings.
+        .generate()
+        // Unwrap the Result and panic on failure.
+        .expect("Unable to generate bindings");
+
+    // Write the bindings to the $OUT_DIR/bindings.rs file.
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    bindings
+        .write_to_file(out_path.join("bindings.rs"))
+        .expect("Couldn't write bindings!");
+
+    println!("cargo:rerun-if-changed=./build.rs");
+    println!("cargo:rerun-if-changed=src/wrapper.h");
 }

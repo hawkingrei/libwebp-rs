@@ -1,0 +1,5 @@
+#include "stdlib.h"
+#include "jerror.h"
+#include "jpegint.h"
+#include "jpeglib.h"
+#include "jmorecfg.h"
