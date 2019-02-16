@@ -11,9 +11,11 @@ libc = "0.2.48"
 
 [workspace]
 members = [
+  "libjpeg-turbo-sys",
   "libwebp-sys",
 ]
 default-members = [
+  "libjpeg-turbo-sys",
   "libwebp-sys",
 ]
 
