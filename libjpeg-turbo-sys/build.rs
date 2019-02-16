@@ -33,7 +33,7 @@ fn main() {
     // Write the bindings to the $OUT_DIR/bindings.rs file.
     let out_path = Path::new("./src/");
     bindings
-        .write_to_file(out_path.join("bindings.rs"))
+        .write_to_file(out_path.join("jpeg_bindings.rs"))
         .expect("Couldn't write bindings!");
 
     println!("cargo:rerun-if-changed=./build.rs");

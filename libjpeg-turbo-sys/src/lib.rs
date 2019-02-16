@@ -1,3 +1,5 @@
+include!("./jpeg_bindings.rs");
+
 #[cfg(test)]
 mod tests {
     #[test]
