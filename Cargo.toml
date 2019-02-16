@@ -1,5 +1,5 @@
 [package]
-name = "cwebp"
+name = "image-rs"
 version = "0.1.0"
 authors = ["vagrant"]
 edition = "2018"
@@ -8,15 +8,19 @@ edition = "2018"
 bindgen = "0.47.0"
 libwebp-sys = { path = "libwebp-sys" }
 libc = "0.2.48"
+lodepng = "2.4.2"
+rgb = "0.8"
 
 [workspace]
 members = [
   "libjpeg-turbo-sys",
   "libwebp-sys",
+  "./"
 ]
 default-members = [
   "libjpeg-turbo-sys",
   "libwebp-sys",
+  "./"
 ]
 
 [profile.bench]

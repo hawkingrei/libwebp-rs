@@ -1,5 +1,3 @@
-extern crate libwebp_sys;
-
 use std::default::Default;
 use std::ffi::CStr;
 use std::mem;
