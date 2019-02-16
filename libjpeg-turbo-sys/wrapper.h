@@ -1,5 +1,5 @@
 #include "stdlib.h"
 #include "jerror.h"
-#include "jpegint.h"
-#include "jpeglib.h"
+#include "jconfig.h"
 #include "jmorecfg.h"
+#include "jpeglib.h"
