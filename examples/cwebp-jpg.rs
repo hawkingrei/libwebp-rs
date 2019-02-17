@@ -52,7 +52,7 @@ fn main() {
         let mut buffer = vec![0u8; buffer_size as usize];
 
         while (*dinfo).output_scanline < (*dinfo).output_height {
-            let offset = (*dinfo).output_scanline as usize * row_stride;
+            let offset = (*dinfo).output_scanline as usize * row_stride as usize;
             let mut jsamparray = [buffer[offset..].as_mut_ptr()];
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
