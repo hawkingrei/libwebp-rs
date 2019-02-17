@@ -29,7 +29,16 @@ unsafe fn ReadJPEG(data: Vec<u8>) {
     (*wp).width = (*dinfo).output_width;
     (*wp).height = (*dinfo).output_height;
 
-    let stride = (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>();
+    let row_stride =
+        (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>();
+    let buffer_size = row_stride * dinfo.image_height as usize;
+    let mut buffer = vec![0u8; buffer_size];
+
+    while dinfo.output_scanline < dinfo.output_height {
+        let offset = dinfo.output_scanline as usize * row_stride;
+        let mut jsamparray = [buffer[offset..].as_mut_ptr()];
+        jpeg_read_scanlines(&mut dinfo, jsamparray.as_mut_ptr(), 1);
+    }
 
     libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
     libjpeg_turbo_sys::jpeg_destroy_decompress(dinfo);
