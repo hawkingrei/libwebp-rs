@@ -50,7 +50,7 @@ fn main() {
         libwebp_sys::WebPPictureAlloc(wp);
         libjpeg_turbo_sys::jpeg_CreateDecompress(
             dinfo,
-            libjpeg_turbo_sys::JPEG_LIB_VERSION,
+            libjpeg_turbo_sys::JPEG_LIB_VERSION as i32,
             mem::size_of::<libjpeg_turbo_sys::jpeg_decompress_struct>(),
         );
         (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
