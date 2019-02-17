@@ -21,13 +21,13 @@ unsafe extern "C" fn MyViewer(
 unsafe fn ReadJPEG(data: Vec<u8>) {
     let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
     let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
-
+    let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
     (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
     libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
     libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
 
-    let width = (*dinfo).output_width;
-    let height = (*dinfo).output_height;
+    (*wp).width = (*dinfo).output_width;
+    (*wp).height = (*dinfo).output_height;
 
     let stride = (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>();
 
