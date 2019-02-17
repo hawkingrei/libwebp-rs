@@ -37,6 +37,8 @@ fn main() {
         let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
         let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+        let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
+
         let c_file = libc::fopen(
             CStr::from_bytes_with_nul_unchecked(b"out.webp\0").as_ptr(),
             CStr::from_bytes_with_nul_unchecked(b"wb\0").as_ptr(),
