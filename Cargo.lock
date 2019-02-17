@@ -169,11 +169,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "image-rs"
+name = "imagers"
 version = "0.1.0"
 dependencies = [
  "bindgen 0.47.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.48 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libjpeg-turbo-sys 0.1.0",
  "libwebp-sys 0.1.0",
  "lodepng 2.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rgb 0.8.12 (registry+https://github.com/rust-lang/crates.io-index)",

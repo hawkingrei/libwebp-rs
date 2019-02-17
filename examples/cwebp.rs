@@ -3,6 +3,7 @@ use std::ffi::CStr;
 use std::mem;
 use std::path::Path;
 
+use imagers;
 use libc;
 use lodepng;
 use rgb::*;
@@ -20,16 +21,6 @@ unsafe extern "C" fn MyViewer(
     }
 }
 
-#[inline(always)]
-unsafe fn WebPConfigInit(config: *mut libwebp_sys::WebPConfig) -> libc::c_int {
-    libwebp_sys::WebPConfigInitInternal(
-        config,
-        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-        75.0 as f32,
-        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-    )
-}
-
 fn main() {
     let path = Path::new("in.png");
     let mut state = lodepng::State::new();
@@ -45,7 +36,7 @@ fn main() {
 
         (*wp).writer = Some(MyViewer);
         (*wp).custom_ptr = c_file as *mut libc::c_void;
-        WebPConfigInit(config);
+        imagers::WebPConfigInit(config);
         match state.decode_file(&path) {
             Ok(image) => match image {
                 lodepng::Image::RGBA(bitmap) => {
