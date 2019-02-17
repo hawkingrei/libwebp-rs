@@ -18,8 +18,6 @@ unsafe extern "C" fn MyViewer(
     }
 }
 
-unsafe fn ReadJPEG(data: Vec<u8>) {}
-
 #[inline(always)]
 unsafe fn WebPConfigInit(config: *mut libwebp_sys::WebPConfig) -> libc::c_int {
     libwebp_sys::WebPConfigInitInternal(
@@ -38,6 +36,15 @@ fn main() {
         let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
         let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+        let c_file = libc::fopen(
+            CStr::from_bytes_with_nul_unchecked(b"out.webp\0").as_ptr(),
+            CStr::from_bytes_with_nul_unchecked(b"wb\0").as_ptr(),
+        );
+        (*wp).writer = Some(MyViewer);
+        (*wp).custom_ptr = c_file as *mut libc::c_void;
+        imagers::WebPConfigInit(config);
+
+        libwebp_sys::WebPPictureAlloc(wp);
         (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
         libjpeg_turbo_sys::jpeg_mem_src(dinfo, data.as_ptr(), data.len() as u64);
         libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
@@ -62,6 +69,7 @@ fn main() {
 
         libwebp_sys::WebPPictureImportRGB(wp, buffer.as_ptr(), row_stride as i32);
 
+        libc::fclose(c_file);
         libwebp_sys::WebPPictureFree(wp);
     }
 }
