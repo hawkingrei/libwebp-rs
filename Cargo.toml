@@ -1,5 +1,5 @@
 [package]
-name = "cwebp"
+name = "imagers"
 version = "0.1.0"
 authors = ["vagrant"]
 edition = "2018"
@@ -7,16 +7,21 @@ edition = "2018"
 [dependencies]
 bindgen = "0.47.0"
 libwebp-sys = { path = "libwebp-sys" }
+libjpeg-turbo-sys = { path = "libjpeg-turbo-sys" }
 libc = "0.2.48"
+lodepng = "2.4.2"
+rgb = "0.8"
 
 [workspace]
 members = [
   "libjpeg-turbo-sys",
   "libwebp-sys",
+  "./"
 ]
 default-members = [
   "libjpeg-turbo-sys",
   "libwebp-sys",
+  "./"
 ]
 
 [profile.bench]

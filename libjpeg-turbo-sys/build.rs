@@ -9,7 +9,7 @@ static TURBO_INCLUDE_DIR: &'static str = "/usr/local/opt/jpeg-turbo";
 static TURBO_INCLUDE_DIR: &'static str = "/opt/libjpeg-turbo";
 
 fn main() {
-    println!("cargo:rustc-link-lib=libjpeg");
+    println!("cargo:rustc-link-lib=jpeg");
     // hzy: Don't use SPDK_DIR as environment variable here as SPDK 18.07 rely on this variable to
     // build (i.e. will fail the SPDK build if we use the same environment variable here)
 

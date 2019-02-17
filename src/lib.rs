@@ -1,3 +1,8 @@
+mod jpg;
+mod webp;
+
+pub use webp::WebPConfigInit;
+
 fn is_gif(buffer: &[u8]) -> bool {
     buffer.starts_with(b"GIF87a") || buffer.starts_with(b"GIF89a")
 }
