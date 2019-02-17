@@ -39,22 +39,22 @@ fn main() {
         let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
-        libjpeg_turbo_sys::jpeg_mem_src(&mut cinfo, data.as_ptr(), data.len());
+        libjpeg_turbo_sys::jpeg_mem_src(&mut dinfo, data.as_ptr(), data.len() as u64);
         libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
         libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
 
-        (*wp).width = (*dinfo).output_width;
-        (*wp).height = (*dinfo).output_height;
+        (*wp).width = (*dinfo).output_width as i32;
+        (*wp).height = (*dinfo).output_height as i32;
 
         let row_stride =
-            (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>();
-        let buffer_size = row_stride * dinfo.image_height as usize;
+            (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>() as u32;
+        let buffer_size = row_stride * (*dinfo).image_height as usize;
         let mut buffer = vec![0u8; buffer_size];
 
-        while dinfo.output_scanline < dinfo.output_height {
-            let offset = dinfo.output_scanline as usize * row_stride;
+        while (*dinfo).output_scanline < (*dinfo).output_height {
+            let offset = (*dinfo).output_scanline as usize * row_stride;
             let mut jsamparray = [buffer[offset..].as_mut_ptr()];
-            jpeg_read_scanlines(&mut dinfo, jsamparray.as_mut_ptr(), 1);
+            libjpeg_turbo_sys::jpeg_read_scanlines(&mut dinfo, jsamparray.as_mut_ptr(), 1);
         }
 
         libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
