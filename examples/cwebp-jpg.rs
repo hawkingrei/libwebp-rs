@@ -1,5 +1,6 @@
 use std::default::Default;
 use std::fs;
+use std::mem;
 use std::path::Path;
 
 use libjpeg_turbo_sys;
