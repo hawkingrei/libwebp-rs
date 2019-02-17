@@ -61,6 +61,8 @@ fn main() {
         (*wp).width = (*dinfo).output_width as i32;
         (*wp).height = (*dinfo).output_height as i32;
 
+        println!("Decoded image {} x {}", (*wp).width, (*wp).height);
+
         let row_stride =
             (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>() as u32;
         let buffer_size = row_stride * (*dinfo).image_height;
