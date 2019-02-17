@@ -73,11 +73,12 @@ fn main() {
             let mut jsamparray = [buffer[offset..].as_mut_ptr()];
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
+        println!("Decoded into {} raw pixel bytes", buffer.len());
+        libwebp_sys::WebPPictureImportRGB(wp, buffer.as_ptr(), row_stride as i32);
+        libwebp_sys::WebPEncode(config, wp);
 
         libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
         libjpeg_turbo_sys::jpeg_destroy_decompress(dinfo);
-
-        libwebp_sys::WebPPictureImportRGB(wp, buffer.as_ptr(), row_stride as i32);
 
         libc::fclose(c_file);
         libwebp_sys::WebPPictureFree(wp);
