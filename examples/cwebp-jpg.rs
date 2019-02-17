@@ -1,4 +1,5 @@
 use std::default::Default;
+use std::ffi::CStr;
 use std::fs;
 use std::mem;
 use std::path::Path;
