@@ -39,7 +39,7 @@ fn main() {
         let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
-        libjpeg_turbo_sys::jpeg_mem_src(&mut dinfo, data.as_ptr(), data.len() as u64);
+        libjpeg_turbo_sys::jpeg_mem_src(dinfo, data.as_ptr(), data.len() as u64);
         libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
         libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
 
