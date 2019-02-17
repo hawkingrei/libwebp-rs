@@ -48,19 +48,19 @@ fn main() {
 
         let row_stride =
             (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>() as u32;
-        let buffer_size = row_stride * (*dinfo).image_height as usize;
-        let mut buffer = vec![0u8; buffer_size];
+        let buffer_size = row_stride * (*dinfo).image_height;
+        let mut buffer = vec![0u8; buffer_size as usize];
 
         while (*dinfo).output_scanline < (*dinfo).output_height {
             let offset = (*dinfo).output_scanline as usize * row_stride;
             let mut jsamparray = [buffer[offset..].as_mut_ptr()];
-            libjpeg_turbo_sys::jpeg_read_scanlines(&mut dinfo, jsamparray.as_mut_ptr(), 1);
+            libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
 
         libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
         libjpeg_turbo_sys::jpeg_destroy_decompress(dinfo);
 
-        libwebp_sys::WebPPictureImportRGB(wp, buffer.as_bytes().as_ptr(), row_stride as i32);
+        libwebp_sys::WebPPictureImportRGB(wp, buffer.as_ptr(), row_stride as i32);
 
         libwebp_sys::WebPPictureFree(wp);
     }
