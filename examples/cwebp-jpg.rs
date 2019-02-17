@@ -24,6 +24,11 @@ unsafe fn ReadJPEG(data: Vec<u8>) {
     (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
     libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
     libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
+
+    let width = dinfo.output_width;
+    let height = dinfo.output_height;
+
+    let stride = dinfo.output_width * dinfo.output_components * *mem::size_of::<u8>();
 }
 
 #[inline(always)]
