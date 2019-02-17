@@ -48,7 +48,11 @@ fn main() {
         imagers::WebPConfigInit(config);
 
         libwebp_sys::WebPPictureAlloc(wp);
-        libjpeg_turbo_sys::jpeg_CreateDecompress(dinfo);
+        libjpeg_turbo_sys::jpeg_CreateDecompress(
+            dinfo,
+            libjpeg_turbo_sys::JPEG_LIB_VERSION,
+            mem::size_of::<libjpeg_turbo_sys::jpeg_decompress_struct>(),
+        );
         (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
         libjpeg_turbo_sys::jpeg_mem_src(dinfo, data.as_ptr(), data.len() as u64);
         libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
