@@ -18,31 +18,7 @@ unsafe extern "C" fn MyViewer(
     }
 }
 
-unsafe fn ReadJPEG(data: Vec<u8>) {
-    let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
-    let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
-    let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
-    (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
-    libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
-    libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
-
-    (*wp).width = (*dinfo).output_width;
-    (*wp).height = (*dinfo).output_height;
-
-    let row_stride =
-        (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>();
-    let buffer_size = row_stride * dinfo.image_height as usize;
-    let mut buffer = vec![0u8; buffer_size];
-
-    while dinfo.output_scanline < dinfo.output_height {
-        let offset = dinfo.output_scanline as usize * row_stride;
-        let mut jsamparray = [buffer[offset..].as_mut_ptr()];
-        jpeg_read_scanlines(&mut dinfo, jsamparray.as_mut_ptr(), 1);
-    }
-
-    libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
-    libjpeg_turbo_sys::jpeg_destroy_decompress(dinfo);
-}
+unsafe fn ReadJPEG(data: Vec<u8>) {}
 
 #[inline(always)]
 unsafe fn WebPConfigInit(config: *mut libwebp_sys::WebPConfig) -> libc::c_int {
@@ -56,5 +32,36 @@ unsafe fn WebPConfigInit(config: *mut libwebp_sys::WebPConfig) -> libc::c_int {
 
 fn main() {
     let path = Path::new("in.jpg");
-    fs::read("in.jpg").unwrap();
+    let mut data = fs::read("in.jpg").unwrap();
+
+    unsafe {
+        let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
+        let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
+        let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+        (*dinfo).err = libjpeg_turbo_sys::jpeg_std_error(jerr);
+        libjpeg_turbo_sys::jpeg_mem_src(&mut cinfo, data.as_ptr(), data.len());
+        libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
+        libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
+
+        (*wp).width = (*dinfo).output_width;
+        (*wp).height = (*dinfo).output_height;
+
+        let row_stride =
+            (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>();
+        let buffer_size = row_stride * dinfo.image_height as usize;
+        let mut buffer = vec![0u8; buffer_size];
+
+        while dinfo.output_scanline < dinfo.output_height {
+            let offset = dinfo.output_scanline as usize * row_stride;
+            let mut jsamparray = [buffer[offset..].as_mut_ptr()];
+            jpeg_read_scanlines(&mut dinfo, jsamparray.as_mut_ptr(), 1);
+        }
+
+        libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
+        libjpeg_turbo_sys::jpeg_destroy_decompress(dinfo);
+
+        libwebp_sys::WebPPictureImportRGB(wp, buffer.as_bytes().as_ptr(), row_stride as i32);
+
+        libwebp_sys::WebPPictureFree(wp);
+    }
 }
