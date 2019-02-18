@@ -32,39 +32,35 @@ impl WebPConfig {
 
 pub struct WebPPicture {
     wp: *mut libwebp_sys::WebPPicture,
-    writer: *mut libwebp_sys::WebPMemoryWriter,
 }
 
 impl Default for WebPPicture {
     fn default() -> Self {
         unsafe {
-            let mut wp = &mut Default::default();
-            let mut w: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
-
+            let mut wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
             libwebp_sys::WebPPictureAlloc(wp);
-            libwebp_sys::WebPMemoryWriterInit(w);
-            (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
-            (*wp).custom_ptr = w as *mut libc::c_void;
-            let mut webp_picture = WebPPicture { wp: wp, writer: w };
-
-            webp_picture
+            WebPPicture { wp }
         }
     }
 }
 
 impl WebPPicture {
+    #[inline(always)]
     pub fn height(&self) -> i32 {
         unsafe { (*self.wp).height }
     }
 
+    #[inline(always)]
     pub fn width(&self) -> i32 {
         unsafe { (*self.wp).width }
     }
 
+    #[inline(always)]
     pub fn set_height(&mut self, height: i32) {
         unsafe { (*self.wp).height = height }
     }
 
+    #[inline(always)]
     pub fn set_width(&mut self, width: i32) {
         unsafe { (*self.wp).width = width }
     }
@@ -83,30 +79,15 @@ impl WebPPicture {
         }
     }
 
+    #[inline(always)]
     pub fn encode(&mut self, mut config: WebPConfig) -> Vec<u8> {
         unsafe {
+            let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
+            libwebp_sys::WebPMemoryWriterInit(writer);
+            (*self.wp).writer = Some(libwebp_sys::WebPMemoryWrite);
+            (*self.wp).custom_ptr = writer as *mut libc::c_void;
             libwebp_sys::WebPEncode(config.as_raw(), self.wp);
-            Vec::from_raw_parts((*self.writer).mem, (*self.writer).size, (*self.writer).size)
-        }
-    }
-
-    pub fn writer(
-        &mut self,
-        w: Option<unsafe extern "C" fn(*const u8, usize, *const libwebp_sys::WebPPicture) -> i32>,
-    ) {
-        unsafe {
-            (*self.wp).writer = w;
-        }
-    }
-}
-
-impl Drop for WebPPicture {
-    fn drop(&mut self) {
-        unsafe {
-            println!("clean drop");
-            drop(self.writer);
-            libwebp_sys::WebPPictureFree(self.wp);
-            drop(self);
+            Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size)
         }
     }
 }
