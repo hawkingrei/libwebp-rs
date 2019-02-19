@@ -6,6 +6,7 @@ pub struct WebPConfig {
 }
 
 impl Default for WebPConfig {
+    #[inline(always)]
     fn default() -> Self {
         WebPConfig {
             webp_config: &mut Default::default(),
@@ -25,7 +26,7 @@ impl WebPConfig {
     }
 
     #[inline(always)]
-    pub fn as_raw(&mut self) -> *mut libwebp_sys::WebPConfig {
+    pub fn as_ptr(&mut self) -> *mut libwebp_sys::WebPConfig {
         self.webp_config
     }
 }
@@ -35,6 +36,7 @@ pub struct WebPPicture {
 }
 
 impl Default for WebPPicture {
+    #[inline(always)]
     fn default() -> Self {
         unsafe {
             let mut wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
@@ -86,7 +88,7 @@ impl WebPPicture {
             libwebp_sys::WebPMemoryWriterInit(writer);
             (*self.wp).writer = Some(libwebp_sys::WebPMemoryWrite);
             (*self.wp).custom_ptr = writer as *mut libc::c_void;
-            libwebp_sys::WebPEncode(config.as_raw(), self.wp);
+            libwebp_sys::WebPEncode(config.as_ptr(), self.wp);
             Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size)
         }
     }

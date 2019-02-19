@@ -22,9 +22,7 @@ fn main() {
             Ok(image) => match image {
                 lodepng::Image::RGBA(bitmap) => {
                     let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
-                    libwebp_sys::WebPMemoryWriterInit(writer);
-                    (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
-                    (*wp).custom_ptr = writer as *mut libc::c_void;
+
                     imagers::WebPConfigInit(config);
                     (*wp).height = bitmap.height as i32;
                     (*wp).width = bitmap.width as i32;
@@ -37,6 +35,9 @@ fn main() {
                     );
 
                     println!("The first pixel is {}", bitmap.buffer[0]);
+                    libwebp_sys::WebPMemoryWriterInit(writer);
+                    (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
+                    (*wp).custom_ptr = writer as *mut libc::c_void;
                     libwebp_sys::WebPEncode(config, wp);
 
                     let result = Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size);

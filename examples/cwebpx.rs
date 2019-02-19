@@ -20,15 +20,18 @@ fn main() {
                     let mut wp: imagers::WebPPicture = Default::default();
                     let mut config: imagers::WebPConfig = Default::default();
                     config.WebPConfigInit();
+
                     wp.set_height(bitmap.height as i32);
                     wp.set_width(bitmap.width as i32);
                     let stride = 4 * bitmap.width * mem::size_of::<u8>();
                     println!("Decoded image {} x {}", bitmap.width, bitmap.height);
+                    println!("len {}", bitmap.buffer.as_bytes().len());
+                    //let image_ptr = ;
                     wp.ImportRGBA(bitmap.buffer.as_bytes().as_ptr(), stride as i32);
 
                     println!("The first pixel is {}", bitmap.buffer[0]);
                     let result = wp.encode(config);
-                    println!("ok");
+                    println!("{:?}", result.len());
                     fs::write("out.webp", result);
                     //println!("The raw bytes are {:?}", bitmap.buffer.as_bytes());
                 }
