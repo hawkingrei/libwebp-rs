@@ -27,7 +27,7 @@ fn main() {
                     println!("Decoded image {} x {}", bitmap.width, bitmap.height);
                     println!("len {}", bitmap.buffer.as_bytes().len());
                     //let image_ptr = ;
-                    wp.ImportRGBA(bitmap.buffer.as_bytes().as_ptr(), stride as i32);
+                    wp.ImportRGBA(bitmap.buffer.as_bytes().to_vec(), stride as i32);
 
                     println!("The first pixel is {}", bitmap.buffer[0]);
                     let result = wp.encode(config);

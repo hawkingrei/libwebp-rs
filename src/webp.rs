@@ -68,16 +68,16 @@ impl WebPPicture {
     }
 
     #[inline(always)]
-    pub fn ImportRGBA(&mut self, rgba: *const u8, rgba_stride: libc::c_int) {
+    pub fn ImportRGBA(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
         unsafe {
-            libwebp_sys::WebPPictureImportRGBA(self.wp, rgba, rgba_stride);
+            libwebp_sys::WebPPictureImportRGBA(self.wp, rgba.as_ptr(), rgba_stride);
         }
     }
 
     #[inline(always)]
-    pub fn ImportRGB(&mut self, rgba: *const u8, rgba_stride: libc::c_int) {
+    pub fn ImportRGB(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
         unsafe {
-            libwebp_sys::WebPPictureImportRGB(self.wp, rgba, rgba_stride);
+            libwebp_sys::WebPPictureImportRGB(self.wp, rgba.as_ptr(), rgba_stride);
         }
     }
 
