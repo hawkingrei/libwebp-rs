@@ -16,7 +16,7 @@ fn main() {
 
         let mut wp: imagers::WebPPicture = Default::default();
         let mut config: imagers::WebPConfig = Default::default();
-        config.WebPConfigInit();
+        config.webp_config_init();
 
         libjpeg_turbo_sys::jpeg_CreateDecompress(
             dinfo,
@@ -43,7 +43,7 @@ fn main() {
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
         println!("Decoded into {} raw pixel bytes", buffer.len());
-        wp.ImportRGB(buffer, row_stride as i32);
+        wp.import_rgb(buffer, row_stride as i32);
         wp.rescale(2000, 1500);
         wp.crop(0, 0, 500, 500);
 
