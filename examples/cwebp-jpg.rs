@@ -44,6 +44,8 @@ fn main() {
         }
         println!("Decoded into {} raw pixel bytes", buffer.len());
         wp.ImportRGB(buffer, row_stride as i32);
+        wp.rescale(2000, 1500);
+        wp.crop(0, 0, 500, 500);
 
         let result = wp.encode(config);
         println!("{:?}", result.len());
