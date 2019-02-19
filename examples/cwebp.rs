@@ -1,5 +1,6 @@
 use std::default::Default;
 use std::ffi::CStr;
+use std::fs;
 use std::mem;
 use std::path::Path;
 
@@ -8,19 +9,6 @@ use libc;
 use lodepng;
 use rgb::*;
 
-unsafe extern "C" fn MyViewer(
-    data: *const u8,
-    data_size: usize,
-    picture: *const libwebp_sys::WebPPicture,
-) -> libc::c_int {
-    let out: *mut libc::FILE = (*picture).custom_ptr as *mut libc::FILE;
-    if data_size > 0 {
-        libc::fwrite(data as *const libc::c_void, data_size, 1, out) as i32
-    } else {
-        1
-    }
-}
-
 fn main() {
     let path = Path::new("in.png");
     let mut state = lodepng::State::new();
@@ -28,18 +16,14 @@ fn main() {
     let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
 
     unsafe {
-        let c_file = libc::fopen(
-            CStr::from_bytes_with_nul_unchecked(b"out.webp\0").as_ptr(),
-            CStr::from_bytes_with_nul_unchecked(b"wb\0").as_ptr(),
-        );
         libwebp_sys::WebPPictureAlloc(wp);
 
-        (*wp).writer = Some(MyViewer);
-        (*wp).custom_ptr = c_file as *mut libc::c_void;
-        imagers::WebPConfigInit(config);
         match state.decode_file(&path) {
             Ok(image) => match image {
                 lodepng::Image::RGBA(bitmap) => {
+                    let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
+
+                    imagers::WebPConfigInit(config);
                     (*wp).height = bitmap.height as i32;
                     (*wp).width = bitmap.width as i32;
                     let stride = 4 * bitmap.width * mem::size_of::<u8>();
@@ -51,14 +35,19 @@ fn main() {
                     );
 
                     println!("The first pixel is {}", bitmap.buffer[0]);
+                    libwebp_sys::WebPMemoryWriterInit(writer);
+                    (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
+                    (*wp).custom_ptr = writer as *mut libc::c_void;
                     libwebp_sys::WebPEncode(config, wp);
+
+                    let result = Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size);
+                    fs::write("out.webp", result);
                     //println!("The raw bytes are {:?}", bitmap.buffer.as_bytes());
                 }
                 x => println!("Decoded some other image format {:?}", x),
             },
             Err(reason) => println!("Could not load {}, because: {}", path.display(), reason),
         }
-        libc::fclose(c_file);
         libwebp_sys::WebPPictureFree(wp);
     }
 }

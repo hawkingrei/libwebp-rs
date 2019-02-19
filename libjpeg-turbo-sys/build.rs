@@ -41,7 +41,6 @@ fn main() {
         .expect("Couldn't write bindings!");
 
     println!("cargo:rerun-if-changed=./build.rs");
-    println!("cargo:rerun-if-changed=src/wrapper.h");
     if cfg!(target_os = "macos") {
         println!("cargo:rustc-link-search=native=/usr/local/opt/jpeg-turbo/lib");
     } else {
