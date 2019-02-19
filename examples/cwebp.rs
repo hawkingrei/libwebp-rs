@@ -23,7 +23,7 @@ fn main() {
                 lodepng::Image::RGBA(bitmap) => {
                     let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
 
-                    imagers::WebPConfigInit(config);
+                    //imagers::WebPConfigInit(config);
                     (*wp).height = bitmap.height as i32;
                     (*wp).width = bitmap.width as i32;
                     let stride = 4 * bitmap.width * mem::size_of::<u8>();
