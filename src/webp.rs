@@ -16,7 +16,7 @@ impl Default for WebPConfig {
 
 impl WebPConfig {
     #[inline(always)]
-    pub unsafe fn WebPConfigInit(&mut self) {
+    pub unsafe fn webp_config_init(&mut self) {
         libwebp_sys::WebPConfigInitInternal(
             self.webp_config,
             libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
@@ -68,14 +68,14 @@ impl WebPPicture {
     }
 
     #[inline(always)]
-    pub fn ImportRGBA(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
+    pub fn import_rgba(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
         unsafe {
             libwebp_sys::WebPPictureImportRGBA(self.wp, rgba.as_ptr(), rgba_stride);
         }
     }
 
     #[inline(always)]
-    pub fn ImportRGB(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
+    pub fn import_rgb(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
         unsafe {
             libwebp_sys::WebPPictureImportRGB(self.wp, rgba.as_ptr(), rgba_stride);
         }
@@ -112,14 +112,4 @@ impl WebPPicture {
             Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size)
         }
     }
-}
-
-#[inline(always)]
-pub unsafe fn WebPConfigInit(config: *mut libwebp_sys::WebPConfig) -> libc::c_int {
-    libwebp_sys::WebPConfigInitInternal(
-        config,
-        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-        75.0 as f32,
-        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-    )
 }

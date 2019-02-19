@@ -127,6 +127,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "cwebp"
+version = "0.1.0"
+dependencies = [
+ "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "imagers 0.1.0",
+ "libjpeg-turbo-sys 0.1.0",
+ "libwebp-sys 0.1.0",
+ "lodepng 2.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rgb 0.8.12 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "env_logger"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
