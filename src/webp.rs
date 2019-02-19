@@ -82,6 +82,26 @@ impl WebPPicture {
     }
 
     #[inline(always)]
+    pub fn rescale(&mut self, width: libc::c_int, height: libc::c_int) {
+        unsafe {
+            libwebp_sys::WebPPictureRescale(self.wp, width, height);
+        }
+    }
+
+    #[inline(always)]
+    pub fn crop(
+        &mut self,
+        left: libc::c_int,
+        top: libc::c_int,
+        width: libc::c_int,
+        height: libc::c_int,
+    ) {
+        unsafe {
+            libwebp_sys::WebPPictureView(self.wp, left, top, width, height, self.wp);
+        }
+    }
+
+    #[inline(always)]
     pub fn encode(&mut self, mut config: WebPConfig) -> Vec<u8> {
         unsafe {
             let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
