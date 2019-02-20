@@ -20,7 +20,8 @@ pub fn png_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
                     wp.set_width(bitmap.width as i32);
                     let stride = 4 * bitmap.width * mem::size_of::<u8>();
 
-                    wp.import_rgba(bitmap.buffer.as_bytes().to_vec(), stride as i32);
+                    wp.import_rgba(bitmap.buffer.as_bytes().to_vec(), stride as i32)
+                        .unwrap();
 
                     let result = wp.encode(config);
                     return Ok(result.unwrap());
@@ -34,7 +35,8 @@ pub fn png_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
                     wp.set_width(bitmap.width as i32);
                     let stride = 4 * bitmap.width * mem::size_of::<u8>();
 
-                    wp.import_rgba(bitmap.buffer.as_bytes().to_vec(), stride as i32);
+                    wp.import_rgba(bitmap.buffer.as_bytes().to_vec(), stride as i32)
+                        .unwrap();
 
                     let result = wp.encode(config);
                     return Ok(result.unwrap());

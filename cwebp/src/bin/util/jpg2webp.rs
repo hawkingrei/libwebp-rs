@@ -36,14 +36,14 @@ pub fn jpg_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
         println!("Decoded into {} raw pixel bytes", buffer.len());
-        wp.import_rgb(buffer, row_stride as i32);
+        wp.import_rgb(buffer, row_stride as i32).unwrap();
 
         if resize.len() == 2 {
-            wp.rescale(resize[0], resize[1]);
+            wp.rescale(resize[0], resize[1]).unwrap();
         }
 
         if crop.len() == 4 {
-            wp.crop(crop[0], crop[1], crop[2], crop[3]);
+            wp.crop(crop[0], crop[1], crop[2], crop[3]).unwrap();
         }
         let result = wp.encode(config);
         Ok(result.unwrap())
