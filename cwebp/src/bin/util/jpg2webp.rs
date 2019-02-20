@@ -46,6 +46,6 @@ pub fn jpg_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
             wp.crop(crop[0], crop[1], crop[2], crop[3]);
         }
         let result = wp.encode(config);
-        Ok(result)
+        Ok(result.unwrap())
     }
 }

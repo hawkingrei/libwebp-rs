@@ -23,7 +23,7 @@ pub fn png_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
                     wp.import_rgba(bitmap.buffer.as_bytes().to_vec(), stride as i32);
 
                     let result = wp.encode(config);
-                    return Ok(result);
+                    return Ok(result.unwrap());
                 }
                 lodepng::Image::RGB(bitmap) => {
                     let mut wp: imagers::WebPPicture = Default::default();
@@ -37,7 +37,7 @@ pub fn png_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
                     wp.import_rgba(bitmap.buffer.as_bytes().to_vec(), stride as i32);
 
                     let result = wp.encode(config);
-                    return Ok(result);
+                    return Ok(result.unwrap());
                 }
                 _ => return Err(ImageError::FormatError("png format error".to_string())),
             },

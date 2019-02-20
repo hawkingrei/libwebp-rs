@@ -48,11 +48,6 @@ fn main() {
     let output = matches.value_of("o").unwrap_or("out.webp");
     let input = matches.value_of("i").unwrap();
 
-    println!("input: {:?}", input);
-    println!("output: {:?}", output);
-    println!("resize: {:?}", resize);
-    println!("crop: {:?}", crop);
-
     let data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(data).unwrap();
     match ptype {

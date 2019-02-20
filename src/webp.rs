@@ -68,23 +68,35 @@ impl WebPPicture {
     }
 
     #[inline(always)]
-    pub fn import_rgba(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
+    pub fn import_rgba(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) -> WebPResult<()> {
         unsafe {
-            libwebp_sys::WebPPictureImportRGBA(self.wp, rgba.as_ptr(), rgba_stride);
+            try_ffi!(
+                libwebp_sys::WebPPictureImportRGBA(self.wp, rgba.as_ptr(), rgba_stride),
+                (),
+                WebPError::ImportRGBAError
+            )
         }
     }
 
     #[inline(always)]
-    pub fn import_rgb(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) {
+    pub fn import_rgb(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) -> WebPResult<()> {
         unsafe {
-            libwebp_sys::WebPPictureImportRGB(self.wp, rgba.as_ptr(), rgba_stride);
+            try_ffi!(
+                libwebp_sys::WebPPictureImportRGB(self.wp, rgba.as_ptr(), rgba_stride),
+                (),
+                WebPError::ImportRGBError
+            )
         }
     }
 
     #[inline(always)]
-    pub fn rescale(&mut self, width: libc::c_int, height: libc::c_int) {
+    pub fn rescale(&mut self, width: libc::c_int, height: libc::c_int) -> WebPResult<()> {
         unsafe {
-            libwebp_sys::WebPPictureRescale(self.wp, width, height);
+            try_ffi!(
+                libwebp_sys::WebPPictureRescale(self.wp, width, height),
+                (),
+                WebPError::RescaleError
+            )
         }
     }
 
@@ -95,21 +107,39 @@ impl WebPPicture {
         top: libc::c_int,
         width: libc::c_int,
         height: libc::c_int,
-    ) {
+    ) -> WebPResult<()> {
         unsafe {
-            libwebp_sys::WebPPictureView(self.wp, left, top, width, height, self.wp);
+            try_ffi!(
+                libwebp_sys::WebPPictureView(self.wp, left, top, width, height, self.wp),
+                (),
+                WebPError::CropError
+            )
         }
     }
 
     #[inline(always)]
-    pub fn encode(&mut self, mut config: WebPConfig) -> Vec<u8> {
+    pub fn encode(&mut self, mut config: WebPConfig) -> WebPResult<Vec<u8>> {
         unsafe {
             let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
             libwebp_sys::WebPMemoryWriterInit(writer);
             (*self.wp).writer = Some(libwebp_sys::WebPMemoryWrite);
             (*self.wp).custom_ptr = writer as *mut libc::c_void;
-            libwebp_sys::WebPEncode(config.as_ptr(), self.wp);
-            Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size)
+            try_ffi!(
+                libwebp_sys::WebPEncode(config.as_ptr(), self.wp),
+                Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size),
+                WebPError::EncodeError
+            )
         }
     }
+}
+
+pub type WebPResult<T> = Result<T, WebPError>;
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum WebPError {
+    RescaleError,
+    CropError,
+    EncodeError,
+    ImportRGBAError,
+    ImportRGBError,
 }
