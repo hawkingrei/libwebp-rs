@@ -1,9 +1,10 @@
 use imagers::ImageResult;
 use libjpeg_turbo_sys;
 
+use crate::util::param::ImageHandler;
 use std::mem;
 
-pub fn jpg_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> ImageResult<Vec<u8>> {
+pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {
         let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
         let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
@@ -22,6 +23,11 @@ pub fn jpg_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
         libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
         libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
 
+        let param = p
+            .set_height((*dinfo).output_height as i32)
+            .set_width((*dinfo).output_width as i32)
+            .adapt()
+            .unwrap();
         wp.set_height((*dinfo).output_height as i32);
         wp.set_width((*dinfo).output_width as i32);
 
@@ -38,12 +44,13 @@ pub fn jpg_encode_webp(data: Vec<u8>, resize: Vec<i32>, crop: Vec<i32>) -> Image
         println!("Decoded into {} raw pixel bytes", buffer.len());
         wp.import_rgb(buffer, row_stride as i32).unwrap();
 
-        if resize.len() == 2 {
-            wp.rescale(resize[0], resize[1]).unwrap();
+        match param.resize {
+            Some(r) => wp.rescale(r.width, r.height).unwrap(),
+            None => {}
         }
-
-        if crop.len() == 4 {
-            wp.crop(crop[0], crop[1], crop[2], crop[3]).unwrap();
+        match param.crop {
+            Some(c) => wp.crop(c.x, c.y, c.width, c.height).unwrap(),
+            None => {}
         }
         let result = wp.encode(config);
         Ok(result.unwrap())

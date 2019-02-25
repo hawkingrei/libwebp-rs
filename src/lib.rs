@@ -93,7 +93,7 @@ impl fmt::Display for ImageError {
     }
 }
 
-pub fn guess_format(buffer: Vec<u8>) -> ImageResult<ImageFormat> {
+pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
     for &(signature, format) in &MAGIC_BYTES {
         if buffer.starts_with(signature) {
             return Ok(format);

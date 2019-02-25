@@ -1,8 +1,9 @@
 const MAX_WIDTH: i32 = 8192;
 const MAX_HEIGHT: i32 = 8192;
-const HEIGHT_LIMIT: i32 = 8092;
+const height_LIMIT: i32 = 8092;
 const WIDTH_LIMIT: i32 = 8092;
 
+use std::default::Default;
 use std::result::Result;
 
 #[derive(Debug)]
@@ -62,6 +63,10 @@ pub struct ImageHandler {
 }
 
 impl ImageHandler {
+    pub fn new() -> Self {
+        return Default::default();
+    }
+
     pub fn height(&self) -> i32 {
         self.height
     }
@@ -74,81 +79,118 @@ impl ImageHandler {
         self.edge
     }
 
-    pub fn set_height(&mut self, height: i32) {
-        self.height = height
+    pub fn set_height(mut self, height: i32) -> Self {
+        self.height = height;
+        self
     }
 
-    pub fn set_width(&mut self, width: i32) {
-        self.width = width
+    pub fn set_width(mut self, width: i32) -> Self {
+        self.width = width;
+        self
     }
 
-    pub fn set_edge(&mut self, edge: i32) {
-        self.edge = edge
+    pub fn set_edge(mut self, edge: i32) -> Self {
+        self.edge = edge;
+        self
     }
 
-    pub fn adapt(&mut self, w: i32, h: i32) -> ParamResult<ImageHandler> {
+    pub fn set_longside(mut self, longside: i32) -> Self {
+        self.LongSide = longside;
+        self
+    }
+
+    pub fn set_region_crop(mut self, rc: Option<RegionCrop>) -> Self {
+        self.regionCrop = rc;
+        self
+    }
+
+    pub fn set_resize(mut self, resize: Option<Resize>) -> Self {
+        self.resize = resize;
+        self
+    }
+
+    pub fn set_crop(mut self, crop: Option<Crop>) -> Self {
+        self.crop = crop;
+        self
+    }
+
+    pub fn set_proportion(mut self, p: i32) -> Self {
+        self.p = p;
+        self
+    }
+
+    pub fn set_auto_crop(mut self, ac: bool) -> Self {
+        if ac {
+            self.C = 1;
+        } else {
+            self.C = 0;
+        }
+        self
+    }
+
+    pub fn adapt(&mut self) -> ParamResult<ImageHandler> {
         let mut result: ImageHandler = Default::default();
 
         let mut crop = self.crop.clone();
         let mut resize = self.resize.clone();
         let mut region_crop = self.regionCrop.clone();
 
-        let mut oriH: i32 = h;
-        let mut oriW: i32 = w;
+        let mut oriH: i32 = self.height;
+        let mut oriW: i32 = self.width;
 
-        let mut adapt_h: i32 = h;
-        let mut adapt_w: i32 = w;
+        let mut adapt_h: i32 = self.height;
+        let mut adapt_w: i32 = self.width;
 
         let mut caluate: bool = false;
 
-        if h > MAX_HEIGHT {
-            adapt_w = (w as f32 * MAX_HEIGHT as f32 / h as f32) as i32;
+        if self.height > MAX_HEIGHT {
+            adapt_w = (self.width as f32 * MAX_HEIGHT as f32 / self.height as f32) as i32;
             adapt_h = MAX_HEIGHT;
         }
-        if w > MAX_WIDTH {
-            adapt_h = (h as f32 * MAX_WIDTH as f32 / w as f32) as i32;
+        if self.width > MAX_WIDTH {
+            adapt_h = (self.height as f32 * MAX_WIDTH as f32 / self.width as f32) as i32;
             adapt_w = MAX_WIDTH;
         }
 
         if self.width > MAX_WIDTH {
-            result.set_height((self.height as f32 * MAX_WIDTH as f32 / self.width as f32) as i32);
-            result.set_width(MAX_WIDTH)
+            result.height = (self.height as f32 * MAX_WIDTH as f32 / self.width as f32) as i32;
+            result.width = MAX_WIDTH;
         } else {
-            result.set_width(self.width)
+            result.width = self.width;
         }
 
         if self.height > MAX_HEIGHT {
-            result.set_width((self.width as f32 * MAX_HEIGHT as f32 / self.height as f32) as i32);
-            result.set_height(MAX_HEIGHT);
+            result.width = (self.width as f32 * MAX_HEIGHT as f32 / self.height as f32) as i32;
+            result.height = MAX_HEIGHT;
         } else {
-            result.set_height(self.height)
+            result.height = self.height;
         }
 
         let mut fh = result.height();
         let mut fw = result.width();
         if fh <= 0 && fw > 0 {
-            fh = (h as f32 * fw as f32 / w as f32) as i32;
+            fh = (self.height as f32 * fw as f32 / self.width as f32) as i32;
         }
         if fw <= 0 && fh > 0 {
-            fw = (w as f32 * fh as f32 / h as f32) as i32;
+            fw = (self.width as f32 * fh as f32 / self.height as f32) as i32;
         }
         if result.height() == 0 {
-            result.set_height(h)
+            result.height = self.height;
         }
         if result.width() == 0 {
-            result.set_width(w)
+            result.width = self.width;
         }
         if (fh > 0 && fw > 0) || self.p > 1 {
             let mut refh_refw_longside: (i32, i32, i32);
-            refh_refw_longside = CaluatSize(h, w, fh, fw, self.edge, self.p);
-            result.set_height(refh_refw_longside.0);
-            result.set_width(refh_refw_longside.1);
+            refh_refw_longside = CaluatSize(self.height, self.width, fh, fw, self.edge, self.p);
+            result.height = refh_refw_longside.0;
+            result.width = refh_refw_longside.1;
             result.LongSide = refh_refw_longside.2;
             caluate = true;
         }
         if caluate
-            && (result.height() * result.width() > HEIGHT_LIMIT * WIDTH_LIMIT
-                || result.height() >= HEIGHT_LIMIT * 4
+            && (result.height() * result.width() > height_LIMIT * WIDTH_LIMIT
+                || result.height() >= height_LIMIT * 4
                 || result.width() >= WIDTH_LIMIT)
         {
             return Err(ParamError::ErrResizeParams);
@@ -159,16 +201,14 @@ impl ImageHandler {
             && (result.height() != oriH && result.width() != oriW)
         {
             if result.width() > MAX_HEIGHT {
-                result.set_width(
-                    (result.width() as f32 * MAX_HEIGHT as f32 / result.height() as f32) as i32,
-                );
-                result.set_height(MAX_HEIGHT);
+                result.width =
+                    (result.width() as f32 * MAX_HEIGHT as f32 / result.height() as f32) as i32;
+                result.height = (MAX_HEIGHT);
             }
             if result.width() > MAX_WIDTH {
-                result.set_height(
-                    (result.height() as f32 * MAX_WIDTH as f32 / result.width() as f32) as i32,
-                );
-                result.set_width(MAX_WIDTH);
+                result.height =
+                    (result.height() as f32 * MAX_WIDTH as f32 / result.width() as f32) as i32;
+                result.width = (MAX_WIDTH);
             }
             result.resize = Some(Resize {
                 width: result.width(),
@@ -252,8 +292,31 @@ impl ImageHandler {
                 }
             } else if self.C == 1 && self.edge == 1 {
                 match self.LongSide {
-                    1 => {}
-                    2 => {}
+                    1 => {
+                        let cropW = fw;
+                        let cropH = self.height();
+                        let cropPosX = (self.width() - cropW) / 2;
+                        let cropPosY = 0;
+                        result.crop = Some(Crop {
+                            x: cropPosX,
+                            y: cropPosY,
+                            height: cropH,
+                            width: cropW,
+                        });
+                    }
+                    2 => {
+                        let cropW = self.width();
+                        let cropH = fh;
+
+                        let cropPosX = 0;
+                        let cropPosY = (self.height() - cropH) / 2;
+                        result.crop = Some(Crop {
+                            x: cropPosX,
+                            y: cropPosY,
+                            height: cropH,
+                            width: cropW,
+                        });
+                    }
                     _ => {}
                 }
             }
