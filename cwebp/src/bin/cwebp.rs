@@ -125,3 +125,14 @@ fn main() {
         _ => println!("not support "),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::util::ImageHandler;
+
+    use std::path::Path;
+    #[test]
+    fn test_png_to_webp() {
+        let dateset_path = Path::new("./dataset");
+    }
+}

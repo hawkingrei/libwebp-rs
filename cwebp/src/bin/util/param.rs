@@ -29,7 +29,7 @@ pub struct RegionCrop {
     pub Region: i32,
 }
 
-#[derive(Default, Clone, PartialEq)]
+#[derive(Default, Copy, Clone, PartialEq)]
 pub struct Resize {
     pub height: i32,
     pub width: i32,
@@ -130,6 +130,13 @@ impl ImageHandler {
 
     pub fn adapt(&mut self) -> ParamResult<ImageHandler> {
         let mut result: ImageHandler = Default::default();
+        result.resize = match &self.resize {
+            Some(r) => Some(r.clone()),
+            None => Some(Resize {
+                width: 0,
+                height: 0,
+            }),
+        };
 
         let mut crop = self.crop.clone();
         let mut resize = self.resize.clone();
@@ -142,15 +149,6 @@ impl ImageHandler {
         let mut adapt_w: i32 = self.width;
 
         let mut caluate: bool = false;
-
-        if self.height > MAX_HEIGHT {
-            adapt_w = (self.width as f32 * MAX_HEIGHT as f32 / self.height as f32) as i32;
-            adapt_h = MAX_HEIGHT;
-        }
-        if self.width > MAX_WIDTH {
-            adapt_h = (self.height as f32 * MAX_WIDTH as f32 / self.width as f32) as i32;
-            adapt_w = MAX_WIDTH;
-        }
 
         if self.width > MAX_WIDTH {
             result.height = (self.height as f32 * MAX_WIDTH as f32 / self.width as f32) as i32;
@@ -165,27 +163,61 @@ impl ImageHandler {
         } else {
             result.height = self.height;
         }
+        let mut fh;
+        let mut fw;
+        match self.resize {
+            Some(mut resize_param) => {
+                if resize_param.height > MAX_HEIGHT {
+                    resize_param.width = (resize_param.width as f32 * MAX_HEIGHT as f32
+                        / resize_param.height as f32)
+                        as i32;
+                    resize_param.height = MAX_HEIGHT;
+                }
+                if resize_param.width > MAX_WIDTH {
+                    resize_param.height = (resize_param.height as f32 * MAX_WIDTH as f32
+                        / resize_param.width as f32)
+                        as i32;
+                    resize_param.width = MAX_WIDTH;
+                }
+                if resize_param.height == 0 {
+                    result.height = self.height;
+                }
+                if resize_param.width == 0 {
+                    result.width = self.width;
+                }
 
-        let mut fh = result.height();
-        let mut fw = result.width();
+                fh = resize_param.height;
+                fw = resize_param.width;
+            }
+            None => {
+                fh = 0;
+                fw = 0;
+                result.height = self.height;
+                result.width = self.width;
+            }
+        }
+
         if fh <= 0 && fw > 0 {
             fh = (self.height as f32 * fw as f32 / self.width as f32) as i32;
         }
         if fw <= 0 && fh > 0 {
             fw = (self.width as f32 * fh as f32 / self.height as f32) as i32;
         }
-        if result.height() == 0 {
-            result.height = self.height;
-        }
-        if result.width() == 0 {
-            result.width = self.width;
-        }
+
         if (fh > 0 && fw > 0) || self.p > 1 {
             let mut refh_refw_longside: (i32, i32, i32);
             refh_refw_longside = CaluatSize(self.height, self.width, fh, fw, self.edge, self.p);
             result.height = refh_refw_longside.0;
             result.width = refh_refw_longside.1;
             result.LongSide = refh_refw_longside.2;
+            result.resize = Some(Resize {
+                width: refh_refw_longside.1,
+                height: refh_refw_longside.0,
+            });
+            println!(
+                "result height {:?} width {:?} longside {:?}",
+                result.height, result.width, refh_refw_longside.2
+            );
             caluate = true;
         }
         if caluate
@@ -218,7 +250,7 @@ impl ImageHandler {
         if !crop.is_none() {
             match crop {
                 Some(mut crop) => {
-                    if crop.x > self.width() || crop.x < 0 {
+                    if crop.x > result.width() || crop.x < 0 {
                         crop.x = 0;
                     }
                     if crop.y > result.height() || crop.y < 0 {
@@ -290,12 +322,13 @@ impl ImageHandler {
                     }
                     _ => {}
                 }
-            } else if self.C == 1 && self.edge == 1 {
-                match self.LongSide {
+            }
+            if self.C == 1 && self.edge == 1 || (result.C == 1 && result.edge == 1) {
+                match result.LongSide {
                     1 => {
                         let cropW = fw;
-                        let cropH = self.height();
-                        let cropPosX = (self.width() - cropW) / 2;
+                        let cropH = result.height();
+                        let cropPosX = (result.width() - cropW) / 2;
                         let cropPosY = 0;
                         result.crop = Some(Crop {
                             x: cropPosX,
@@ -305,11 +338,11 @@ impl ImageHandler {
                         });
                     }
                     2 => {
-                        let cropW = self.width();
+                        let cropW = result.width();
                         let cropH = fh;
 
                         let cropPosX = 0;
-                        let cropPosY = (self.height() - cropH) / 2;
+                        let cropPosY = (result.height() - cropH) / 2;
                         result.crop = Some(Crop {
                             x: cropPosX,
                             y: cropPosY,
