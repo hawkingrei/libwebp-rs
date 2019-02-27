@@ -132,6 +132,7 @@ version = "0.1.0"
 dependencies = [
  "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "imagers 0.1.0",
+ "libc 0.2.48 (registry+https://github.com/rust-lang/crates.io-index)",
  "libjpeg-turbo-sys 0.1.0",
  "libwebp-sys 0.1.0",
  "lodepng 2.4.2 (registry+https://github.com/rust-lang/crates.io-index)",

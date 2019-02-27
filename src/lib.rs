@@ -51,7 +51,7 @@ static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
     (&[0xff, 0xd8, 0xff], ImageFormat::JPEG),
     (b"GIF89a", ImageFormat::GIF),
     (b"GIF87a", ImageFormat::GIF),
-    (b"WEBP", ImageFormat::WEBP),
+    (b"RIFF", ImageFormat::WEBP),
     (b"MM.*", ImageFormat::TIFF),
     (b"II*.", ImageFormat::TIFF),
     (b"BM", ImageFormat::BMP),

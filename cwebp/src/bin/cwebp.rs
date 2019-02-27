@@ -11,6 +11,7 @@ use crate::util::param::Crop;
 use crate::util::param::RegionCrop;
 use crate::util::param::Resize;
 use crate::util::png2webp::png_encode_webp;
+use crate::util::webp2webp::webp_encode_webp;
 use crate::util::ImageHandler;
 
 fn main() {
@@ -122,6 +123,10 @@ fn main() {
             let result = jpg_encode_webp(&data.clone(), param).unwrap();
             fs::write(output, result);
         }
+        ImageFormat::WEBP => {
+            let result = webp_encode_webp(&data.clone(), param).unwrap();
+            fs::write(output, result);
+        }
         _ => println!("not support "),
     }
 }
@@ -129,6 +134,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use crate::util::ImageHandler;
+
+    pub struct test_case {}
 
     use std::path::Path;
     #[test]

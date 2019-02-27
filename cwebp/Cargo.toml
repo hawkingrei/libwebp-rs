@@ -11,6 +11,7 @@ libjpeg-turbo-sys = { path = "../libjpeg-turbo-sys" }
 imagers = { path = "../" }
 lodepng = "2.4.2"
 rgb = "0.8"
+libc = "0.2.48"
 
 [lib]
 name = "cwebp"

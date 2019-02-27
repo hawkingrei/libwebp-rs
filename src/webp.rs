@@ -32,7 +32,7 @@ impl WebPConfig {
 }
 
 pub struct WebPPicture {
-    wp: *mut libwebp_sys::WebPPicture,
+    pub wp: *mut libwebp_sys::WebPPicture,
 }
 
 impl Default for WebPPicture {
