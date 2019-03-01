@@ -16,11 +16,13 @@ rgb = "0.8"
 members = [
   "libjpeg-turbo-sys",
   "libwebp-sys",
+  "cwebp",
   "./"
 ]
 default-members = [
   "libjpeg-turbo-sys",
   "libwebp-sys",
+  "cwebp",
   "./"
 ]
 
