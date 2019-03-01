@@ -211,8 +211,8 @@ impl ImageHandler {
             result.width = refh_refw_longside.1;
             result.LongSide = refh_refw_longside.2;
             result.resize = Some(Resize {
-                width: refh_refw_longside.1,
                 height: refh_refw_longside.0,
+                width: refh_refw_longside.1,
             });
             println!(
                 "result height {:?} width {:?} longside {:?}",
@@ -250,6 +250,7 @@ impl ImageHandler {
         if !crop.is_none() {
             match crop {
                 Some(mut crop) => {
+                    println!("do crop");
                     if crop.x > result.width() || crop.x < 0 {
                         crop.x = 0;
                     }
@@ -277,6 +278,7 @@ impl ImageHandler {
             if !region_crop.is_none() {
                 match region_crop {
                     Some(mut regionc) => {
+                        println!("do region_crop");
                         let mut rcW = regionc.width;
                         let mut rcH = regionc.height;
 
@@ -322,35 +324,38 @@ impl ImageHandler {
                     }
                     _ => {}
                 }
-            }
-            if self.C == 1 && self.edge == 1 || (result.C == 1 && result.edge == 1) {
-                match result.LongSide {
-                    1 => {
-                        let cropW = fw;
-                        let cropH = result.height();
-                        let cropPosX = (result.width() - cropW) / 2;
-                        let cropPosY = 0;
-                        result.crop = Some(Crop {
-                            x: cropPosX,
-                            y: cropPosY,
-                            height: cropH,
-                            width: cropW,
-                        });
-                    }
-                    2 => {
-                        let cropW = result.width();
-                        let cropH = fh;
+            } else {
+                if self.C == 1 && self.edge == 1 || (result.C == 1 && result.edge == 1) {
+                    match result.LongSide {
+                        1 => {
+                            let cropW = fw;
+                            let cropH = result.height();
+                            dbg!(result.width());
+                            dbg!(cropW);
+                            let cropPosX = dbg!((result.width() - cropW) / 2);
+                            let cropPosY = 0;
+                            result.crop = Some(Crop {
+                                x: cropPosX,
+                                y: cropPosY,
+                                height: cropH,
+                                width: cropW,
+                            });
+                        }
+                        2 => {
+                            let cropW = result.width();
+                            let cropH = fh;
 
-                        let cropPosX = 0;
-                        let cropPosY = (result.height() - cropH) / 2;
-                        result.crop = Some(Crop {
-                            x: cropPosX,
-                            y: cropPosY,
-                            height: cropH,
-                            width: cropW,
-                        });
+                            let cropPosX = 0;
+                            let cropPosY = (result.height() - cropH) / 2;
+                            result.crop = Some(Crop {
+                                x: cropPosX,
+                                y: cropPosY,
+                                height: cropH,
+                                width: cropW,
+                            });
+                        }
+                        _ => {}
                     }
-                    _ => {}
                 }
             }
         }
