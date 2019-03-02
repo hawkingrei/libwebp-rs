@@ -220,6 +220,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "libpng-sys"
+version = "0.1.0"
+dependencies = [
+ "bindgen 0.47.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "libwebp-sys"
 version = "0.1.0"
 dependencies = [
