@@ -142,11 +142,8 @@ impl ImageHandler {
         let mut resize = self.resize.clone();
         let mut region_crop = self.regionCrop.clone();
 
-        let mut oriH: i32 = self.height;
-        let mut oriW: i32 = self.width;
-
-        let mut adapt_h: i32 = self.height;
-        let mut adapt_w: i32 = self.width;
+        let mut ori_h: i32 = self.height;
+        let mut ori_w: i32 = self.width;
 
         let mut caluate: bool = false;
 
@@ -230,7 +227,7 @@ impl ImageHandler {
 
         if result.height() > 0
             && result.width() > 0
-            && (result.height() != oriH && result.width() != oriW)
+            && (result.height() != ori_h && result.width() != ori_w)
         {
             if result.width() > MAX_HEIGHT {
                 result.width =
@@ -291,33 +288,33 @@ impl ImageHandler {
                         if rcW == 0 {
                             rcW = self.width();
                         }
-                        let mut regionH = self.height() / 3;
-                        let mut regionW = self.width() / 3;
+                        let mut region_h = self.height() / 3;
+                        let mut region_w = self.width() / 3;
 
-                        if rcH > regionH {
-                            rcH = regionH;
+                        if rcH > region_h {
+                            rcH = region_h;
                         }
                         let mut rcXSt = (regionc.Region - 1) % 3;
                         let mut rcYSt = (regionc.Region - 1) / 3;
-                        let mut cropPosX = 0;
-                        let mut cropPosY = 0;
+                        let mut crop_pos_x = 0;
+                        let mut crop_pos_y = 0;
 
                         match rcXSt {
-                            0 => cropPosX = 0,
-                            1 => cropPosX = (rcXSt + regionW) + ((regionW - rcW) / 2),
-                            2 => cropPosX = (rcXSt * regionW) + (regionW - rcW),
+                            0 => crop_pos_x = 0,
+                            1 => crop_pos_x = (rcXSt + region_w) + ((region_w - rcW) / 2),
+                            2 => crop_pos_x = (rcXSt * region_w) + (region_w - rcW),
                             _ => {}
                         }
 
                         match rcYSt {
-                            0 => cropPosY = 0,
-                            1 => cropPosY = (rcYSt * regionH) + ((regionH - rcH) / 2),
-                            2 => cropPosY = (rcYSt * regionH) + (regionH - rcH),
+                            0 => crop_pos_y = 0,
+                            1 => crop_pos_y = (rcYSt * region_h) + ((region_h - rcH) / 2),
+                            2 => crop_pos_y = (rcYSt * region_h) + (region_h - rcH),
                             _ => {}
                         }
                         result.crop = Some(Crop {
-                            x: cropPosX,
-                            y: cropPosY,
+                            x: crop_pos_x,
+                            y: crop_pos_y,
                             height: rcH,
                             width: rcW,
                         });
@@ -328,30 +325,30 @@ impl ImageHandler {
                 if self.C == 1 && self.edge == 1 || (result.C == 1 && result.edge == 1) {
                     match result.LongSide {
                         1 => {
-                            let cropW = fw;
-                            let cropH = result.height();
+                            let crop_w = fw;
+                            let crop_h = result.height();
                             dbg!(result.width());
-                            dbg!(cropW);
-                            let cropPosX = dbg!((result.width() - cropW) / 2);
-                            let cropPosY = 0;
+                            dbg!(crop_w);
+                            let crop_pos_x = dbg!((result.width() - crop_w) / 2);
+                            let crop_pos_y = 0;
                             result.crop = Some(Crop {
-                                x: cropPosX,
-                                y: cropPosY,
-                                height: cropH,
-                                width: cropW,
+                                x: crop_pos_x,
+                                y: crop_pos_y,
+                                height: crop_h,
+                                width: crop_w,
                             });
                         }
                         2 => {
-                            let cropW = result.width();
-                            let cropH = fh;
+                            let crop_w = result.width();
+                            let crop_h = fh;
 
-                            let cropPosX = 0;
-                            let cropPosY = (result.height() - cropH) / 2;
+                            let crop_pos_x = 0;
+                            let crop_pos_y = (result.height() - crop_h) / 2;
                             result.crop = Some(Crop {
-                                x: cropPosX,
-                                y: cropPosY,
-                                height: cropH,
-                                width: cropW,
+                                x: crop_pos_x,
+                                y: crop_pos_y,
+                                height: crop_h,
+                                width: crop_w,
                             });
                         }
                         _ => {}
@@ -364,44 +361,44 @@ impl ImageHandler {
     }
 }
 
-fn CaluatSize(oriH: i32, oriW: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, i32, i32) {
-    let mut ratioH: f64;
-    let mut ratioW: f64;
+fn CaluatSize(ori_h: i32, ori_w: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, i32, i32) {
+    let mut ratio_h: f64;
+    let mut ratio_w: f64;
     let mut ratio: f64;
 
-    let mut refH = oriH;
-    let mut refW = oriW;
+    let mut ref_h = ori_h;
+    let mut ref_w = ori_w;
 
     let mut longside: i32 = 0;
 
     if p > 1 {
-        refH = oriH * p / 100;
-        refW = oriW * p / 100;
+        ref_h = ori_h * p / 100;
+        ref_w = ori_w * p / 100;
     }
     if e == 2 {
         return (h, w, 0);
     }
     if e >= 0 && h > 0 && w > 0 {
-        ratioH = oriH as f64 / h as f64;
+        ratio_h = ori_h as f64 / h as f64;
         // 1.222493888
-        ratioW = oriW as f64 / w as f64;
+        ratio_w = ori_w as f64 / w as f64;
 
         longside = 1;
-        ratio = ratioH;
-        if ratioW > ratioH {
-            ratio = ratioW;
+        ratio = ratio_h;
+        if ratio_w > ratio_h {
+            ratio = ratio_w;
             longside = 2;
         }
         if e == 1 {
-            ratio = ratioH;
+            ratio = ratio_h;
             longside = 1;
-            if ratioW < ratioH {
-                ratio = ratioW;
+            if ratio_w < ratio_h {
+                ratio = ratio_w;
                 longside = 2;
             }
         }
-        refH = (oriH as f64 / ratio) as i32;
-        refW = (oriW as f64 / ratio) as i32;
+        ref_h = (ori_h as f64 / ratio) as i32;
+        ref_w = (ori_w as f64 / ratio) as i32;
     }
-    return (refH, refW, longside);
+    return (ref_h, ref_w, longside);
 }

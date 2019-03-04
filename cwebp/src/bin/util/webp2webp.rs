@@ -88,7 +88,7 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
                     "crop x: {} y: {} width: {} height: {}",
                     c.x, c.y, c.width, c.height
                 );
-                libwebp_sys::WebPPictureView(wp, c.x * 2, c.y, c.width, c.height, wp);
+                libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
             }
             None => {}
         }
