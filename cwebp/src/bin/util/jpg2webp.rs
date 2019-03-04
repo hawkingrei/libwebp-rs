@@ -1,22 +1,17 @@
-use std::default::Default;
-use std::ffi::CStr;
-use std::fs;
-use std::mem;
-use std::path::Path;
-
+use imagers::ImageResult;
 use libjpeg_turbo_sys;
 
-fn main() {
-    let path = Path::new("in.jpg");
-    let mut data = fs::read("in.jpg").unwrap();
+use crate::util::param::ImageHandler;
+use std::mem;
 
+pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {
         let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
         let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
 
         let mut wp: imagers::WebPPicture = Default::default();
         let mut config: imagers::WebPConfig = Default::default();
-        config.WebPConfigInit();
+        config.webp_config_init();
 
         libjpeg_turbo_sys::jpeg_CreateDecompress(
             dinfo,
@@ -28,9 +23,13 @@ fn main() {
         libjpeg_turbo_sys::jpeg_read_header(dinfo, 1);
         libjpeg_turbo_sys::jpeg_start_decompress(dinfo);
 
+        let param = p
+            .set_height((*dinfo).output_height as i32)
+            .set_width((*dinfo).output_width as i32)
+            .adapt()
+            .unwrap();
         wp.set_height((*dinfo).output_height as i32);
         wp.set_width((*dinfo).output_width as i32);
-        println!("Decoded image {} x {}", wp.width(), wp.height());
 
         let row_stride =
             (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>() as u32;
@@ -43,15 +42,17 @@ fn main() {
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
         println!("Decoded into {} raw pixel bytes", buffer.len());
-        wp.ImportRGB(buffer, row_stride as i32);
-        wp.rescale(2000, 1500);
-        wp.crop(0, 0, 500, 500);
+        wp.import_rgb(buffer, row_stride as i32).unwrap();
 
+        match param.resize {
+            Some(r) => wp.rescale(r.width, r.height).unwrap(),
+            None => {}
+        }
+        match param.crop {
+            Some(c) => wp.crop(c.x, c.y, c.width, c.height).unwrap(),
+            None => {}
+        }
         let result = wp.encode(config);
-        println!("{:?}", result.len());
-        fs::write("out.webp", result);
-
-        libjpeg_turbo_sys::jpeg_finish_decompress(dinfo);
-        libjpeg_turbo_sys::jpeg_destroy_decompress(dinfo);
+        Ok(result.unwrap())
     }
 }

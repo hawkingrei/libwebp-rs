@@ -1,3 +1,6 @@
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
 #![feature(test)]
 
 extern crate test;
@@ -15,14 +18,6 @@ use rgb::*;
 include!("./webp_bindings.rs");
 
 pub const WEBP_ENCODER_ABI_VERSION: i32 = 526;
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
 
 #[inline(always)]
 unsafe fn WebPConfigInit(config: *mut WebPConfig) -> libc::c_int {
