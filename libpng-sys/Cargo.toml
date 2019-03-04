@@ -1,0 +1,10 @@
+[package]
+name = "libpng-sys"
+version = "0.1.0"
+authors = ["Wangweizhen <wangweizhen@bilibili.com>"]
+edition = "2018"
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.47.0"
