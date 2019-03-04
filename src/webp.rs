@@ -26,6 +26,16 @@ impl WebPConfig {
     }
 
     #[inline(always)]
+    pub unsafe fn webp_config_costum_init(&mut self, arg: f32) {
+        libwebp_sys::WebPConfigInitInternal(
+            self.webp_config,
+            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+            arg,
+            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+        );
+    }
+
+    #[inline(always)]
     pub fn as_ptr(&mut self) -> *mut libwebp_sys::WebPConfig {
         self.webp_config
     }
