@@ -8,6 +8,7 @@ edition = "2018"
 clap = "2.32.0"
 libwebp-sys = { path = "../libwebp-sys" }
 libjpeg-turbo-sys = { path = "../libjpeg-turbo-sys" }
+libpng-sys = { path = "../libpng-sys" }
 imagers = { path = "../" }
 lodepng = "2.4.2"
 rgb = "0.8"
