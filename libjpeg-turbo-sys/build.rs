@@ -1,6 +1,5 @@
 use std::env;
 use std::path::Path;
-use std::path::PathBuf;
 
 #[cfg(target_os = "macos")]
 static TURBO_INCLUDE_DIR: &'static str = "/usr/local/opt/jpeg-turbo";

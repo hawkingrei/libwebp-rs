@@ -1,6 +1,5 @@
 use std::env;
 use std::path::Path;
-use std::path::PathBuf;
 
 static PNG_INCLUDE_DIR: &'static str = "/usr/local/include";
 

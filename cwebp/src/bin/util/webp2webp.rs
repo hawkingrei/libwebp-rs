@@ -5,8 +5,6 @@ use imagers::ImageResult;
 use libwebp_sys;
 
 use std::mem;
-use std::ptr;
-use std::slice;
 
 pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {
@@ -22,9 +20,9 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
             libwebp_sys::WEBP_ENCODER_ABI_VERSION,
         );
 
-        let mut decoder_config: *mut libwebp_sys::WebPDecoderConfig = &mut Default::default();
-        let mut output_buffer: *mut libwebp_sys::WebPDecBuffer = &mut Default::default();
-        let mut bitstream: *mut libwebp_sys::WebPBitstreamFeatures = &mut Default::default();
+        let decoder_config: *mut libwebp_sys::WebPDecoderConfig = &mut Default::default();
+        let output_buffer: *mut libwebp_sys::WebPDecBuffer = &mut Default::default();
+        let bitstream: *mut libwebp_sys::WebPBitstreamFeatures = &mut Default::default();
 
         *output_buffer = (*decoder_config).output;
         *bitstream = (*decoder_config).input;
@@ -88,7 +86,7 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
                     "crop x: {} y: {} width: {} height: {}",
                     c.x, c.y, c.width, c.height
                 );
-                libwebp_sys::WebPPictureView(wp, c.x * 2, c.y, c.width, c.height, wp);
+                libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
             }
             None => {}
         }

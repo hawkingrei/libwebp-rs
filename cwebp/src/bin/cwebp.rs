@@ -80,7 +80,7 @@ fn main() {
     let output = matches.value_of("o").unwrap_or("out.webp");
     let input = matches.value_of("i").unwrap();
 
-    let mut param = ImageHandler::new()
+    let param = ImageHandler::new()
         .set_proportion(proportion)
         .set_edge(edge)
         .set_auto_crop(auto_crop)
@@ -106,7 +106,7 @@ fn main() {
             Some(RegionCrop {
                 width: region_crop[0],
                 height: region_crop[1],
-                Region: region_crop[2],
+                region: region_crop[2],
             })
         } else {
             None
