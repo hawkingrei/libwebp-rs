@@ -22,9 +22,9 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
             libwebp_sys::WEBP_ENCODER_ABI_VERSION,
         );
 
-        let mut decoder_config: *mut libwebp_sys::WebPDecoderConfig = &mut Default::default();
-        let mut output_buffer: *mut libwebp_sys::WebPDecBuffer = &mut Default::default();
-        let mut bitstream: *mut libwebp_sys::WebPBitstreamFeatures = &mut Default::default();
+        let decoder_config: *mut libwebp_sys::WebPDecoderConfig = &mut Default::default();
+        let output_buffer: *mut libwebp_sys::WebPDecBuffer = &mut Default::default();
+        let bitstream: *mut libwebp_sys::WebPBitstreamFeatures = &mut Default::default();
 
         *output_buffer = (*decoder_config).output;
         *bitstream = (*decoder_config).input;
