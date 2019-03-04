@@ -1,9 +1,10 @@
 use std::path::Path;
 
-pub struct case {
+pub struct case<T: Clone> {
     name: String,
     input: String,
     expected: String,
+    parm: T,
 }
 
 pub struct test_config {
@@ -23,14 +24,14 @@ impl Default for test_config {
     }
 }
 
-pub struct wali {
+pub struct wali<T: Clone> {
     config: test_config,
-    case: Vec<case>,
-    test_fn: Fn(String, String, String) -> Result<(), String>,
+    case: Vec<case<T>>,
+    test_fn: Fn(String, String, String, T) -> Result<(), String>,
 }
 
-impl wali {
-    pub fn insert_case(&mut self, c: case) {
+impl<T: Clone> wali<T> {
+    pub fn insert_case(&mut self, c: case<T>) {
         self.case.push(c);
     }
 
@@ -43,6 +44,11 @@ impl wali {
             input.push_str(case.input.as_str());
             expected.push_str(case.expected.as_str());
             output.push_str(case.expected.as_str());
+
+            match (self.test_fn)(input, output, expected, case.parm.clone()) {
+                Ok(()) => {}
+                Err(err) => assert!(false, err),
+            }
         }
     }
 }
