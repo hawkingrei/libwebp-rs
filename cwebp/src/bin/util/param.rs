@@ -41,7 +41,7 @@ pub struct ImageHandler {
     pub width: i32,
     pub crop: Option<Crop>,
     pub resize: Option<Resize>,
-    pub regionCrop: Option<RegionCrop>,
+    pub region_crop: Option<RegionCrop>,
 
     /**
       e: 图片缩放, 缩放尺寸比例与原图比例不同时的优先缩放边, 格式[edge]e, 默认为0表示长边优先, 1表示短边优先, 2表示强制缩放(改变比例), 4表示短边缩略并且用指定颜色填充剩余区域
@@ -58,7 +58,7 @@ pub struct ImageHandler {
     /**
     c: 图片裁剪, 是否进行自动裁剪, 自动裁剪表示图片先按短边缩略，然后从缩略的目标图片裁剪出中间部分得到对应指定高度和宽度的目标缩略图, 格式[value]c, 1表示进行自动裁剪
     */
-    pub C: i8,
+    pub c: i8,
     pub LongSide: i32,
 }
 
@@ -100,7 +100,7 @@ impl ImageHandler {
     }
 
     pub fn set_region_crop(mut self, rc: Option<RegionCrop>) -> Self {
-        self.regionCrop = rc;
+        self.region_crop = rc;
         self
     }
 
@@ -121,9 +121,9 @@ impl ImageHandler {
 
     pub fn set_auto_crop(mut self, ac: bool) -> Self {
         if ac {
-            self.C = 1;
+            self.c = 1;
         } else {
-            self.C = 0;
+            self.c = 0;
         }
         self
     }
@@ -140,7 +140,7 @@ impl ImageHandler {
 
         let mut crop = self.crop.clone();
         let mut resize = self.resize.clone();
-        let mut region_crop = self.regionCrop.clone();
+        let mut region_crop = self.region_crop.clone();
 
         let mut ori_h: i32 = self.height;
         let mut ori_w: i32 = self.width;
@@ -322,7 +322,7 @@ impl ImageHandler {
                     _ => {}
                 }
             } else {
-                if self.C == 1 && self.edge == 1 || (result.C == 1 && result.edge == 1) {
+                if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
                     match result.LongSide {
                         1 => {
                             let crop_w = fw;
