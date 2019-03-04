@@ -50,7 +50,7 @@ impl<'a> Generator<'a> {
             .trust_clang_mangling(false)
             .rustfmt_bindings(true)
             .rustfmt_configuration_file(Some(PathBuf::from("../rustfmt.toml")))
-            .layout_tests(false)
+            .layout_tests(true)
             .ctypes_prefix("libc")
             .generate()
             .expect("Unable to generate bindings");
