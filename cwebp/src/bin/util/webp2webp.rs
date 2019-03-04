@@ -5,8 +5,6 @@ use imagers::ImageResult;
 use libwebp_sys;
 
 use std::mem;
-use std::ptr;
-use std::slice;
 
 pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {

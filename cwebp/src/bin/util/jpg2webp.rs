@@ -7,7 +7,7 @@ use std::mem;
 pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {
         let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
-        let mut jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
+        let jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
 
         let mut wp: imagers::WebPPicture = Default::default();
         let mut config: imagers::WebPConfig = Default::default();
