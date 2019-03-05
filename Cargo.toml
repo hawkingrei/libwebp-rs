@@ -38,3 +38,6 @@ path = "tests/wali/mod.rs"
 
 [profile.bench]
 opt-level = 3
+
+[profile.test]
+opt-level = 3

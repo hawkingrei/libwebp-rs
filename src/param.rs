@@ -6,7 +6,7 @@ const WIDTH_LIMIT: i32 = 8092;
 use std::default::Default;
 use std::result::Result;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ParamError {
     ErrCropParams,
     ErrResizeParams,
@@ -35,7 +35,7 @@ pub struct Resize {
     pub width: i32,
 }
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct ImageHandler {
     pub height: i32,
     pub width: i32,

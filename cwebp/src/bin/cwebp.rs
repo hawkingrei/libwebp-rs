@@ -1,18 +1,16 @@
 use clap::{App, Arg};
 
-mod util;
-
 use std::fs;
 
 use imagers::ImageFormat;
 
-use crate::util::jpg2webp::jpg_encode_webp;
-use crate::util::param::Crop;
-use crate::util::param::RegionCrop;
-use crate::util::param::Resize;
-use crate::util::png2webp::png_encode_webp;
-use crate::util::webp2webp::webp_encode_webp;
-use crate::util::ImageHandler;
+use imagers::jpg_encode_webp;
+use imagers::png_encode_webp;
+use imagers::webp_encode_webp;
+use imagers::Crop;
+use imagers::ImageHandler;
+use imagers::RegionCrop;
+use imagers::Resize;
 
 fn main() {
     let matches = App::new("cwebp")
@@ -128,18 +126,5 @@ fn main() {
             fs::write(output, result);
         }
         _ => println!("not support "),
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::util::ImageHandler;
-
-    pub struct test_case {}
-
-    use std::path::Path;
-    #[test]
-    fn test_png_to_webp() {
-        let dateset_path = Path::new("./dataset");
     }
 }

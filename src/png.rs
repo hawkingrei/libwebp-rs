@@ -1,12 +1,15 @@
-use imagers::ImageResult;
+use crate::webp::WebPConfig;
+use crate::webp::WebPPicture;
+use crate::ImageError;
+use crate::ImageResult;
 
 use std::mem;
 
-use imagers::ImageError;
+use libc;
 use lodepng;
 use rgb::*;
 
-use crate::util::param::ImageHandler;
+use crate::param::ImageHandler;
 
 pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {
@@ -14,8 +17,8 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
         match state.decode(data) {
             Ok(image) => match image {
                 lodepng::Image::RGBA(bitmap) => {
-                    let mut wp: imagers::WebPPicture = Default::default();
-                    let mut config: imagers::WebPConfig = Default::default();
+                    let mut wp: WebPPicture = Default::default();
+                    let mut config: WebPConfig = Default::default();
                     config.webp_config_init();
                     println!(
                         "input image width: {} height: {}",
@@ -35,7 +38,9 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                     match param.resize {
                         Some(r) => {
                             println!("resize width: {} height: {}", r.width, r.height);
-                            wp.rescale(r.width, r.height).unwrap();
+                            if r.width != 0 && r.height != 0 {
+                                wp.rescale(r.width, r.height).unwrap();
+                            }
                         }
                         None => {}
                     }
@@ -54,8 +59,8 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                     return Ok(result.unwrap());
                 }
                 lodepng::Image::RGB(bitmap) => {
-                    let mut wp: imagers::WebPPicture = Default::default();
-                    let mut config: imagers::WebPConfig = Default::default();
+                    let mut wp: WebPPicture = Default::default();
+                    let mut config: WebPConfig = Default::default();
                     config.webp_config_init();
 
                     let param = p

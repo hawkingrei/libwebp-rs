@@ -1,10 +1,12 @@
 use std::path::Path;
 
-pub struct case<T: Clone> {
-    name: String,
+mod cases;
+
+pub struct case<T: Clone + Sized> {
     input: String,
     expected: String,
-    parm: T,
+    param: T,
+    is_corrupted: bool,
 }
 
 pub struct test_config {
@@ -24,28 +26,30 @@ impl Default for test_config {
     }
 }
 
-pub struct wali<T: Clone> {
+pub struct wali<T: Clone + Sized> {
     config: test_config,
     case: Vec<case<T>>,
-    test_fn: Fn(String, String, String, T) -> Result<(), String>,
+    test_fn: Box<dyn Fn(&test_config, String, String, bool, T) -> Result<(), String>>,
 }
 
-impl<T: Clone> wali<T> {
-    pub fn insert_case(&mut self, c: case<T>) {
+impl<T: Clone + Sized> wali<T> {
+    pub fn insert_case(mut self, c: case<T>) -> Self {
         self.case.push(c);
+        self
     }
 
     pub fn verify(&self) {
         for case in &self.case {
-            let mut input = self.config.input.clone();
-            let mut expected = self.config.expected.clone();
-            let mut output = self.config.output.clone();
-
-            input.push_str(case.input.as_str());
-            expected.push_str(case.expected.as_str());
-            output.push_str(case.expected.as_str());
-
-            match (self.test_fn)(input, output, expected, case.parm.clone()) {
+            let input = case.input.clone();
+            let expected = case.expected.clone();
+            let is_corrupted = case.is_corrupted;
+            match (self.test_fn)(
+                &self.config,
+                input,
+                expected,
+                is_corrupted,
+                case.param.clone(),
+            ) {
                 Ok(()) => {}
                 Err(err) => assert!(false, err),
             }
