@@ -1,8 +1,8 @@
 /target
 **/*.rs.bk
 **/.DS_Store
-/libjpeg-turbo-sys/src/jpeg_bindings.rs
-/libwebp-sys/src/webp_bindings.rs
+**/jpeg_bindings.rs
+**/webp_bindings.rs
 *.webp
 *.jpg
 *.jpeg
