@@ -15,7 +15,6 @@ pub use webp::webp_encode_webp;
 pub use webp::WebPConfig;
 pub use webp::WebPPicture;
 
-use std::error::Error;
 use std::fmt;
 
 pub type ImageResult<T> = Result<T, ImageError>;

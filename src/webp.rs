@@ -53,7 +53,7 @@ impl Default for WebPPicture {
     #[inline(always)]
     fn default() -> Self {
         unsafe {
-            let mut wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+            let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
             libwebp_sys::WebPPictureAlloc(wp);
             WebPPicture { wp }
         }

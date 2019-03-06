@@ -14,7 +14,7 @@ pub enum ParamError {
 
 pub type ParamResult<T> = Result<T, ParamError>;
 
-#[derive(Default, Clone, PartialEq)]
+#[derive(Default, Clone, Copy, PartialEq)]
 pub struct Crop {
     pub x: i32,
     pub y: i32,
@@ -144,6 +144,9 @@ impl ImageHandler {
         let ori_h: i32 = self.height;
         let ori_w: i32 = self.width;
 
+        let mut check_h = self.height;
+        let mut check_w = self.width;
+
         let mut caluate: bool = false;
 
         if self.width > MAX_WIDTH {
@@ -210,6 +213,8 @@ impl ImageHandler {
                 height: refh_refw_longside.0,
                 width: refh_refw_longside.1,
             });
+            check_h = refh_refw_longside.0;
+            check_w = refh_refw_longside.1;
             println!(
                 "result height {:?} width {:?} longside {:?}",
                 result.height, result.width, refh_refw_longside.2
@@ -242,6 +247,8 @@ impl ImageHandler {
                 width: result.width(),
                 height: result.height(),
             });
+            check_h = result.width();
+            check_w = result.height();
         }
         if !crop.is_none() {
             match crop {
@@ -265,6 +272,12 @@ impl ImageHandler {
                     }
                     if crop.height == 0 || crop.height > (result.height() - crop.y) {
                         crop.height = result.height() - crop.y
+                    }
+                    if crop.height > check_h {
+                        crop.height = check_h
+                    }
+                    if crop.width > check_w {
+                        crop.width = check_w
                     }
                     result.crop = Some(crop.clone());
                 }
@@ -311,6 +324,12 @@ impl ImageHandler {
                             2 => crop_pos_y = (rc_yst * region_h) + (region_h - rc_h),
                             _ => {}
                         }
+                        if rc_h > check_h {
+                            rc_h = check_h
+                        }
+                        if rc_w > check_w {
+                            rc_w = check_w
+                        }
                         result.crop = Some(Crop {
                             x: crop_pos_x,
                             y: crop_pos_y,
@@ -324,12 +343,18 @@ impl ImageHandler {
                 if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
                     match result.long_side {
                         1 => {
-                            let crop_w = fw;
-                            let crop_h = result.height();
+                            let mut crop_w = fw;
+                            let mut crop_h = result.height();
                             dbg!(result.width());
                             dbg!(crop_w);
                             let crop_pos_x = dbg!((result.width() - crop_w) / 2);
                             let crop_pos_y = 0;
+                            if crop_h > check_h {
+                                crop_h = check_h
+                            }
+                            if crop_w > check_w {
+                                crop_w = check_w
+                            }
                             result.crop = Some(Crop {
                                 x: crop_pos_x,
                                 y: crop_pos_y,
@@ -338,11 +363,17 @@ impl ImageHandler {
                             });
                         }
                         2 => {
-                            let crop_w = result.width();
-                            let crop_h = fh;
+                            let mut crop_w = result.width();
+                            let mut crop_h = fh;
 
                             let crop_pos_x = 0;
                             let crop_pos_y = (result.height() - crop_h) / 2;
+                            if crop_h > check_h {
+                                crop_h = check_h
+                            }
+                            if crop_w > check_w {
+                                crop_w = check_w
+                            }
                             result.crop = Some(Crop {
                                 x: crop_pos_x,
                                 y: crop_pos_y,

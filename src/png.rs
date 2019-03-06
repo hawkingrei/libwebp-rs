@@ -5,7 +5,6 @@ use crate::ImageResult;
 
 use std::mem;
 
-use libc;
 use lodepng;
 use rgb::*;
 
