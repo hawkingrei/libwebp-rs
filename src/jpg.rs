@@ -48,11 +48,20 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
         wp.import_rgb(buffer, row_stride as i32).unwrap();
 
         match param.resize {
-            Some(r) => wp.rescale(r.width, r.height).unwrap(),
+            Some(r) => {
+                println!("resize width: {} height: {}", r.width, r.height);
+                wp.rescale(r.width, r.height).unwrap();
+            }
             None => {}
         }
         match param.crop {
-            Some(c) => wp.crop(c.x, c.y, c.width, c.height).unwrap(),
+            Some(c) => {
+                println!(
+                    "crop x: {} y: {} width: {} height: {}",
+                    c.x, c.y, c.width, c.height
+                );
+                wp.crop(c.x, c.y, c.width, c.height).unwrap();
+            }
             None => {}
         }
         let result = wp.encode(config);

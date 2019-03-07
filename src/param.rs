@@ -247,8 +247,8 @@ impl ImageHandler {
                 width: result.width(),
                 height: result.height(),
             });
-            check_h = result.width();
-            check_w = result.height();
+            check_h = result.height();
+            check_w = result.width();
         }
         if !crop.is_none() {
             match crop {
@@ -324,6 +324,8 @@ impl ImageHandler {
                             2 => crop_pos_y = (rc_yst * region_h) + (region_h - rc_h),
                             _ => {}
                         }
+                        dbg!(rc_w);
+                        dbg!(check_w);
                         if rc_h > check_h {
                             rc_h = check_h
                         }
@@ -349,6 +351,8 @@ impl ImageHandler {
                             dbg!(crop_w);
                             let crop_pos_x = dbg!((result.width() - crop_w) / 2);
                             let crop_pos_y = 0;
+                            dbg!(crop_w);
+                            dbg!(check_w);
                             if crop_h > check_h {
                                 crop_h = check_h
                             }
@@ -368,6 +372,8 @@ impl ImageHandler {
 
                             let crop_pos_x = 0;
                             let crop_pos_y = (result.height() - crop_h) / 2;
+                            dbg!(crop_w);
+                            dbg!(check_w);
                             if crop_h > check_h {
                                 crop_h = check_h
                             }
