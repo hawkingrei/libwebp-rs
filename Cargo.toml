@@ -13,6 +13,9 @@ libc = "0.2.48"
 lodepng = "2.4.2"
 rgb = "0.8"
 
+[dev-dependencies]
+crc = "1.8.1"
+
 [workspace]
 members = [
   "libjpeg-turbo-sys",
@@ -29,5 +32,12 @@ default-members = [
   "./"
 ]
 
+[[test]]
+name = "wali"
+path = "tests/wali/mod.rs"
+
 [profile.bench]
+opt-level = 3
+
+[profile.test]
 opt-level = 3

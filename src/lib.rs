@@ -1,12 +1,20 @@
 #[macro_use]
 mod macros;
-mod jpg;
-mod webp;
+pub mod jpg;
+pub mod param;
+pub mod png;
+pub mod webp;
 
+pub use jpg::jpg_encode_webp;
+pub use param::Crop;
+pub use param::ImageHandler;
+pub use param::RegionCrop;
+pub use param::Resize;
+pub use png::png_encode_webp;
+pub use webp::webp_encode_webp;
 pub use webp::WebPConfig;
 pub use webp::WebPPicture;
 
-use std::error::Error;
 use std::fmt;
 
 pub type ImageResult<T> = Result<T, ImageError>;
