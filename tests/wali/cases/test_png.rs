@@ -60,6 +60,7 @@ fn tranform_png_to_webp(config: &test_config, case: case<ImageHandler>) -> Resul
     return Ok(());
 }
 
+// archive/080fec32d3e0eeb407aafa1fbad7637c21e51601.png@472w_265h_1e_1c.webp
 wali_test!(
     test_1e51601_472w_265h_1e_1c,
     tranform_png_to_webp,

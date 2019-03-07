@@ -60,6 +60,7 @@ fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Resul
     return Ok(());
 }
 
+// article/f946c1d2884e16301d5d43f3ccf917cc14015619.jpg@702w_212h_1e_1c.webp
 wali_test!(
     test_f946c1d2884e16301d5d43f3ccf917cc14015619_702w_212h_1e_1c,
     tranform_jpg_to_webp,
@@ -76,6 +77,7 @@ wali_test!(
                 .set_auto_crop(true)
         )
 );
+// face/fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg 
 wali_test!(
     test_fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h,
     tranform_jpg_to_webp,
