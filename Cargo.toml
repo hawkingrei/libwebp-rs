@@ -21,6 +21,7 @@ members = [
   "libjpeg-turbo-sys",
   "libpng-sys",
   "libwebp-sys",
+  "cv-rs",
   "cwebp",
   "./"
 ]
@@ -28,6 +29,7 @@ default-members = [
   "libjpeg-turbo-sys",
   "libpng-sys",
   "libwebp-sys",
+  "cv-rs",
   "cwebp",
   "./"
 ]
