@@ -3,8 +3,6 @@
 
 #include "common.h"
 #include "utils.h"
-#define SIMD_OPENCV_ENABLE
-#include "Simd/SimdLib.h"
 
 void cv_to_ffi(const cv::Rect &source, Rect *dest)
 {

@@ -4,8 +4,6 @@
 #include <cstddef>
 #include <functional>
 #include <opencv2/core.hpp>
-#define SIMD_OPENCV_ENABLE
-#include "Simd/SimdLib.h"
 
 typedef struct
 {

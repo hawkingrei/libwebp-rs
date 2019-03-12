@@ -5,8 +5,6 @@
 #include <opencv2/core.hpp>
 #include <stddef.h>
 #include <stdint.h>
-#define SIMD_OPENCV_ENABLE
-#include "Simd/SimdLib.h"
 
 extern "C"
 {

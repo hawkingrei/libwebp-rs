@@ -3,8 +3,6 @@
 
 #include <opencv2/core.hpp>
 #include <vector>
-#define SIMD_OPENCV_ENABLE
-#include "Simd/SimdLib.h"
 
 #include "common.h"
 

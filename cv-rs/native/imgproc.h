@@ -4,8 +4,6 @@
 #include "common.h"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#define SIMD_OPENCV_ENABLE
-#include "Simd/SimdLib.h"
 
 extern "C"
 {

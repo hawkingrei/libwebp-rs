@@ -1,7 +1,5 @@
 #include <opencv2/core.hpp>
 #include <opencv2/img_hash.hpp>
-#define SIMD_OPENCV_ENABLE
-#include "Simd/SimdLib.h"
 
 extern "C"
 {
