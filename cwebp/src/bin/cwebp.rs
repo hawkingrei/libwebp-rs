@@ -4,6 +4,7 @@ use std::fs;
 
 use imagers::ImageFormat;
 
+use imagers::jpg_encode_jpg;
 use imagers::jpg_encode_webp;
 use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
@@ -112,15 +113,23 @@ fn main() {
 
     let data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(&data).unwrap();
+    let otype = imagers::get_format(output.to_string()).unwrap();
     match ptype {
         ImageFormat::PNG => {
             let result = png_encode_webp(&data.clone(), param).unwrap();
             fs::write(output, result).unwrap();
         }
-        ImageFormat::JPEG => {
-            let result = jpg_encode_webp(&data.clone(), param).unwrap();
-            fs::write(output, result).unwrap();
-        }
+        ImageFormat::JPEG => match otype {
+            ImageFormat::WEBP => {
+                let result = jpg_encode_webp(&data.clone(), param).unwrap();
+                fs::write(output, result).unwrap();
+            }
+            ImageFormat::JPEG => {
+                let result = jpg_encode_jpg(&data.clone(), param).unwrap();
+                fs::write(output, result).unwrap();
+            }
+            _ => println!("not support "),
+        },
         ImageFormat::WEBP => {
             let result = webp_encode_webp(&data.clone(), param).unwrap();
             fs::write(output, result).unwrap();

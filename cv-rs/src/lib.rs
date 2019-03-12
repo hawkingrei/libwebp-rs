@@ -175,7 +175,9 @@ unsafe fn unpack<T: NestedVec, U, F>(v: &CVec<T>, mut f: F) -> Vec<U>
 where
     F: FnMut(&T) -> U,
 {
-    (0..v.size).map(|i| f(&*v.array.offset(i as isize))).collect()
+    (0..v.size)
+        .map(|i| f(&*v.array.offset(i as isize)))
+        .collect()
 }
 
 pub(crate) trait Unpack {
@@ -240,7 +242,9 @@ impl Unpack for CDisposableString {
     type Out = String;
 
     fn unpack(&self) -> Self::Out {
-        unsafe { CStr::from_ptr(self.value) }.to_string_lossy().into_owned()
+        unsafe { CStr::from_ptr(self.value) }
+            .to_string_lossy()
+            .into_owned()
     }
 }
 

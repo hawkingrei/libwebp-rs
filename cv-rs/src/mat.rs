@@ -59,7 +59,13 @@ extern "C" {
         from_to: *const c_int,
         npairs: usize,
     );
-    fn cv_mat_normalize(csrc: *const CMat, cdst: *mut CMat, alpha: c_double, beta: c_double, norm_type: NormType);
+    fn cv_mat_normalize(
+        csrc: *const CMat,
+        cdst: *mut CMat,
+        alpha: c_double,
+        beta: c_double,
+        norm_type: NormType,
+    );
     fn cv_mat_bitwise_and(src1: *const CMat, src2: *const CMat, dst: *mut CMat);
     fn cv_mat_bitwise_not(src: *const CMat, dst: *mut CMat);
     fn cv_mat_bitwise_or(src1: *const CMat, src2: *const CMat, dst: *mut CMat);
@@ -294,7 +300,8 @@ impl Mat {
     /// [Mat::at3](struct.Mat.html#method.at3).
     pub fn at2<T: FromBytes>(&self, i0: i32, i1: i32) -> T {
         let data = self.data();
-        let pos = i0 as usize * self.step1(0) * self.elem_size1() + i1 as usize * self.step1(1) * self.elem_size1();
+        let pos = i0 as usize * self.step1(0) * self.elem_size1()
+            + i1 as usize * self.step1(1) * self.elem_size1();
         let byte = &data[pos];
         let ptr: *const _ = byte;
         let slice = unsafe { slice::from_raw_parts(ptr, mem::size_of::<T>()) };
@@ -342,14 +349,28 @@ impl Mat {
         let mut max = 0.0;
         let mut min_loc = Point2i::new(0, 0);
         let mut max_loc = Point2i::new(0, 0);
-        unsafe { cv_mat_min_max_loc(self.inner, &mut min, &mut max, &mut min_loc, &mut max_loc, mask.inner) }
+        unsafe {
+            cv_mat_min_max_loc(
+                self.inner,
+                &mut min,
+                &mut max,
+                &mut min_loc,
+                &mut max_loc,
+                mask.inner,
+            )
+        }
         (min, max, min_loc, max_loc)
     }
 
     /// Copy specified channels from `self` to the specified channels of output
     /// `Mat`.
     // The usage (self.depth) here is buggy, it should actually be the type!
-    pub fn mix_channels<T: AsRef<[(c_int, c_int)]>>(&self, nsrcs: usize, ndsts: usize, from_to: T) -> Mat {
+    pub fn mix_channels<T: AsRef<[(c_int, c_int)]>>(
+        &self,
+        nsrcs: usize,
+        ndsts: usize,
+        from_to: T,
+    ) -> Mat {
         let m = Mat::with_size(self.rows, self.cols, self.depth);
         let slice = from_to.as_ref();
         let ptr = slice.as_ptr() as *const c_int;

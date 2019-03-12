@@ -9,7 +9,6 @@ use std::ffi::CString;
 use std::os::raw::{c_char, c_double, c_int};
 use std::path::Path;
 
-
 /// Opaque data struct for C/C++ cv::cuda::GpuMat bindings
 #[derive(Clone, Copy, Debug)]
 pub enum CGpuMat {}
@@ -171,8 +170,15 @@ impl Default for GpuHog {
 
 impl GpuHog {
     /// Creates a new GpuHog detector.
-    pub fn new(win_size: Size2i, block_size: Size2i, block_stride: Size2i, cell_size: Size2i, nbins: c_int) -> GpuHog {
-        let inner = unsafe { cv_cuda_hog_new(win_size, block_size, block_stride, cell_size, nbins) };
+    pub fn new(
+        win_size: Size2i,
+        block_size: Size2i,
+        block_stride: Size2i,
+        cell_size: Size2i,
+        nbins: c_int,
+    ) -> GpuHog {
+        let inner =
+            unsafe { cv_cuda_hog_new(win_size, block_size, block_stride, cell_size, nbins) };
         let mut params = HogParams::default();
         GpuHog::update_params(inner, &mut params);
         GpuHog {
@@ -239,7 +245,11 @@ impl GpuHog {
         unsafe {
             cv_cuda_hog_detect(self.inner, mat.inner, &mut found);
         }
-        found.unpack().into_iter().map(|r| (r, 0f64)).collect::<Vec<_>>()
+        found
+            .unpack()
+            .into_iter()
+            .map(|r| (r, 0f64))
+            .collect::<Vec<_>>()
     }
 
     /// Detects and returns the results with confidence (scores)
@@ -278,7 +288,11 @@ unsafe impl Send for GpuCascade {}
 extern "C" {
     fn cv_cuda_cascade_new(filename: *const c_char) -> *mut CGpuCascade;
     fn cv_cuda_cascade_drop(cascade: *mut CGpuCascade);
-    fn cv_cuda_cascade_detect(cascade: *mut CGpuCascade, image: *const CGpuMat, objects: *mut CVec<Rect>);
+    fn cv_cuda_cascade_detect(
+        cascade: *mut CGpuCascade,
+        image: *const CGpuMat,
+        objects: *mut CVec<Rect>,
+    );
 
     fn cv_cuda_cascade_set_find_largest_object(cascade: *mut CGpuCascade, value: bool);
     fn cv_cuda_cascade_set_max_num_objects(cascade: *mut CGpuCascade, max: c_int);
@@ -405,7 +419,10 @@ impl ObjectDetect for GpuCascade {
     fn detect(&self, image: &Mat) -> Vec<(Rect, f64)> {
         let mut gpu_mat = GpuMat::default();
         gpu_mat.upload(image);
-        self.detect_multiscale(&gpu_mat).into_iter().map(|r| (r, 0.0)).collect()
+        self.detect_multiscale(&gpu_mat)
+            .into_iter()
+            .map(|r| (r, 0.0))
+            .collect()
     }
 }
 

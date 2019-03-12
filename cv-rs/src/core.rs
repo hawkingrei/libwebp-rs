@@ -1,7 +1,7 @@
 //! Core data structures in OpenCV
 
-use bytes::{self, ByteOrder};
 use crate::mat::*;
+use bytes::{self, ByteOrder};
 use std::mem;
 use std::os::raw::c_int;
 
@@ -457,7 +457,9 @@ impl TermCriteria {
     /// Creates a new termination criteria.
     pub fn new(t: TermType, max_count: c_int, epsilon: f64) -> Self {
         let c_criteria = unsafe { cv_term_criteria_new(t, max_count, epsilon) };
-        TermCriteria { c_criteria: c_criteria }
+        TermCriteria {
+            c_criteria: c_criteria,
+        }
     }
 }
 

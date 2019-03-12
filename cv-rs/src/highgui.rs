@@ -1,6 +1,6 @@
 //! highgui: high-level GUI
-use failure::Error;
 use crate::mat::*;
+use failure::Error;
 use std::ffi::CString;
 use std::mem;
 use std::os::raw::{c_char, c_int, c_void};
@@ -46,13 +46,23 @@ pub type MouseCallback = fn(MouseEventType, c_int, c_int, c_int, MouseCallbackDa
 
 /// Set mouse handler for the specified window (identified by name). A callback
 /// handler should be provided and optional user_data can be passed around.
-pub fn highgui_set_mouse_callback(name: &str, on_mouse: MouseCallback, user_data: *mut c_void) -> Result<(), Error> {
+pub fn highgui_set_mouse_callback(
+    name: &str,
+    on_mouse: MouseCallback,
+    user_data: *mut c_void,
+) -> Result<(), Error> {
     struct CallbackWrapper {
         cb: Box<MouseCallback>,
         data: *mut c_void,
     }
 
-    extern "C" fn _mouse_callback(e: MouseEventType, x: c_int, y: c_int, f: c_int, ud: *mut c_void) {
+    extern "C" fn _mouse_callback(
+        e: MouseEventType,
+        x: c_int,
+        y: c_int,
+        f: c_int,
+        ud: *mut c_void,
+    ) {
         let cb_wrapper = unsafe { ptr::read(ud as *mut CallbackWrapper) };
         let true_callback = *(cb_wrapper.cb);
         true_callback(e, x, y, f, cb_wrapper.data);

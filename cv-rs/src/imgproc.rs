@@ -21,7 +21,13 @@ extern "C" {
         shift: c_int,
     );
 
-    fn cv_rectangle(cmat: *mut CMat, rect: Rect, color: Scalar, thickness: c_int, linetype: LineType);
+    fn cv_rectangle(
+        cmat: *mut CMat,
+        rect: Rect,
+        color: Scalar,
+        thickness: c_int,
+        linetype: LineType,
+    );
 
     fn cv_ellipse(
         cmat: *mut CMat,
@@ -38,7 +44,13 @@ extern "C" {
 
     fn cv_cvt_color(cmat: *const CMat, output: *mut CMat, code: ColorConversion);
     fn cv_pyr_down(cmat: *const CMat, output: *mut CMat);
-    fn cv_threshold(from: *const CMat, to: *mut CMat, thresh: f64, maxval: f64, ttype: ThresholdType);
+    fn cv_threshold(
+        from: *const CMat,
+        to: *mut CMat,
+        thresh: f64,
+        maxval: f64,
+        ttype: ThresholdType,
+    );
     fn cv_erode(
         from: *const CMat,
         to: *mut CMat,
@@ -340,7 +352,13 @@ impl Mat {
     }
 
     /// Draws a rectangle with custom color, thickness and linetype.
-    pub fn rectangle_custom(&self, rect: Rect, color: Scalar, thickness: c_int, linetype: LineType) {
+    pub fn rectangle_custom(
+        &self,
+        rect: Rect,
+        color: Scalar,
+        thickness: c_int,
+        linetype: LineType,
+    ) {
         unsafe { cv_rectangle(self.inner, rect, color, thickness, linetype) }
     }
 
@@ -351,7 +369,14 @@ impl Mat {
     }
 
     /// Draws a simple, thick ellipse
-    pub fn ellipse(&self, center: Point2i, axes: Size2i, angle: f64, start_angle: f64, end_angle: f64) {
+    pub fn ellipse(
+        &self,
+        center: Point2i,
+        axes: Size2i,
+        angle: f64,
+        start_angle: f64,
+        end_angle: f64,
+    ) {
         self.ellipse_custom(
             center,
             axes,
@@ -469,7 +494,13 @@ impl Mat {
 
     /// Gaussian Blur
     ///
-    pub fn gaussian_blur(&self, dsize: Size2i, sigma_x: f64, sigma_y: f64, border_type: BorderType) -> Mat {
+    pub fn gaussian_blur(
+        &self,
+        dsize: Size2i,
+        sigma_x: f64,
+        sigma_y: f64,
+        border_type: BorderType,
+    ) -> Mat {
         let m = CMat::new();
         unsafe { cv_gaussian_blur(self.inner, m, dsize, sigma_x, sigma_y, border_type as i32) }
         Mat::from_raw(m)
@@ -496,7 +527,12 @@ impl Mat {
     }
 
     /// Calculate a histogram of an image.
-    pub fn calc_hist<T: AsRef<[c_int]>, U: AsRef<[c_int]>, MElem: AsRef<[f32]>, M: AsRef<[MElem]>>(
+    pub fn calc_hist<
+        T: AsRef<[c_int]>,
+        U: AsRef<[c_int]>,
+        MElem: AsRef<[f32]>,
+        M: AsRef<[MElem]>,
+    >(
         &self,
         channels: T,
         mask: &Mat,
@@ -554,8 +590,14 @@ impl Mat {
     /// the coordinates of non-zero histogram bins can slightly shift.
     /// To compare such histograms or more general sparse configurations of weighted points,
     /// consider using the cv::EMD function.
-    pub fn compare_hist(&self, other: &Mat, method: HistogramComparisionMethod) -> Result<f64, String> {
-        let result = CResult::<f64>::from_callback(|r| unsafe { cv_compare_hist(self.inner, other.inner, method, r) });
+    pub fn compare_hist(
+        &self,
+        other: &Mat,
+        method: HistogramComparisionMethod,
+    ) -> Result<f64, String> {
+        let result = CResult::<f64>::from_callback(|r| unsafe {
+            cv_compare_hist(self.inner, other.inner, method, r)
+        });
         result.into()
     }
 
@@ -588,6 +630,10 @@ impl Mat {
     }
 
     fn matrix_to_vec<T, MElem: AsRef<[T]>, M: AsRef<[MElem]>>(value: M) -> Vec<*const T> {
-        value.as_ref().iter().map(|x| x.as_ref().as_ptr()).collect::<Vec<_>>()
+        value
+            .as_ref()
+            .iter()
+            .map(|x| x.as_ref().as_ptr())
+            .collect::<Vec<_>>()
     }
 }

@@ -4,48 +4,58 @@
 #include <cstddef>
 #include <functional>
 #include <opencv2/core.hpp>
+#define SIMD_OPENCV_ENABLE
+#include "Simd/SimdLib.h"
 
-typedef struct {
+typedef struct
+{
     int x;
     int y;
 } Point2i;
 
-typedef struct {
+typedef struct
+{
     float x;
     float y;
 } Point2f;
 
-typedef struct {
+typedef struct
+{
     int width;
     int height;
 } Size2i;
 
-typedef struct {
+typedef struct
+{
     float width;
     float height;
 } Size2f;
 
-typedef struct {
+typedef struct
+{
     int x;
     int y;
     int width;
     int height;
 } Rect;
 
-typedef struct {
+typedef struct
+{
     Point2f center;
     Size2f size;
     float angle;
 } RotatedRect;
 
-typedef struct {
+typedef struct
+{
     int v0;
     int v1;
     int v2;
     int v3;
 } Scalar;
 
-typedef struct {
+typedef struct
+{
     Point2f pt;
     float size;
     float angle;
@@ -54,30 +64,37 @@ typedef struct {
     int class_id;
 } KeyPoint;
 
-typedef struct {
+typedef struct
+{
     float distance;
     int imgIdx;
     int queryIdx;
     int trainIdx;
 } DMatch;
 
-typedef struct {
-    const char* value;
+typedef struct
+{
+    const char *value;
 } CDisposableString;
 
 // Caller is responsible for disposing `error` field
 template <typename T>
-struct Result {
+struct Result
+{
     T value;
     CDisposableString error;
 
-    static Result<T> FromFunction(std::function<T()> function) {
+    static Result<T> FromFunction(std::function<T()> function)
+    {
         T value;
-        char* error = nullptr;
-        try {
+        char *error = nullptr;
+        try
+        {
             value = function();
-        } catch (cv::Exception& e) {
-            const char* err_msg = e.what();
+        }
+        catch (cv::Exception &e)
+        {
+            const char *err_msg = e.what();
             auto len = std::strlen(err_msg);
             error = new char[len + 1];
             std::strcpy(error, err_msg);
@@ -87,16 +104,21 @@ struct Result {
 };
 
 // Caller is responsible for disposing `error` field
-struct EmptyResult {
+struct EmptyResult
+{
     CDisposableString error;
 
-    static EmptyResult FromFunction(std::function<void()> function) {
-        char* error = nullptr;
+    static EmptyResult FromFunction(std::function<void()> function)
+    {
+        char *error = nullptr;
 
-        try {
+        try
+        {
             function();
-        } catch (cv::Exception& e) {
-            const char* err_msg = e.what();
+        }
+        catch (cv::Exception &e)
+        {
+            const char *err_msg = e.what();
             auto len = std::strlen(err_msg);
             error = new char[len + 1];
             std::strcpy(error, err_msg);
@@ -107,14 +129,16 @@ struct EmptyResult {
 };
 
 template <typename T>
-struct CVec {
-    T* array;
+struct CVec
+{
+    T *array;
     size_t size;
 };
 
 template <typename T>
-struct COption {
+struct COption
+{
     bool hasValue;
     T value;
 };
-#endif  // CV_RS_COMMON_H
+#endif // CV_RS_COMMON_H

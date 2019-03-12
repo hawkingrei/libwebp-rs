@@ -2,17 +2,17 @@
 //! imgcodecs](http://docs.opencv.org/3.1.0/d4/da8/group__imgcodecs.html).
 
 use crate::errors::*;
-use failure::Error;
 use crate::mat::*;
+use failure::Error;
 use std::ffi::CString;
+use std::mem;
 use std::os::raw::c_char;
 use std::path::Path;
-use std::mem;
 
-use crate::Unpack;
-use crate::CVec;
-use crate::COption;
 use crate::path_to_cstring;
+use crate::COption;
+use crate::CVec;
+use crate::Unpack;
 
 extern "C" {
     fn cv_imread(input: *const c_char, flags: ImageReadMode) -> *mut CMat;
@@ -20,7 +20,7 @@ extern "C" {
     fn cv_imencode(
         ext: *const c_char,
         inner: *const CMat,
-        flag_ptr: *const ImageWriteMode,
+        flag_ptr: *const i32,
         flag_size: usize,
         result: *mut COption<CVec<u8>>,
     );
@@ -135,11 +135,17 @@ impl Mat {
     /// Encodes an image; the encoding scheme depends on the extension provided;
     /// additional write flags can be passed in using a vector. If successful,
     /// returns an owned vector of the encoded image.
-    pub fn image_encode(&self, ext: &str, flags: Vec<ImageWriteMode>) -> Result<Vec<u8>, Error> {
+    pub fn image_encode(&self, ext: &str, flags: Vec<i32>) -> Result<Vec<u8>, Error> {
         let ext = CString::new(ext)?;
         unsafe {
             let mut result: COption<CVec<u8>> = mem::zeroed();
-            cv_imencode(ext.into_raw(), self.inner, flags.as_ptr(), flags.len(), &mut result);
+            cv_imencode(
+                ext.into_raw(),
+                self.inner,
+                flags.as_ptr(),
+                flags.len(),
+                &mut result,
+            );
             if result.has_value {
                 Ok(result.value.unpack())
             } else {

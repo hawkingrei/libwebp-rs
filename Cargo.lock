@@ -296,6 +296,7 @@ version = "0.1.0"
 dependencies = [
  "bindgen 0.47.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "crc 1.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cv 0.1.0",
  "libc 0.2.49 (registry+https://github.com/rust-lang/crates.io-index)",
  "libjpeg-turbo-sys 0.1.0",
  "libpng-sys 0.1.0",

@@ -9,6 +9,7 @@ bindgen = "0.47.0"
 libwebp-sys = { path = "libwebp-sys" }
 libjpeg-turbo-sys = { path = "libjpeg-turbo-sys" }
 libpng-sys = { path = "libpng-sys" }
+cv = { path = "cv-rs" }
 libc = "0.2.48"
 lodepng = "2.4.2"
 rgb = "0.8"
