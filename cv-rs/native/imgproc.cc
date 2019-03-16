@@ -2,7 +2,6 @@
 
 extern "C"
 {
-
     void cv_line(cv::Mat *mat, Point2i pt1, Point2i pt2, Scalar color, int thickness, int linetype, int shift)
     {
         cv::Point point1(pt1.x, pt1.y);

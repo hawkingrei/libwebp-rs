@@ -1,90 +1,4 @@
-extern crate cc;
-
-#[cfg(windows)]
-mod windows {
-    use std::error::Error;
-    use std::{env, fmt, fs, io, process};
-
-    pub fn opencv_include() -> String {
-        if let Ok(dir) = env::var("OPENCV_DIR") {
-            format!("{}\\include", dir)
-        } else {
-            eprint!("%OPENCV_DIR% is not set.");
-            process::exit(0x0100);
-        }
-    }
-
-    pub fn opencv_link() {
-        if let Err(e) = try_opencv_link() {
-            eprint!("Error while building cv-rs: {:?}.", e);
-            process::exit(0x0100);
-        }
-    }
-
-    fn try_opencv_link() -> Result<(), Box<Error>> {
-        let opencv_dir = env::var("OPENCV_LIB")?;
-        let files = fs::read_dir(&opencv_dir)?.collect::<Vec<_>>();
-        let opencv_world = get_opencv_lib_path(files.iter(), "world")?;
-        let img_hash = get_opencv_lib_path(files.iter(), "img_hash")?;
-
-        println!("cargo:rustc-link-search=native={}", opencv_dir);
-        println!("cargo:rustc-link-lib={}", opencv_world);
-        println!("cargo:rustc-link-lib={}", img_hash);
-        Ok(())
-    }
-
-    fn get_opencv_lib_path<'a, T: Iterator<Item = &'a io::Result<fs::DirEntry>>>(
-        files: T,
-        name: &str,
-    ) -> Result<String, Box<Error>> {
-        let opencv_world_entry = files.filter_map(|entry| entry.as_ref().ok()).find(|entry| {
-            let file_name = entry.file_name().to_string_lossy().into_owned();
-            (file_name.starts_with(&format!("opencv_{}", name))
-                || file_name.starts_with(&format!("libopencv_{}", name)))
-                && !file_name.ends_with("d.lib")
-        });
-        let lib = opencv_world_entry.ok_or_else(|| {
-            BuildError::new(format!(
-                "Cannot find opencv_{} file in provided %OPENCV_LIB% directory",
-                name
-            ))
-        })?;
-        let lib = lib.file_name();
-        let lib = lib
-            .into_string()
-            .map_err(|e| BuildError::new(format!("Cannot convert path '{:?}' to string", e)))?;
-        // we expect filename to be something like 'open_world340.lib' or
-        // 'open_world.340.dll.a', so we just consider everything after the
-        // version number is an extension
-        let lib_without_extension = lib.trim_end_matches(|c: char| !c.is_numeric());
-        Ok(lib_without_extension.into())
-    }
-
-    #[derive(Debug)]
-    struct BuildError {
-        details: String,
-    }
-
-    impl BuildError {
-        fn new<T: Into<String>>(details: T) -> Self {
-            Self {
-                details: details.into(),
-            }
-        }
-    }
-
-    impl Error for BuildError {
-        fn description(&self) -> &str {
-            &self.details
-        }
-    }
-
-    impl fmt::Display for BuildError {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            write!(f, "{}", self.details)
-        }
-    }
-}
+use cmake::Config;
 
 #[cfg(unix)]
 mod unix {
@@ -99,9 +13,10 @@ mod unix {
     }
 
     pub fn opencv_link() {
-        let cargo_rustc_link_search = env::var("OPENCV_LIB").unwrap_or("/use/local/lib".into());
+        let cargo_rustc_link_search =
+            env::var("OPENCV_LIB").unwrap_or("/usr/local/opt/opencv@4/lib".into());
 
-        println!("cargo:rustc-link-search=static={}", cargo_rustc_link_search);
+        println!("cargo:rustc-link-search=native={}", cargo_rustc_link_search);
         println!("cargo:rustc-link-lib=opencv_core");
         println!("cargo:rustc-link-lib=opencv_features2d");
         println!("cargo:rustc-link-lib=opencv_xfeatures2d");
@@ -118,12 +33,27 @@ mod unix {
     }
 }
 
-#[cfg(windows)]
-use windows::*;
-
 #[cfg(unix)]
 use unix::*;
 
+fn main() {
+    let mut cfg = Config::new("native");
+    let dst = cfg.build();
+    println!("cargo:rerun-if-changed=./native");
+    println!("cargo:rerun-if-changed=./build.rs");
+    opencv_link();
+    println!("cargo:rustc-link-lib=static=opencv-wrapper");
+    println!(
+        "cargo:rustc-link-search=native={}",
+        format!("{}/opencv-wrapper/lib", dst.display())
+    );
+    println!(
+        "cargo:rustc-link-search=native={}",
+        format!("{}/opencv-wrapper/include", dst.display())
+    );
+}
+
+/*
 fn main() {
     let files = get_files("native");
 
@@ -155,3 +85,4 @@ fn get_files(path: &str) -> Vec<std::path::PathBuf> {
         .filter(|x| x.extension().map(|e| e == "cc").unwrap_or(false))
         .collect::<Vec<_>>()
 }
+*/

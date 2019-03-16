@@ -95,11 +95,7 @@ pub fn jpg_encode_jpg(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
         match param.resize {
             Some(r) => {
                 println!("resize width: {} height: {}", r.width, r.height);
-                data_mat.resize_by(
-                    r.width as f64,
-                    r.height as f64,
-                    InterpolationFlag::InterLinear,
-                );
+                //data_mat.resize_by(r.width as f64, r.height as f64);
             }
             None => {}
         }
