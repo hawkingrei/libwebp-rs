@@ -1,0 +1,23 @@
+[package]
+name = "cv"
+version = "0.1.0"
+authors = ["Wangweizhen <hawking.rei@gmail.com>"]
+edition = "2018"
+build = "build.rs"
+
+[dependencies]
+bytes = "0.4"
+failure = "0.1"
+
+[dev-dependencies]
+getopts = "0.2"
+float-cmp = "0.4"
+
+[build-dependencies]
+cc = { version = "1.0", features = ["parallel"] }
+cmake = "0.1.35"
+
+[features]
+cuda = []
+text = []
+tesseract = []

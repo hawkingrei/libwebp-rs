@@ -77,7 +77,7 @@ wali_test!(
                 .set_auto_crop(true)
         )
 );
-// face/fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg 
+// face/fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg
 wali_test!(
     test_fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h,
     tranform_jpg_to_webp,

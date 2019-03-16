@@ -5,6 +5,7 @@ pub mod param;
 pub mod png;
 pub mod webp;
 
+pub use jpg::jpg_encode_jpg;
 pub use jpg::jpg_encode_webp;
 pub use param::Crop;
 pub use param::ImageHandler;
@@ -110,4 +111,18 @@ pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
     Err(ImageError::UnsupportedError(
         "Unsupported image format".to_string(),
     ))
+}
+
+pub fn get_format(path: String) -> ImageResult<ImageFormat> {
+    if path.ends_with(".jpg") || path.ends_with(".jpeg") {
+        return Ok(ImageFormat::JPEG);
+    } else if path.ends_with(".png") {
+        return Ok(ImageFormat::PNG);
+    } else if path.ends_with(".webp") {
+        return Ok(ImageFormat::WEBP);
+    } else {
+        Err(ImageError::UnsupportedError(
+            "Unsupported image format".to_string(),
+        ))
+    }
 }
