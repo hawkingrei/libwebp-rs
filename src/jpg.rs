@@ -50,7 +50,9 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
         match param.resize {
             Some(r) => {
                 println!("resize width: {} height: {}", r.width, r.height);
-                wp.rescale(r.width, r.height).unwrap();
+                if (r.width != 0 && r.height != 0) {
+                    wp.rescale(r.width, r.height).unwrap();
+                }
             }
             None => {}
         }
