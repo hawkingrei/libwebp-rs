@@ -1,10 +1,12 @@
+use std::default::Default;
+use std::result::Result;
+
+use crate::ImageFormat;
+
 const MAX_WIDTH: i32 = 8192;
 const MAX_HEIGHT: i32 = 8192;
 const HEIGHT_LIMIT: i32 = 8092;
 const WIDTH_LIMIT: i32 = 8092;
-
-use std::default::Default;
-use std::result::Result;
 
 #[derive(Debug, Clone)]
 pub enum ParamError {
@@ -42,6 +44,7 @@ pub struct ImageHandler {
     pub crop: Option<Crop>,
     pub resize: Option<Resize>,
     pub region_crop: Option<RegionCrop>,
+    pub target_format: Option<ImageFormat>,
 
     /**
       e: 图片缩放, 缩放尺寸比例与原图比例不同时的优先缩放边, 格式[edge]e, 默认为0表示长边优先, 1表示短边优先, 2表示强制缩放(改变比例), 4表示短边缩略并且用指定颜色填充剩余区域
