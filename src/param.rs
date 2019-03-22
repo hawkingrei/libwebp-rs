@@ -107,6 +107,11 @@ impl ImageHandler {
         self
     }
 
+    pub fn set_target_format(mut self, ift: Option<ImageFormat>) -> Self {
+        self.target_format = ift;
+        self
+    }
+
     pub fn set_resize(mut self, resize: Option<Resize>) -> Self {
         self.resize = resize;
         self
