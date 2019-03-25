@@ -24,7 +24,7 @@ pub struct Crop {
     pub width: i32,
 }
 
-#[derive(Default, Clone, PartialEq)]
+#[derive(Default, Copy, Clone, PartialEq)]
 pub struct RegionCrop {
     pub height: i32,
     pub width: i32,
@@ -37,7 +37,7 @@ pub struct Resize {
     pub width: i32,
 }
 
-#[derive(Default, Clone)]
+#[derive(Default, Copy, Clone)]
 pub struct ImageHandler {
     pub height: i32,
     pub width: i32,
