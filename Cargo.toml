@@ -5,11 +5,11 @@ authors = ["vagrant"]
 edition = "2018"
 
 [dependencies]
-bindgen = "0.47.0"
+bindgen = "0.48.1"
 libwebp-sys = { path = "libwebp-sys" }
 libjpeg-turbo-sys = { path = "libjpeg-turbo-sys" }
 libpng-sys = { path = "libpng-sys" }
-libc = "0.2.48"
+libc = "0.2.50"
 lodepng = "2.4.2"
 rgb = "0.8"
 
@@ -37,7 +37,25 @@ name = "wali"
 path = "tests/wali/mod.rs"
 
 [profile.bench]
-opt-level = 3
+opt-level = 1
+debug = true
+# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
+codegen-units = 1
+incremental = false
+overflow-checks = false
 
 [profile.test]
-opt-level = 3
+opt-level = 1
+debug = true
+# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
+codegen-units = 1
+incremental = false
+overflow-checks = false
+
+[profile.release]
+opt-level = 1
+debug = true
+# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
+codegen-units = 1
+incremental = false
+overflow-checks = false
