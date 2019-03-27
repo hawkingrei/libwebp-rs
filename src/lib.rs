@@ -1,3 +1,5 @@
+#![crate_type = "lib"]
+
 #[macro_use]
 mod macros;
 pub mod jpg;
