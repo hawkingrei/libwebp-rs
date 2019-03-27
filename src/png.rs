@@ -40,7 +40,7 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                     }
                     match param.crop {
                         Some(c) => {
-                            if c.width != wp.wdith() && c.height != wp.height() {
+                            if c.width != wp.width() && c.height != wp.height() {
                                 wp.crop(c.x, c.y, c.width, c.height).unwrap();
                             }
                         }
@@ -77,7 +77,7 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                     }
                     match param.crop {
                         Some(c) => {
-                            if c.width != wp.wdith() && c.height != wp.height() {
+                            if c.width != wp.width() && c.height != wp.height() {
                                 wp.crop(c.x, c.y, c.width, c.height).unwrap();
                             }
                         }
