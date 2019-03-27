@@ -36,26 +36,19 @@ default-members = [
 name = "wali"
 path = "tests/wali/mod.rs"
 
-[profile.bench]
-opt-level = 1
+[profile.dev]
+opt-level = 3
 debug = true
-# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
-codegen-units = 1
-incremental = false
-overflow-checks = false
+
+[profile.bench]
+opt-level = 3
+debug = true
 
 [profile.test]
-opt-level = 1
+opt-level = 3
 debug = true
-# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
-codegen-units = 1
-incremental = false
-overflow-checks = false
+
 
 [profile.release]
-opt-level = 1
+opt-level = 3
 debug = true
-# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
-codegen-units = 1
-incremental = false
-overflow-checks = false

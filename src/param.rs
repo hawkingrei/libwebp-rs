@@ -223,10 +223,6 @@ impl ImageHandler {
             });
             check_h = refh_refw_longside.0;
             check_w = refh_refw_longside.1;
-            println!(
-                "result height {:?} width {:?} longside {:?}",
-                result.height, result.width, refh_refw_longside.2
-            );
             caluate = true;
         }
         if caluate
@@ -261,7 +257,6 @@ impl ImageHandler {
         if !crop.is_none() {
             match crop {
                 Some(mut crop) => {
-                    println!("do crop");
                     if crop.x > result.width() || crop.x < 0 {
                         crop.x = 0;
                     }
@@ -295,7 +290,6 @@ impl ImageHandler {
             if !region_crop.is_none() {
                 match region_crop {
                     Some(regionc) => {
-                        println!("do region_crop");
                         let mut rc_w = regionc.width;
                         let mut rc_h = regionc.height;
 

@@ -44,12 +44,10 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
             let mut jsamparray = [buffer[offset..].as_mut_ptr()];
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
-        println!("Decoded into {} raw pixel bytes", buffer.len());
         wp.import_rgb(buffer, row_stride as i32).unwrap();
 
         match param.resize {
             Some(r) => {
-                println!("resize width: {} height: {}", r.width, r.height);
                 if (r.width != 0 && r.height != 0) {
                     wp.rescale(r.width, r.height).unwrap();
                 }
@@ -58,10 +56,6 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
         }
         match param.crop {
             Some(c) => {
-                println!(
-                    "crop x: {} y: {} width: {} height: {}",
-                    c.x, c.y, c.width, c.height
-                );
                 wp.crop(c.x, c.y, c.width, c.height).unwrap();
             }
             None => {}
