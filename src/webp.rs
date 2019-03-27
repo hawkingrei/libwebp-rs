@@ -5,6 +5,7 @@ use crate::ImageResult;
 use libc;
 use std::mem;
 
+#[repr(C)]
 pub struct WebPConfig {
     webp_config: *mut libwebp_sys::WebPConfig,
 }

@@ -40,7 +40,9 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                     }
                     match param.crop {
                         Some(c) => {
-                            wp.crop(c.x, c.y, c.width, c.height).unwrap();
+                            if c.width != wp.wdith() && c.height != wp.height() {
+                                wp.crop(c.x, c.y, c.width, c.height).unwrap();
+                            }
                         }
                         None => {}
                     }
@@ -67,13 +69,17 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                         .unwrap();
                     match param.resize {
                         Some(r) => {
-                            wp.rescale(r.width, r.height).unwrap();
+                            if r.width != 0 && r.height != 0 {
+                                wp.rescale(r.width, r.height).unwrap();
+                            }
                         }
                         None => {}
                     }
                     match param.crop {
                         Some(c) => {
-                            wp.crop(c.x, c.y, c.width, c.height).unwrap();
+                            if c.width != wp.wdith() && c.height != wp.height() {
+                                wp.crop(c.x, c.y, c.width, c.height).unwrap();
+                            }
                         }
                         None => {}
                     }
