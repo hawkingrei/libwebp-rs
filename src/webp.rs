@@ -82,7 +82,7 @@ impl WebPPicture {
         unsafe { (*self.wp).width = width }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn import_rgba(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) -> WebPResult<()> {
         unsafe {
             try_ffi!(
@@ -93,7 +93,7 @@ impl WebPPicture {
         }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn import_rgb(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) -> WebPResult<()> {
         unsafe {
             try_ffi!(
