@@ -5,12 +5,13 @@ use crate::ImageResult;
 use libc;
 use std::mem;
 
+#[repr(C)]
 pub struct WebPConfig {
     webp_config: *mut libwebp_sys::WebPConfig,
 }
 
 impl Default for WebPConfig {
-    #[inline]
+    #[inline(always)]
     fn default() -> Self {
         WebPConfig {
             webp_config: &mut Default::default(),
@@ -19,7 +20,7 @@ impl Default for WebPConfig {
 }
 
 impl WebPConfig {
-    #[inline]
+    #[inline(always)]
     pub unsafe fn webp_config_init(&mut self) {
         libwebp_sys::WebPConfigInitInternal(
             self.webp_config,
@@ -29,7 +30,7 @@ impl WebPConfig {
         );
     }
 
-    #[inline]
+    #[inline(always)]
     pub unsafe fn webp_config_costum_init(&mut self, arg: f32) {
         libwebp_sys::WebPConfigInitInternal(
             self.webp_config,
@@ -39,7 +40,7 @@ impl WebPConfig {
         );
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn as_ptr(&mut self) -> *mut libwebp_sys::WebPConfig {
         self.webp_config
     }
@@ -50,7 +51,7 @@ pub struct WebPPicture {
 }
 
 impl Default for WebPPicture {
-    #[inline]
+    #[inline(always)]
     fn default() -> Self {
         unsafe {
             let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
@@ -61,22 +62,22 @@ impl Default for WebPPicture {
 }
 
 impl WebPPicture {
-    #[inline]
+    #[inline(always)]
     pub fn height(&self) -> i32 {
         unsafe { (*self.wp).height }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn width(&self) -> i32 {
         unsafe { (*self.wp).width }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn set_height(&mut self, height: i32) {
         unsafe { (*self.wp).height = height }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn set_width(&mut self, width: i32) {
         unsafe { (*self.wp).width = width }
     }
@@ -103,7 +104,7 @@ impl WebPPicture {
         }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn rescale(&mut self, width: libc::c_int, height: libc::c_int) -> WebPResult<()> {
         unsafe {
             try_ffi!(
@@ -114,7 +115,7 @@ impl WebPPicture {
         }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn crop(
         &mut self,
         left: libc::c_int,
@@ -131,7 +132,7 @@ impl WebPPicture {
         }
     }
 
-    #[inline]
+    #[inline(always)]
     pub fn encode(&mut self, mut config: WebPConfig) -> WebPResult<Vec<u8>> {
         unsafe {
             let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
@@ -226,7 +227,6 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
         (*wp).custom_ptr = writer as *mut libc::c_void;
         match param.resize {
             Some(r) => {
-                println!("resize width: {} height: {}", r.width, r.height);
                 libwebp_sys::WebPPictureRescale(wp, r.width, r.height);
             }
             None => {}
@@ -234,10 +234,6 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
 
         match param.crop {
             Some(c) => {
-                println!(
-                    "crop x: {} y: {} width: {} height: {}",
-                    c.x, c.y, c.width, c.height
-                );
                 libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
             }
             None => {}
