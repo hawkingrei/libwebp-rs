@@ -1,3 +1,5 @@
+cargo-features = ["profile-overrides"]
+
 [package]
 name = "imagers"
 version = "0.1.0"
@@ -36,19 +38,3 @@ default-members = [
 name = "wali"
 path = "tests/wali/mod.rs"
 
-[profile.dev]
-opt-level = 3
-debug = true
-
-[profile.bench]
-opt-level = 3
-debug = true
-
-[profile.test]
-opt-level = 3
-debug = true
-
-
-[profile.release]
-opt-level = 3
-debug = true
