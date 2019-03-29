@@ -48,9 +48,6 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                     (*wp).width = bitmap.width as i32;
                     let stride = 4 * bitmap.width * mem::size_of::<u8>();
 
-                    println!("height {:?}", (*wp).height);
-                    println!("width {:?}", (*wp).width);
-                    println!("{:?}", bitmap.buffer.as_bytes().to_vec().len());
                     if libwebp_sys::WebPPictureImportRGBA(
                         wp,
                         bitmap.buffer.as_bytes().to_vec().as_ptr(),
