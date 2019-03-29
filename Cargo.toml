@@ -38,27 +38,3 @@ default-members = [
 name = "wali"
 path = "tests/wali/mod.rs"
 
-[profile.test]
-opt-level = 3
-
-[profile.bench]
-opt-level = 3
-incremental = true
-overflow-checks = true
-
-[profile.release]
-opt-level = 3
-debug = false
-rpath = false
-lto = false
-debug-assertions = false
-codegen-units = 1
-panic = 'unwind'
-incremental = true
-overflow-checks = false
-
-[profile.release.overrides.libwebp-sys]
-opt-level = 0
-codegen-units = 1
-incremental = true
-overflow-checks = false
