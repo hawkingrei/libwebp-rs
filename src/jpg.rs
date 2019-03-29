@@ -1,20 +1,30 @@
 use crate::param::ImageHandler;
 use crate::webp::WebPConfig;
 use crate::webp::WebPPicture;
+use crate::ImageError;
 use crate::ImageResult;
 
 use libjpeg_turbo_sys;
 
 use std::mem;
 
+use crate::webp::webp_config_init;
+
 pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
     unsafe {
         let mut dinfo: *mut libjpeg_turbo_sys::jpeg_decompress_struct = &mut Default::default();
         let jerr: *mut libjpeg_turbo_sys::jpeg_error_mgr = &mut Default::default();
 
-        let mut wp: WebPPicture = Default::default();
-        let mut config: WebPConfig = Default::default();
-        config.webp_config_init();
+        let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
+        let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
+        libwebp_sys::WebPPictureAlloc(wp);
+
+        libwebp_sys::WebPConfigInitInternal(
+            config,
+            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+            75.0 as f32,
+            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+        );
 
         libjpeg_turbo_sys::jpeg_CreateDecompress(
             dinfo,
@@ -31,9 +41,8 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
             .set_width((*dinfo).output_width as i32)
             .adapt()
             .unwrap();
-        wp.set_height((*dinfo).output_height as i32);
-        wp.set_width((*dinfo).output_width as i32);
-
+        (*wp).height = (*dinfo).output_height as i32;
+        (*wp).width = (*dinfo).output_width as i32;
         let row_stride =
             (*dinfo).output_width * (*dinfo).output_components as u32 * mem::size_of::<u8>() as u32;
         let buffer_size = row_stride * (*dinfo).image_height;
@@ -44,23 +53,33 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
             let mut jsamparray = [buffer[offset..].as_mut_ptr()];
             libjpeg_turbo_sys::jpeg_read_scanlines(dinfo, jsamparray.as_mut_ptr(), 1);
         }
-        wp.import_rgb(buffer, row_stride as i32).unwrap();
 
+        libwebp_sys::WebPPictureImportRGB(wp, buffer.as_ptr(), row_stride as i32);
+        let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
+        libwebp_sys::WebPMemoryWriterInit(writer);
+        (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
+        (*wp).custom_ptr = writer as *mut libc::c_void;
         match param.resize {
             Some(r) => {
                 if (r.width != 0 && r.height != 0) {
-                    wp.rescale(r.width, r.height).unwrap();
+                    libwebp_sys::WebPPictureRescale(wp, r.width, r.height);
                 }
             }
             None => {}
         }
         match param.crop {
             Some(c) => {
-                wp.crop(c.x, c.y, c.width, c.height).unwrap();
+                libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
             }
             None => {}
         }
-        let result = wp.encode(config);
-        Ok(result.unwrap())
+        if libwebp_sys::WebPEncode(config, wp) == 1 {
+            return Ok(Vec::from_raw_parts(
+                (*writer).mem,
+                (*writer).size,
+                (*writer).size,
+            ));
+        }
+        return Err(ImageError::FormatError("jpg webp encode error".to_string()));
     }
 }

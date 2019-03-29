@@ -3,51 +3,38 @@ use crate::ImageError;
 use crate::ImageResult;
 
 use libc;
+use libwebp_sys;
 use std::mem;
 
-pub struct WebPConfig {
-    webp_config: *mut libwebp_sys::WebPConfig,
-}
+pub struct WebPConfig(*mut libwebp_sys::WebPConfig);
 
 impl Default for WebPConfig {
-    #[inline(always)]
     fn default() -> Self {
-        WebPConfig {
-            webp_config: &mut Default::default(),
-        }
+        WebPConfig(&mut Default::default())
     }
 }
 
-impl WebPConfig {
-    #[inline(always)]
-    pub unsafe fn webp_config_init(&mut self) {
-        libwebp_sys::WebPConfigInitInternal(
-            self.webp_config,
-            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-            75.0 as f32,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        );
-    }
-
-    #[inline(always)]
-    pub unsafe fn webp_config_costum_init(&mut self, arg: f32) {
-        libwebp_sys::WebPConfigInitInternal(
-            self.webp_config,
-            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-            arg,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        );
-    }
-
-    #[inline(always)]
-    pub fn as_ptr(&mut self) -> *mut libwebp_sys::WebPConfig {
-        self.webp_config
-    }
+#[inline(always)]
+pub unsafe fn webp_config_init(c: &mut WebPConfig) {
+    libwebp_sys::WebPConfigInitInternal(
+        c.0,
+        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+        75.0 as f32,
+        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+    );
 }
 
-pub struct WebPPicture {
-    pub wp: *mut libwebp_sys::WebPPicture,
+#[inline(always)]
+pub unsafe fn webp_config_costum_init(c: &mut WebPConfig, arg: f32) {
+    libwebp_sys::WebPConfigInitInternal(
+        c.0,
+        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+        arg,
+        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+    );
 }
+
+pub struct WebPPicture(*mut libwebp_sys::WebPPicture);
 
 impl Default for WebPPicture {
     #[inline(always)]
@@ -55,7 +42,16 @@ impl Default for WebPPicture {
         unsafe {
             let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
             libwebp_sys::WebPPictureAlloc(wp);
-            WebPPicture { wp }
+            WebPPicture(wp)
+        }
+    }
+}
+
+impl Drop for WebPPicture {
+    #[inline(always)]
+    fn drop(&mut self) {
+        unsafe {
+            libwebp_sys::WebPPictureFree(self.0);
         }
     }
 }
@@ -63,29 +59,29 @@ impl Default for WebPPicture {
 impl WebPPicture {
     #[inline(always)]
     pub fn height(&self) -> i32 {
-        unsafe { (*self.wp).height }
+        unsafe { (*self.0).height }
     }
 
     #[inline(always)]
     pub fn width(&self) -> i32 {
-        unsafe { (*self.wp).width }
+        unsafe { (*self.0).width }
     }
 
     #[inline(always)]
     pub fn set_height(&mut self, height: i32) {
-        unsafe { (*self.wp).height = height }
+        unsafe { (*self.0).height = height }
     }
 
     #[inline(always)]
     pub fn set_width(&mut self, width: i32) {
-        unsafe { (*self.wp).width = width }
+        unsafe { (*self.0).width = width }
     }
 
     #[inline(always)]
     pub fn import_rgba(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) -> WebPResult<()> {
         unsafe {
             try_ffi!(
-                libwebp_sys::WebPPictureImportRGBA(self.wp, rgba.as_ptr(), rgba_stride),
+                libwebp_sys::WebPPictureImportRGBA(self.0, rgba.as_ptr(), rgba_stride),
                 (),
                 WebPError::ImportRGBAError
             )
@@ -96,7 +92,7 @@ impl WebPPicture {
     pub fn import_rgb(&mut self, rgba: Vec<u8>, rgba_stride: libc::c_int) -> WebPResult<()> {
         unsafe {
             try_ffi!(
-                libwebp_sys::WebPPictureImportRGB(self.wp, rgba.as_ptr(), rgba_stride),
+                libwebp_sys::WebPPictureImportRGB(self.0, rgba.as_ptr(), rgba_stride),
                 (),
                 WebPError::ImportRGBError
             )
@@ -107,7 +103,7 @@ impl WebPPicture {
     pub fn rescale(&mut self, width: libc::c_int, height: libc::c_int) -> WebPResult<()> {
         unsafe {
             try_ffi!(
-                libwebp_sys::WebPPictureRescale(self.wp, width, height),
+                libwebp_sys::WebPPictureRescale(self.0, width, height),
                 (),
                 WebPError::RescaleError
             )
@@ -124,7 +120,7 @@ impl WebPPicture {
     ) -> WebPResult<()> {
         unsafe {
             try_ffi!(
-                libwebp_sys::WebPPictureView(self.wp, left, top, width, height, self.wp),
+                libwebp_sys::WebPPictureView(self.0, left, top, width, height, self.0),
                 (),
                 WebPError::CropError
             )
@@ -132,14 +128,14 @@ impl WebPPicture {
     }
 
     #[inline(always)]
-    pub fn encode(&mut self, mut config: WebPConfig) -> WebPResult<Vec<u8>> {
+    pub fn encode(&mut self, mut config: &WebPConfig) -> WebPResult<Vec<u8>> {
         unsafe {
             let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
             libwebp_sys::WebPMemoryWriterInit(writer);
-            (*self.wp).writer = Some(libwebp_sys::WebPMemoryWrite);
-            (*self.wp).custom_ptr = writer as *mut libc::c_void;
+            (*self.0).writer = Some(libwebp_sys::WebPMemoryWrite);
+            (*self.0).custom_ptr = writer as *mut libc::c_void;
             try_ffi!(
-                libwebp_sys::WebPEncode(config.as_ptr(), self.wp),
+                libwebp_sys::WebPEncode(config.0, self.0),
                 Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size),
                 WebPError::EncodeError
             )
