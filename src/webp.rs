@@ -5,57 +5,42 @@ use crate::ImageResult;
 use libc;
 use std::mem;
 
-pub struct WebPConfig {
-    webp_config: *mut libwebp_sys::WebPConfig,
-}
+pub struct WebPConfig(*mut libwebp_sys::WebPConfig);
 
 impl Default for WebPConfig {
-    #[inline(always)]
     fn default() -> Self {
-        WebPConfig {
-            webp_config: &mut Default::default(),
-        }
+        &Default::default()
     }
 }
 
-impl WebPConfig {
-    #[inline(always)]
-    pub unsafe fn webp_config_init(&mut self) {
-        libwebp_sys::WebPConfigInitInternal(
-            self.webp_config,
-            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-            75.0 as f32,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        );
-    }
-
-    #[inline(always)]
-    pub unsafe fn webp_config_costum_init(&mut self, arg: f32) {
-        libwebp_sys::WebPConfigInitInternal(
-            self.webp_config,
-            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-            arg,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        );
-    }
-
-    #[inline(always)]
-    pub fn as_ptr(&mut self) -> *mut libwebp_sys::WebPConfig {
-        self.webp_config
-    }
+pub unsafe fn webp_config_init(c: WebPConfig) {
+    libwebp_sys::WebPConfigInitInternal(
+        &c.0,
+        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+        75.0 as f32,
+        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+    );
 }
 
-pub struct WebPPicture {
-    pub wp: *mut libwebp_sys::WebPPicture,
+pub unsafe fn webp_config_costum_init(c: WebPConfig, arg: f32) {
+    libwebp_sys::WebPConfigInitInternal(
+        &c.0,
+        libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+        arg,
+        libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+    );
 }
+
+
+
+pub struct WebPPicture ( *mut libwebp_sys::WebPPicture);
 
 impl Default for WebPPicture {
-    #[inline(always)]
     fn default() -> Self {
         unsafe {
             let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
             libwebp_sys::WebPPictureAlloc(wp);
-            WebPPicture { wp }
+            WebPPicture(wp）
         }
     }
 }

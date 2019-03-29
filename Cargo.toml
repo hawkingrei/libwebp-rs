@@ -48,7 +48,10 @@ debug = true
 opt-level = 3
 debug = true
 
-
 [profile.release]
-opt-level = 3
+lto = true
+opt-level = 1
 debug = true
+rpath = true
+incremental = true
+overflow-checks = true
