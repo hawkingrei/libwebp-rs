@@ -6,10 +6,10 @@ edition = "2018"
 build = "build.rs"
 
 [dependencies]
-libc = "0.2.48"
+libc = "0.2.50"
 lodepng = "2.4.2"
 rgb = "0.8"
 
 [build-dependencies]
-bindgen = "0.47.0"
+bindgen = "0.48.1"
 
