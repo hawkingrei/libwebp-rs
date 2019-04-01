@@ -11,7 +11,6 @@ libjpeg-turbo-sys = { path = "libjpeg-turbo-sys" }
 libpng-sys = { path = "libpng-sys" }
 libc = "0.2.51"
 
-
 [dev-dependencies]
 crc = "1.8.1"
 
