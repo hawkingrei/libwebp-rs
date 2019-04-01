@@ -7,9 +7,7 @@ build = "build.rs"
 
 [dependencies]
 libc = "0.2.51"
-lodepng = "2.4.2"
-rgb = "0.8"
 
 [build-dependencies]
 bindgen = "0.49.0"
-
+cc = "1.0.32"

@@ -40,10 +40,25 @@ impl<'a> Generator<'a> {
             );
             builder = builder.header(format!("{}", header_path.display()));
         }
+        let png_library_path = Path::new("/usr/local/include");
+        let zlib_library_path = Path::new("/usr/local/opt/zlib/include");
+        cc::Build::new()
+            .cpp(false)
+            .define("WEBP_HAVE_PNG", None)
+            .file("pngwebp/pngdec.c")
+            .file("pngwebp/imageio_util.c")
+            .file("pngwebp/metadata.c")
+            .include(png_library_path)
+            .include(zlib_library_path)
+            .compile("libpngdec.a");
 
         let bindings = builder
             .derive_default(true)
             .with_codegen_config(codegen_config)
+            .header("png.h")
+            .header("pngwebp/pngdec.h")
+            .header("pngwebp/imageio_util.h")
+            .header("pngwebp/metadata.h")
             .generate_inline_functions(false)
             // If there are linking errors and the generated bindings have weird looking
             // #link_names (that start with \u{1}), the make sure to flip that to false.
@@ -51,7 +66,6 @@ impl<'a> Generator<'a> {
             .rustfmt_bindings(true)
             .rustfmt_configuration_file(Some(PathBuf::from("../rustfmt.toml")))
             .layout_tests(true)
-            .ctypes_prefix("libc")
             .generate()
             .expect("Unable to generate bindings");
 
@@ -62,12 +76,16 @@ impl<'a> Generator<'a> {
 }
 
 fn main() {
-    generate_bindings();
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rustc-link-lib=static=png");
     println!("cargo:rustc-link-lib=static=webp");
-    println!("cargo:rustc-link-search=native=/usr/local/lib");
-    println!("cargo:rustc-link-search=native=/usr/local/include");
+    println!("cargo:rustc-link-lib=static=z");
+    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rustc-link-search=/usr/local/lib");
+    println!("cargo:rustc-link-search=/usr/local/include");
     println!("cargo:rustc-link-search=native=/usr/local/include/webp");
     println!("cargo:rustc-link-search=native=/usr/include/");
     println!("cargo:rustc-link-search=native=/usr/local/lib");
+    println!("cargo:rustc-link-search=native=/usr/local/opt/zlib/lib");
+    println!("cargo:rustc-link-search=native=/usr/local/opt/zlib/include");
+    generate_bindings();
 }
