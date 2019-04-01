@@ -74,12 +74,11 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
             None => {}
         }
         if libwebp_sys::WebPEncode(config, wp) == 1 {
-            return Ok(Vec::from_raw_parts(
-                (*writer).mem,
-                (*writer).size,
-                (*writer).size,
-            ));
+            let result = Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
+            libwebp_sys::WebPPictureFree(wp);
+            return Ok(result);
         }
+        libwebp_sys::WebPPictureFree(wp);
         return Err(ImageError::FormatError("jpg webp encode error".to_string()));
     }
 }
