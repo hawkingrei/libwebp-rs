@@ -88,6 +88,8 @@ pub enum ImageError {
     UnsupportedError(String),
 
     TranformError(String),
+
+    ServiceError(String),
 }
 
 impl fmt::Display for ImageError {
@@ -101,6 +103,7 @@ impl fmt::Display for ImageError {
                 f
             ),
             ImageError::TranformError(ref f) => write!(fmt, "Tranform error: {}", f),
+            ImageError::ServiceError(ref f) => write!(fmt, "service error: {}", f),
         }
     }
 }
@@ -111,6 +114,7 @@ impl std::error::Error for ImageError {
             ImageError::FormatError(ref e) => &"Format error",
             ImageError::UnsupportedError(ref f) => &"The Decoder does not support the image format",
             ImageError::TranformError(ref f) => &"Tranform error",
+            ImageError::ServiceError(ref f) => &"Tranform error",
         }
     }
 }
@@ -129,5 +133,11 @@ pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
 impl ResponseError for ImageError {
     fn error_response(&self) -> HttpResponse {
         HttpResponse::InternalServerError().body(format!("{}", self))
+    }
+}
+
+impl From<actix_web::error::Error> for ImageError {
+    fn from(mut err: actix_web::error::Error) -> Self {
+        ImageError::ServiceError("actix error".to_string())
     }
 }
