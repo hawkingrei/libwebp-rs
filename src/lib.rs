@@ -119,16 +119,6 @@ impl std::error::Error for ImageError {
     }
 }
 
-impl std::error::Error for ImageError {
-    fn description(&self) -> &str {
-        match *self {
-            ImageError::FormatError(ref e) => &"Format error",
-            ImageError::UnsupportedError(ref f) => &"The Decoder does not support the image format",
-            ImageError::TranformError(ref f) => &"Tranform error",
-        }
-    }
-}
-
 pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
     for &(signature, format) in &MAGIC_BYTES {
         if buffer.starts_with(signature) {
