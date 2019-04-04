@@ -19,6 +19,9 @@ pub use webp::WebPPicture;
 
 use std::fmt;
 
+use actix_web::HttpResponse;
+use actix_web::ResponseError;
+
 pub type ImageResult<T> = Result<T, ImageError>;
 
 /// An enumeration of supported image formats.
@@ -76,7 +79,6 @@ static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
     (b"P7", ImageFormat::PNM),
 ];
 
-/// An enumeration of Image errors
 #[derive(Debug)]
 pub enum ImageError {
     /// The Image is not formatted properly
@@ -103,6 +105,16 @@ impl fmt::Display for ImageError {
     }
 }
 
+impl std::error::Error for ImageError {
+    fn description(&self) -> &str {
+        match *self {
+            ImageError::FormatError(ref e) => &"Format error",
+            ImageError::UnsupportedError(ref f) => &"The Decoder does not support the image format",
+            ImageError::TranformError(ref f) => &"Tranform error",
+        }
+    }
+}
+
 pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
     for &(signature, format) in &MAGIC_BYTES {
         if buffer.starts_with(signature) {
@@ -112,4 +124,10 @@ pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
     Err(ImageError::UnsupportedError(
         "Unsupported image format".to_string(),
     ))
+}
+
+impl ResponseError for ImageError {
+    fn error_response(&self) -> HttpResponse {
+        HttpResponse::InternalServerError().body(format!("{}", self))
+    }
 }
