@@ -45,6 +45,8 @@ impl<'a> Generator<'a> {
         cc::Build::new()
             .cpp(false)
             .define("WEBP_HAVE_PNG", None)
+            .define("WEBP_HAVE_JPEG", None)
+            .file("pngwebp/jpegdec.c")
             .file("pngwebp/pngdec.c")
             .file("pngwebp/imageio_util.c")
             .file("pngwebp/metadata.c")
@@ -56,13 +58,14 @@ impl<'a> Generator<'a> {
             .derive_default(true)
             .with_codegen_config(codegen_config)
             .header("png.h")
+            .header("pngwebp/jpegdec.h")
             .header("pngwebp/pngdec.h")
             .header("pngwebp/imageio_util.h")
             .header("pngwebp/metadata.h")
-            .generate_inline_functions(false)
+            .generate_inline_functions(true)
             // If there are linking errors and the generated bindings have weird looking
             // #link_names (that start with \u{1}), the make sure to flip that to false.
-            .trust_clang_mangling(false)
+            .trust_clang_mangling(true)
             .rustfmt_bindings(true)
             .rustfmt_configuration_file(Some(PathBuf::from("../rustfmt.toml")))
             .layout_tests(true)
@@ -77,6 +80,7 @@ impl<'a> Generator<'a> {
 
 fn main() {
     println!("cargo:rustc-link-lib=static=png");
+    println!("cargo:rustc-link-lib=static=jpeg");
     println!("cargo:rustc-link-lib=static=webp");
     println!("cargo:rustc-link-lib=static=z");
     println!("cargo:rerun-if-changed=build.rs");
