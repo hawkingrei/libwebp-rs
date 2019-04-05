@@ -682,6 +682,7 @@ pub type syscall_arg_t = u_int64_t;
 pub type intmax_t = ::std::os::raw::c_long;
 pub type uintmax_t = ::std::os::raw::c_ulong;
 extern "C" {
+    #[link_name = "\u{1}_imaxabs"]
     pub fn imaxabs(j: intmax_t) -> intmax_t;
 }
 #[repr(C)]
@@ -724,9 +725,11 @@ fn bindgen_test_layout_imaxdiv_t() {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_imaxdiv"]
     pub fn imaxdiv(__numer: intmax_t, __denom: intmax_t) -> imaxdiv_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtoimax"]
     pub fn strtoimax(
         __nptr: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -734,6 +737,7 @@ extern "C" {
     ) -> intmax_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtoumax"]
     pub fn strtoumax(
         __nptr: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -741,6 +745,7 @@ extern "C" {
     ) -> uintmax_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_wcstoimax"]
     pub fn wcstoimax(
         __nptr: *const wchar_t,
         __endptr: *mut *mut wchar_t,
@@ -748,6 +753,7 @@ extern "C" {
     ) -> intmax_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_wcstoumax"]
     pub fn wcstoumax(
         __nptr: *const wchar_t,
         __endptr: *mut *mut wchar_t,
@@ -755,9 +761,11 @@ extern "C" {
     ) -> uintmax_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPGetEncoderVersion"]
     pub fn WebPGetEncoderVersion() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeRGB"]
     pub fn WebPEncodeRGB(
         rgb: *const u8,
         width: ::std::os::raw::c_int,
@@ -768,6 +776,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeBGR"]
     pub fn WebPEncodeBGR(
         bgr: *const u8,
         width: ::std::os::raw::c_int,
@@ -778,6 +787,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeRGBA"]
     pub fn WebPEncodeRGBA(
         rgba: *const u8,
         width: ::std::os::raw::c_int,
@@ -788,6 +798,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeBGRA"]
     pub fn WebPEncodeBGRA(
         bgra: *const u8,
         width: ::std::os::raw::c_int,
@@ -798,6 +809,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeLosslessRGB"]
     pub fn WebPEncodeLosslessRGB(
         rgb: *const u8,
         width: ::std::os::raw::c_int,
@@ -807,6 +819,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeLosslessBGR"]
     pub fn WebPEncodeLosslessBGR(
         bgr: *const u8,
         width: ::std::os::raw::c_int,
@@ -816,6 +829,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeLosslessRGBA"]
     pub fn WebPEncodeLosslessRGBA(
         rgba: *const u8,
         width: ::std::os::raw::c_int,
@@ -825,6 +839,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncodeLosslessBGRA"]
     pub fn WebPEncodeLosslessBGRA(
         bgra: *const u8,
         width: ::std::os::raw::c_int,
@@ -834,6 +849,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPFree"]
     pub fn WebPFree(ptr: *mut ::std::os::raw::c_void);
 }
 pub const WebPImageHint_WEBP_HINT_DEFAULT: WebPImageHint = 0;
@@ -1180,6 +1196,7 @@ pub const WebPPreset_WEBP_PRESET_ICON: WebPPreset = 4;
 pub const WebPPreset_WEBP_PRESET_TEXT: WebPPreset = 5;
 pub type WebPPreset = u32;
 extern "C" {
+    #[link_name = "\u{1}_WebPConfigInitInternal"]
     pub fn WebPConfigInitInternal(
         arg1: *mut WebPConfig,
         arg2: WebPPreset,
@@ -1188,12 +1205,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPConfigLosslessPreset"]
     pub fn WebPConfigLosslessPreset(
         config: *mut WebPConfig,
         level: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPValidateConfig"]
     pub fn WebPValidateConfig(config: *const WebPConfig) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
@@ -1496,12 +1515,15 @@ impl Default for WebPMemoryWriter {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMemoryWriterInit"]
     pub fn WebPMemoryWriterInit(writer: *mut WebPMemoryWriter);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMemoryWriterClear"]
     pub fn WebPMemoryWriterClear(writer: *mut WebPMemoryWriter);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMemoryWrite"]
     pub fn WebPMemoryWrite(
         data: *const u8,
         data_size: usize,
@@ -1889,22 +1911,27 @@ impl Default for WebPPicture {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureInitInternal"]
     pub fn WebPPictureInitInternal(
         arg1: *mut WebPPicture,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureAlloc"]
     pub fn WebPPictureAlloc(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureFree"]
     pub fn WebPPictureFree(picture: *mut WebPPicture);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureCopy"]
     pub fn WebPPictureCopy(src: *const WebPPicture, dst: *mut WebPPicture)
         -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPlaneDistortion"]
     pub fn WebPPlaneDistortion(
         src: *const u8,
         src_stride: usize,
@@ -1919,6 +1946,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureDistortion"]
     pub fn WebPPictureDistortion(
         src: *const WebPPicture,
         ref_: *const WebPPicture,
@@ -1927,6 +1955,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureCrop"]
     pub fn WebPPictureCrop(
         picture: *mut WebPPicture,
         left: ::std::os::raw::c_int,
@@ -1936,6 +1965,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureView"]
     pub fn WebPPictureView(
         src: *const WebPPicture,
         left: ::std::os::raw::c_int,
@@ -1946,9 +1976,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureIsView"]
     pub fn WebPPictureIsView(picture: *const WebPPicture) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureRescale"]
     pub fn WebPPictureRescale(
         pic: *mut WebPPicture,
         width: ::std::os::raw::c_int,
@@ -1956,6 +1988,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureImportRGB"]
     pub fn WebPPictureImportRGB(
         picture: *mut WebPPicture,
         rgb: *const u8,
@@ -1963,6 +1996,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureImportRGBA"]
     pub fn WebPPictureImportRGBA(
         picture: *mut WebPPicture,
         rgba: *const u8,
@@ -1970,6 +2004,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureImportRGBX"]
     pub fn WebPPictureImportRGBX(
         picture: *mut WebPPicture,
         rgbx: *const u8,
@@ -1977,6 +2012,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureImportBGR"]
     pub fn WebPPictureImportBGR(
         picture: *mut WebPPicture,
         bgr: *const u8,
@@ -1984,6 +2020,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureImportBGRA"]
     pub fn WebPPictureImportBGRA(
         picture: *mut WebPPicture,
         bgra: *const u8,
@@ -1991,6 +2028,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureImportBGRX"]
     pub fn WebPPictureImportBGRX(
         picture: *mut WebPPicture,
         bgrx: *const u8,
@@ -1998,12 +2036,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureARGBToYUVA"]
     pub fn WebPPictureARGBToYUVA(
         picture: *mut WebPPicture,
         arg1: WebPEncCSP,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureARGBToYUVADithered"]
     pub fn WebPPictureARGBToYUVADithered(
         picture: *mut WebPPicture,
         colorspace: WebPEncCSP,
@@ -2011,24 +2051,31 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureSharpARGBToYUVA"]
     pub fn WebPPictureSharpARGBToYUVA(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureSmartARGBToYUVA"]
     pub fn WebPPictureSmartARGBToYUVA(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureYUVAToARGB"]
     pub fn WebPPictureYUVAToARGB(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPCleanupTransparentArea"]
     pub fn WebPCleanupTransparentArea(picture: *mut WebPPicture);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPPictureHasTransparency"]
     pub fn WebPPictureHasTransparency(picture: *const WebPPicture) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPBlendAlpha"]
     pub fn WebPBlendAlpha(pic: *mut WebPPicture, background_rgb: u32);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPEncode"]
     pub fn WebPEncode(
         config: *const WebPConfig,
         picture: *mut WebPPicture,
@@ -2040,9 +2087,11 @@ pub struct WebPIDecoder {
     _unused: [u8; 0],
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPGetDecoderVersion"]
     pub fn WebPGetDecoderVersion() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPGetInfo"]
     pub fn WebPGetInfo(
         data: *const u8,
         data_size: usize,
@@ -2051,6 +2100,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeRGBA"]
     pub fn WebPDecodeRGBA(
         data: *const u8,
         data_size: usize,
@@ -2059,6 +2109,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeARGB"]
     pub fn WebPDecodeARGB(
         data: *const u8,
         data_size: usize,
@@ -2067,6 +2118,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeBGRA"]
     pub fn WebPDecodeBGRA(
         data: *const u8,
         data_size: usize,
@@ -2075,6 +2127,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeRGB"]
     pub fn WebPDecodeRGB(
         data: *const u8,
         data_size: usize,
@@ -2083,6 +2136,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeBGR"]
     pub fn WebPDecodeBGR(
         data: *const u8,
         data_size: usize,
@@ -2091,6 +2145,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeYUV"]
     pub fn WebPDecodeYUV(
         data: *const u8,
         data_size: usize,
@@ -2103,6 +2158,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeRGBAInto"]
     pub fn WebPDecodeRGBAInto(
         data: *const u8,
         data_size: usize,
@@ -2112,6 +2168,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeARGBInto"]
     pub fn WebPDecodeARGBInto(
         data: *const u8,
         data_size: usize,
@@ -2121,6 +2178,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeBGRAInto"]
     pub fn WebPDecodeBGRAInto(
         data: *const u8,
         data_size: usize,
@@ -2130,6 +2188,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeRGBInto"]
     pub fn WebPDecodeRGBInto(
         data: *const u8,
         data_size: usize,
@@ -2139,6 +2198,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeBGRInto"]
     pub fn WebPDecodeBGRInto(
         data: *const u8,
         data_size: usize,
@@ -2148,6 +2208,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecodeYUVInto"]
     pub fn WebPDecodeYUVInto(
         data: *const u8,
         data_size: usize,
@@ -2537,12 +2598,14 @@ impl Default for WebPDecBuffer {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPInitDecBufferInternal"]
     pub fn WebPInitDecBufferInternal(
         arg1: *mut WebPDecBuffer,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPFreeDecBuffer"]
     pub fn WebPFreeDecBuffer(buffer: *mut WebPDecBuffer);
 }
 pub const VP8StatusCode_VP8_STATUS_OK: VP8StatusCode = 0;
@@ -2555,9 +2618,11 @@ pub const VP8StatusCode_VP8_STATUS_USER_ABORT: VP8StatusCode = 6;
 pub const VP8StatusCode_VP8_STATUS_NOT_ENOUGH_DATA: VP8StatusCode = 7;
 pub type VP8StatusCode = u32;
 extern "C" {
+    #[link_name = "\u{1}_WebPINewDecoder"]
     pub fn WebPINewDecoder(output_buffer: *mut WebPDecBuffer) -> *mut WebPIDecoder;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPINewRGB"]
     pub fn WebPINewRGB(
         csp: WEBP_CSP_MODE,
         output_buffer: *mut u8,
@@ -2566,6 +2631,7 @@ extern "C" {
     ) -> *mut WebPIDecoder;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPINewYUVA"]
     pub fn WebPINewYUVA(
         luma: *mut u8,
         luma_size: usize,
@@ -2582,6 +2648,7 @@ extern "C" {
     ) -> *mut WebPIDecoder;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPINewYUV"]
     pub fn WebPINewYUV(
         luma: *mut u8,
         luma_size: usize,
@@ -2595,17 +2662,21 @@ extern "C" {
     ) -> *mut WebPIDecoder;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIDelete"]
     pub fn WebPIDelete(idec: *mut WebPIDecoder);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIAppend"]
     pub fn WebPIAppend(idec: *mut WebPIDecoder, data: *const u8, data_size: usize)
         -> VP8StatusCode;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIUpdate"]
     pub fn WebPIUpdate(idec: *mut WebPIDecoder, data: *const u8, data_size: usize)
         -> VP8StatusCode;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIDecGetRGB"]
     pub fn WebPIDecGetRGB(
         idec: *const WebPIDecoder,
         last_y: *mut ::std::os::raw::c_int,
@@ -2615,6 +2686,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIDecGetYUVA"]
     pub fn WebPIDecGetYUVA(
         idec: *const WebPIDecoder,
         last_y: *mut ::std::os::raw::c_int,
@@ -2629,6 +2701,7 @@ extern "C" {
     ) -> *mut u8;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIDecodedArea"]
     pub fn WebPIDecodedArea(
         idec: *const WebPIDecoder,
         left: *mut ::std::os::raw::c_int,
@@ -2723,6 +2796,7 @@ fn bindgen_test_layout_WebPBitstreamFeatures() {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPGetFeaturesInternal"]
     pub fn WebPGetFeaturesInternal(
         arg1: *const u8,
         arg2: usize,
@@ -2979,12 +3053,14 @@ impl Default for WebPDecoderConfig {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPInitDecoderConfigInternal"]
     pub fn WebPInitDecoderConfigInternal(
         arg1: *mut WebPDecoderConfig,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPIDecode"]
     pub fn WebPIDecode(
         data: *const u8,
         data_size: usize,
@@ -2992,6 +3068,7 @@ extern "C" {
     ) -> *mut WebPIDecoder;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPDecode"]
     pub fn WebPDecode(
         data: *const u8,
         data_size: usize,
@@ -9885,6 +9962,7 @@ impl Default for sigstack {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_signal"]
     pub fn signal(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
@@ -11675,21 +11753,26 @@ fn bindgen_test_layout_proc_rlimit_control_wakeupmon() {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_getpriority"]
     pub fn getpriority(arg1: ::std::os::raw::c_int, arg2: id_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getiopolicy_np"]
     pub fn getiopolicy_np(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getrlimit"]
     pub fn getrlimit(arg1: ::std::os::raw::c_int, arg2: *mut rlimit) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getrusage"]
     pub fn getrusage(arg1: ::std::os::raw::c_int, arg2: *mut rusage) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setpriority"]
     pub fn setpriority(
         arg1: ::std::os::raw::c_int,
         arg2: id_t,
@@ -11697,6 +11780,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setiopolicy_np"]
     pub fn setiopolicy_np(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
@@ -11704,6 +11788,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setrlimit"]
     pub fn setrlimit(arg1: ::std::os::raw::c_int, arg2: *const rlimit) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
@@ -11921,9 +12006,11 @@ impl Default for wait {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_wait"]
     pub fn wait(arg1: *mut ::std::os::raw::c_int) -> pid_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_waitpid"]
     pub fn waitpid(
         arg1: pid_t,
         arg2: *mut ::std::os::raw::c_int,
@@ -11931,6 +12018,7 @@ extern "C" {
     ) -> pid_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_waitid"]
     pub fn waitid(
         arg1: idtype_t,
         arg2: id_t,
@@ -11939,6 +12027,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_wait3"]
     pub fn wait3(
         arg1: *mut ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
@@ -11946,6 +12035,7 @@ extern "C" {
     ) -> pid_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_wait4"]
     pub fn wait4(
         arg1: pid_t,
         arg2: *mut ::std::os::raw::c_int,
@@ -11954,6 +12044,7 @@ extern "C" {
     ) -> pid_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_alloca"]
     pub fn alloca(arg1: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
 }
 pub type ct_rune_t = __darwin_ct_rune_t;
@@ -12076,27 +12167,33 @@ fn bindgen_test_layout_lldiv_t() {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_malloc"]
     pub fn malloc(__size: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_calloc"]
     pub fn calloc(
         __count: ::std::os::raw::c_ulong,
         __size: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_free"]
     pub fn free(arg1: *mut ::std::os::raw::c_void);
 }
 extern "C" {
+    #[link_name = "\u{1}_realloc"]
     pub fn realloc(
         __ptr: *mut ::std::os::raw::c_void,
         __size: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_valloc"]
     pub fn valloc(arg1: usize) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_posix_memalign"]
     pub fn posix_memalign(
         __memptr: *mut *mut ::std::os::raw::c_void,
         __alignment: usize,
@@ -12104,27 +12201,35 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_abort"]
     pub fn abort();
 }
 extern "C" {
+    #[link_name = "\u{1}_abs"]
     pub fn abs(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_atexit"]
     pub fn atexit(arg1: ::std::option::Option<unsafe extern "C" fn()>) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_atof"]
     pub fn atof(arg1: *const ::std::os::raw::c_char) -> f64;
 }
 extern "C" {
+    #[link_name = "\u{1}_atoi"]
     pub fn atoi(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_atol"]
     pub fn atol(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_atoll"]
     pub fn atoll(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
+    #[link_name = "\u{1}_bsearch"]
     pub fn bsearch(
         __key: *const ::std::os::raw::c_void,
         __base: *const ::std::os::raw::c_void,
@@ -12139,33 +12244,43 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_div"]
     pub fn div(arg1: ::std::os::raw::c_int, arg2: ::std::os::raw::c_int) -> div_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_exit"]
     pub fn exit(arg1: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_getenv"]
     pub fn getenv(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_labs"]
     pub fn labs(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_ldiv"]
     pub fn ldiv(arg1: ::std::os::raw::c_long, arg2: ::std::os::raw::c_long) -> ldiv_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_llabs"]
     pub fn llabs(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
+    #[link_name = "\u{1}_lldiv"]
     pub fn lldiv(arg1: ::std::os::raw::c_longlong, arg2: ::std::os::raw::c_longlong) -> lldiv_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_mblen"]
     pub fn mblen(__s: *const ::std::os::raw::c_char, __n: usize) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_mbstowcs"]
     pub fn mbstowcs(arg1: *mut wchar_t, arg2: *const ::std::os::raw::c_char, arg3: usize) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_mbtowc"]
     pub fn mbtowc(
         arg1: *mut wchar_t,
         arg2: *const ::std::os::raw::c_char,
@@ -12173,6 +12288,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_qsort"]
     pub fn qsort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12186,24 +12302,29 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_rand"]
     pub fn rand() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_srand"]
     pub fn srand(arg1: ::std::os::raw::c_uint);
 }
 extern "C" {
+    #[link_name = "\u{1}_strtod"]
     pub fn strtod(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> f64;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtof"]
     pub fn strtof(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> f32;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtol"]
     pub fn strtol(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12211,12 +12332,14 @@ extern "C" {
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtold"]
     pub fn strtold(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> u128;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtoll"]
     pub fn strtoll(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12224,6 +12347,7 @@ extern "C" {
     ) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtoul"]
     pub fn strtoul(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12231,6 +12355,7 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtoull"]
     pub fn strtoull(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12238,24 +12363,31 @@ extern "C" {
     ) -> ::std::os::raw::c_ulonglong;
 }
 extern "C" {
+    #[link_name = "\u{1}_system"]
     pub fn system(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_wcstombs"]
     pub fn wcstombs(arg1: *mut ::std::os::raw::c_char, arg2: *const wchar_t, arg3: usize) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_wctomb"]
     pub fn wctomb(arg1: *mut ::std::os::raw::c_char, arg2: wchar_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}__Exit"]
     pub fn _Exit(arg1: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_a64l"]
     pub fn a64l(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_drand48"]
     pub fn drand48() -> f64;
 }
 extern "C" {
+    #[link_name = "\u{1}_ecvt"]
     pub fn ecvt(
         arg1: f64,
         arg2: ::std::os::raw::c_int,
@@ -12264,9 +12396,11 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_erand48"]
     pub fn erand48(arg1: *mut ::std::os::raw::c_ushort) -> f64;
 }
 extern "C" {
+    #[link_name = "\u{1}_fcvt"]
     pub fn fcvt(
         arg1: f64,
         arg2: ::std::os::raw::c_int,
@@ -12275,6 +12409,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_gcvt"]
     pub fn gcvt(
         arg1: f64,
         arg2: ::std::os::raw::c_int,
@@ -12282,6 +12417,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_getsubopt"]
     pub fn getsubopt(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *const *mut ::std::os::raw::c_char,
@@ -12289,9 +12425,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_grantpt"]
     pub fn grantpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_initstate"]
     pub fn initstate(
         arg1: ::std::os::raw::c_uint,
         arg2: *mut ::std::os::raw::c_char,
@@ -12299,36 +12437,47 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_jrand48"]
     pub fn jrand48(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_l64a"]
     pub fn l64a(arg1: ::std::os::raw::c_long) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_lcong48"]
     pub fn lcong48(arg1: *mut ::std::os::raw::c_ushort);
 }
 extern "C" {
+    #[link_name = "\u{1}_lrand48"]
     pub fn lrand48() -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_mktemp"]
     pub fn mktemp(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_mkstemp"]
     pub fn mkstemp(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_mrand48"]
     pub fn mrand48() -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_nrand48"]
     pub fn nrand48(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_posix_openpt"]
     pub fn posix_openpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ptsname"]
     pub fn ptsname(arg1: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_ptsname_r"]
     pub fn ptsname_r(
         fildes: ::std::os::raw::c_int,
         buffer: *mut ::std::os::raw::c_char,
@@ -12336,24 +12485,30 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_putenv"]
     pub fn putenv(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_random"]
     pub fn random() -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_rand_r"]
     pub fn rand_r(arg1: *mut ::std::os::raw::c_uint) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_realpath$DARWIN_EXTSN"]
     pub fn realpath(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_seed48"]
     pub fn seed48(arg1: *mut ::std::os::raw::c_ushort) -> *mut ::std::os::raw::c_ushort;
 }
 extern "C" {
+    #[link_name = "\u{1}_setenv"]
     pub fn setenv(
         __name: *const ::std::os::raw::c_char,
         __value: *const ::std::os::raw::c_char,
@@ -12361,44 +12516,57 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setkey"]
     pub fn setkey(arg1: *const ::std::os::raw::c_char);
 }
 extern "C" {
+    #[link_name = "\u{1}_setstate"]
     pub fn setstate(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_srand48"]
     pub fn srand48(arg1: ::std::os::raw::c_long);
 }
 extern "C" {
+    #[link_name = "\u{1}_srandom"]
     pub fn srandom(arg1: ::std::os::raw::c_uint);
 }
 extern "C" {
+    #[link_name = "\u{1}_unlockpt"]
     pub fn unlockpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_unsetenv"]
     pub fn unsetenv(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 pub type dev_t = __darwin_dev_t;
 pub type mode_t = __darwin_mode_t;
 extern "C" {
+    #[link_name = "\u{1}_arc4random"]
     pub fn arc4random() -> u32;
 }
 extern "C" {
+    #[link_name = "\u{1}_arc4random_addrandom"]
     pub fn arc4random_addrandom(arg1: *mut ::std::os::raw::c_uchar, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_arc4random_buf"]
     pub fn arc4random_buf(__buf: *mut ::std::os::raw::c_void, __nbytes: usize);
 }
 extern "C" {
+    #[link_name = "\u{1}_arc4random_stir"]
     pub fn arc4random_stir();
 }
 extern "C" {
+    #[link_name = "\u{1}_arc4random_uniform"]
     pub fn arc4random_uniform(__upper_bound: u32) -> u32;
 }
 extern "C" {
+    #[link_name = "\u{1}_atexit_b"]
     pub fn atexit_b(arg1: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_bsearch_b"]
     pub fn bsearch_b(
         __key: *const ::std::os::raw::c_void,
         __base: *const ::std::os::raw::c_void,
@@ -12408,6 +12576,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetcap"]
     pub fn cgetcap(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12415,9 +12584,11 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetclose"]
     pub fn cgetclose() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetent"]
     pub fn cgetent(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
@@ -12425,24 +12596,28 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetfirst"]
     pub fn cgetfirst(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetmatch"]
     pub fn cgetmatch(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetnext"]
     pub fn cgetnext(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetnum"]
     pub fn cgetnum(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12450,9 +12625,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetset"]
     pub fn cgetset(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetstr"]
     pub fn cgetstr(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12460,6 +12637,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_cgetustr"]
     pub fn cgetustr(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12467,15 +12645,18 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_daemon$1050"]
     pub fn daemon(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_devname"]
     pub fn devname(arg1: dev_t, arg2: mode_t) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_devname_r"]
     pub fn devname_r(
         arg1: dev_t,
         arg2: mode_t,
@@ -12484,18 +12665,22 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_getbsize"]
     pub fn getbsize(
         arg1: *mut ::std::os::raw::c_int,
         arg2: *mut ::std::os::raw::c_long,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_getloadavg"]
     pub fn getloadavg(arg1: *mut f64, arg2: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getprogname"]
     pub fn getprogname() -> *const ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_heapsort"]
     pub fn heapsort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12509,6 +12694,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_heapsort_b"]
     pub fn heapsort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12517,6 +12703,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_mergesort"]
     pub fn mergesort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12530,6 +12717,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_mergesort_b"]
     pub fn mergesort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12538,6 +12726,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_psort"]
     pub fn psort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12551,6 +12740,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_psort_b"]
     pub fn psort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12559,6 +12749,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_psort_r"]
     pub fn psort_r(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12574,6 +12765,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_qsort_b"]
     pub fn qsort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12582,6 +12774,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_qsort_r"]
     pub fn qsort_r(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12597,6 +12790,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_radixsort"]
     pub fn radixsort(
         __base: *mut *const ::std::os::raw::c_uchar,
         __nel: ::std::os::raw::c_int,
@@ -12605,9 +12799,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setprogname"]
     pub fn setprogname(arg1: *const ::std::os::raw::c_char);
 }
 extern "C" {
+    #[link_name = "\u{1}_sradixsort"]
     pub fn sradixsort(
         __base: *mut *const ::std::os::raw::c_uchar,
         __nel: ::std::os::raw::c_int,
@@ -12616,18 +12812,22 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_sranddev"]
     pub fn sranddev();
 }
 extern "C" {
+    #[link_name = "\u{1}_srandomdev"]
     pub fn srandomdev();
 }
 extern "C" {
+    #[link_name = "\u{1}_reallocf"]
     pub fn reallocf(
         __ptr: *mut ::std::os::raw::c_void,
         __size: usize,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtoq"]
     pub fn strtoq(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12635,6 +12835,7 @@ extern "C" {
     ) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtouq"]
     pub fn strtouq(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12642,6 +12843,7 @@ extern "C" {
     ) -> ::std::os::raw::c_ulonglong;
 }
 extern "C" {
+    #[link_name = "\u{1}_memchr"]
     pub fn memchr(
         __s: *const ::std::os::raw::c_void,
         __c: ::std::os::raw::c_int,
@@ -12649,6 +12851,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_memcmp"]
     pub fn memcmp(
         __s1: *const ::std::os::raw::c_void,
         __s2: *const ::std::os::raw::c_void,
@@ -12656,6 +12859,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_memcpy"]
     pub fn memcpy(
         __dst: *mut ::std::os::raw::c_void,
         __src: *const ::std::os::raw::c_void,
@@ -12663,6 +12867,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_memmove"]
     pub fn memmove(
         __dst: *mut ::std::os::raw::c_void,
         __src: *const ::std::os::raw::c_void,
@@ -12670,6 +12875,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_memset"]
     pub fn memset(
         __b: *mut ::std::os::raw::c_void,
         __c: ::std::os::raw::c_int,
@@ -12677,48 +12883,57 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_strcat"]
     pub fn strcat(
         __s1: *mut ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strchr"]
     pub fn strchr(
         __s: *const ::std::os::raw::c_char,
         __c: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strcmp"]
     pub fn strcmp(
         __s1: *const ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_strcoll"]
     pub fn strcoll(
         __s1: *const ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_strcpy"]
     pub fn strcpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strcspn"]
     pub fn strcspn(
         __s: *const ::std::os::raw::c_char,
         __charset: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strerror"]
     pub fn strerror(__errnum: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strlen"]
     pub fn strlen(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strncat"]
     pub fn strncat(
         __s1: *mut ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
@@ -12726,6 +12941,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strncmp"]
     pub fn strncmp(
         __s1: *const ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
@@ -12733,6 +12949,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_strncpy"]
     pub fn strncpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
@@ -12740,36 +12957,42 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strpbrk"]
     pub fn strpbrk(
         __s: *const ::std::os::raw::c_char,
         __charset: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strrchr"]
     pub fn strrchr(
         __s: *const ::std::os::raw::c_char,
         __c: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strspn"]
     pub fn strspn(
         __s: *const ::std::os::raw::c_char,
         __charset: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strstr"]
     pub fn strstr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtok"]
     pub fn strtok(
         __str: *mut ::std::os::raw::c_char,
         __sep: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strxfrm"]
     pub fn strxfrm(
         __s1: *mut ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
@@ -12777,6 +13000,7 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strtok_r"]
     pub fn strtok_r(
         __str: *mut ::std::os::raw::c_char,
         __sep: *const ::std::os::raw::c_char,
@@ -12784,6 +13008,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strerror_r"]
     pub fn strerror_r(
         __errnum: ::std::os::raw::c_int,
         __strerrbuf: *mut ::std::os::raw::c_char,
@@ -12791,9 +13016,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_strdup"]
     pub fn strdup(__s1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_memccpy"]
     pub fn memccpy(
         __dst: *mut ::std::os::raw::c_void,
         __src: *const ::std::os::raw::c_void,
@@ -12802,12 +13029,14 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_stpcpy"]
     pub fn stpcpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_stpncpy"]
     pub fn stpncpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
@@ -12815,20 +13044,24 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strndup"]
     pub fn strndup(
         __s1: *const ::std::os::raw::c_char,
         __n: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strnlen"]
     pub fn strnlen(__s1: *const ::std::os::raw::c_char, __n: usize) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_strsignal"]
     pub fn strsignal(__sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 pub type rsize_t = __darwin_size_t;
 pub type errno_t = ::std::os::raw::c_int;
 extern "C" {
+    #[link_name = "\u{1}_memset_s"]
     pub fn memset_s(
         __s: *mut ::std::os::raw::c_void,
         __smax: rsize_t,
@@ -12837,6 +13070,7 @@ extern "C" {
     ) -> errno_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_memmem"]
     pub fn memmem(
         __big: *const ::std::os::raw::c_void,
         __big_len: usize,
@@ -12845,6 +13079,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    #[link_name = "\u{1}_memset_pattern4"]
     pub fn memset_pattern4(
         __b: *mut ::std::os::raw::c_void,
         __pattern4: *const ::std::os::raw::c_void,
@@ -12852,6 +13087,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_memset_pattern8"]
     pub fn memset_pattern8(
         __b: *mut ::std::os::raw::c_void,
         __pattern8: *const ::std::os::raw::c_void,
@@ -12859,6 +13095,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_memset_pattern16"]
     pub fn memset_pattern16(
         __b: *mut ::std::os::raw::c_void,
         __pattern16: *const ::std::os::raw::c_void,
@@ -12866,12 +13103,14 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_strcasestr"]
     pub fn strcasestr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strnstr"]
     pub fn strnstr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
@@ -12879,6 +13118,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_strlcat"]
     pub fn strlcat(
         __dst: *mut ::std::os::raw::c_char,
         __source: *const ::std::os::raw::c_char,
@@ -12886,6 +13126,7 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strlcpy"]
     pub fn strlcpy(
         __dst: *mut ::std::os::raw::c_char,
         __source: *const ::std::os::raw::c_char,
@@ -12893,15 +13134,18 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_strmode"]
     pub fn strmode(__mode: ::std::os::raw::c_int, __bp: *mut ::std::os::raw::c_char);
 }
 extern "C" {
+    #[link_name = "\u{1}_strsep"]
     pub fn strsep(
         __stringp: *mut *mut ::std::os::raw::c_char,
         __delim: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_swab"]
     pub fn swab(
         arg1: *const ::std::os::raw::c_void,
         arg2: *mut ::std::os::raw::c_void,
@@ -12909,6 +13153,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_timingsafe_bcmp"]
     pub fn timingsafe_bcmp(
         __b1: *const ::std::os::raw::c_void,
         __b2: *const ::std::os::raw::c_void,
@@ -12916,6 +13161,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_bcmp"]
     pub fn bcmp(
         arg1: *const ::std::os::raw::c_void,
         arg2: *const ::std::os::raw::c_void,
@@ -12923,6 +13169,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_bcopy"]
     pub fn bcopy(
         arg1: *const ::std::os::raw::c_void,
         arg2: *mut ::std::os::raw::c_void,
@@ -12930,30 +13177,36 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_bzero"]
     pub fn bzero(arg1: *mut ::std::os::raw::c_void, arg2: ::std::os::raw::c_ulong);
 }
 extern "C" {
+    #[link_name = "\u{1}_index"]
     pub fn index(
         arg1: *const ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_rindex"]
     pub fn rindex(
         arg1: *const ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_ffs"]
     pub fn ffs(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_strcasecmp"]
     pub fn strcasecmp(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_strncasecmp"]
     pub fn strncasecmp(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12961,18 +13214,23 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ffsl"]
     pub fn ffsl(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ffsll"]
     pub fn ffsll(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fls"]
     pub fn fls(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_flsl"]
     pub fn flsl(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_flsll"]
     pub fn flsll(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int;
 }
 pub const WebPFeatureFlags_ANIMATION_FLAG: WebPFeatureFlags = 2;
@@ -13057,15 +13315,19 @@ pub const WebPChunkId_WEBP_CHUNK_UNKNOWN: WebPChunkId = 9;
 pub const WebPChunkId_WEBP_CHUNK_NIL: WebPChunkId = 10;
 pub type WebPChunkId = u32;
 extern "C" {
+    #[link_name = "\u{1}_WebPGetMuxVersion"]
     pub fn WebPGetMuxVersion() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPNewInternal"]
     pub fn WebPNewInternal(arg1: ::std::os::raw::c_int) -> *mut WebPMux;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxDelete"]
     pub fn WebPMuxDelete(mux: *mut WebPMux);
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxCreateInternal"]
     pub fn WebPMuxCreateInternal(
         arg1: *const WebPData,
         arg2: ::std::os::raw::c_int,
@@ -13073,6 +13335,7 @@ extern "C" {
     ) -> *mut WebPMux;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxSetChunk"]
     pub fn WebPMuxSetChunk(
         mux: *mut WebPMux,
         fourcc: *const ::std::os::raw::c_char,
@@ -13081,6 +13344,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxGetChunk"]
     pub fn WebPMuxGetChunk(
         mux: *const WebPMux,
         fourcc: *const ::std::os::raw::c_char,
@@ -13088,6 +13352,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxDeleteChunk"]
     pub fn WebPMuxDeleteChunk(
         mux: *mut WebPMux,
         fourcc: *const ::std::os::raw::c_char,
@@ -13204,6 +13469,7 @@ impl Default for WebPMuxFrameInfo {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxSetImage"]
     pub fn WebPMuxSetImage(
         mux: *mut WebPMux,
         bitstream: *const WebPData,
@@ -13211,6 +13477,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxPushFrame"]
     pub fn WebPMuxPushFrame(
         mux: *mut WebPMux,
         frame: *const WebPMuxFrameInfo,
@@ -13218,6 +13485,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxGetFrame"]
     pub fn WebPMuxGetFrame(
         mux: *const WebPMux,
         nth: u32,
@@ -13225,6 +13493,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxDeleteFrame"]
     pub fn WebPMuxDeleteFrame(mux: *mut WebPMux, nth: u32) -> WebPMuxError;
 }
 #[repr(C)]
@@ -13267,18 +13536,21 @@ fn bindgen_test_layout_WebPMuxAnimParams() {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxSetAnimationParams"]
     pub fn WebPMuxSetAnimationParams(
         mux: *mut WebPMux,
         params: *const WebPMuxAnimParams,
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxGetAnimationParams"]
     pub fn WebPMuxGetAnimationParams(
         mux: *const WebPMux,
         params: *mut WebPMuxAnimParams,
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxSetCanvasSize"]
     pub fn WebPMuxSetCanvasSize(
         mux: *mut WebPMux,
         width: ::std::os::raw::c_int,
@@ -13286,6 +13558,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxGetCanvasSize"]
     pub fn WebPMuxGetCanvasSize(
         mux: *const WebPMux,
         width: *mut ::std::os::raw::c_int,
@@ -13293,9 +13566,11 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxGetFeatures"]
     pub fn WebPMuxGetFeatures(mux: *const WebPMux, flags: *mut u32) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxNumChunks"]
     pub fn WebPMuxNumChunks(
         mux: *const WebPMux,
         id: WebPChunkId,
@@ -13303,6 +13578,7 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPMuxAssemble"]
     pub fn WebPMuxAssemble(mux: *mut WebPMux, assembled_data: *mut WebPData) -> WebPMuxError;
 }
 #[repr(C)]
@@ -13411,12 +13687,14 @@ fn bindgen_test_layout_WebPAnimEncoderOptions() {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPAnimEncoderOptionsInitInternal"]
     pub fn WebPAnimEncoderOptionsInitInternal(
         arg1: *mut WebPAnimEncoderOptions,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPAnimEncoderNewInternal"]
     pub fn WebPAnimEncoderNewInternal(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
@@ -13425,6 +13703,7 @@ extern "C" {
     ) -> *mut WebPAnimEncoder;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPAnimEncoderAdd"]
     pub fn WebPAnimEncoderAdd(
         enc: *mut WebPAnimEncoder,
         frame: *mut WebPPicture,
@@ -13433,19 +13712,23 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPAnimEncoderAssemble"]
     pub fn WebPAnimEncoderAssemble(
         enc: *mut WebPAnimEncoder,
         webp_data: *mut WebPData,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPAnimEncoderGetError"]
     pub fn WebPAnimEncoderGetError(enc: *mut WebPAnimEncoder) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_WebPAnimEncoderDelete"]
     pub fn WebPAnimEncoderDelete(enc: *mut WebPAnimEncoder);
 }
 pub type va_list = __darwin_va_list;
 extern "C" {
+    #[link_name = "\u{1}_renameat"]
     pub fn renameat(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -13454,6 +13737,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_renamex_np"]
     pub fn renamex_np(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13461,6 +13745,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_renameatx_np"]
     pub fn renameatx_np(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -13783,27 +14068,35 @@ impl Default for __sFILE {
 }
 pub type FILE = __sFILE;
 extern "C" {
+    #[link_name = "\u{1}_clearerr"]
     pub fn clearerr(arg1: *mut FILE);
 }
 extern "C" {
+    #[link_name = "\u{1}_fclose"]
     pub fn fclose(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_feof"]
     pub fn feof(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ferror"]
     pub fn ferror(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fflush"]
     pub fn fflush(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fgetc"]
     pub fn fgetc(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fgetpos"]
     pub fn fgetpos(arg1: *mut FILE, arg2: *mut fpos_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fgets"]
     pub fn fgets(
         arg1: *mut ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
@@ -13811,12 +14104,14 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_fopen"]
     pub fn fopen(
         __filename: *const ::std::os::raw::c_char,
         __mode: *const ::std::os::raw::c_char,
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_fprintf"]
     pub fn fprintf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -13824,12 +14119,15 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fputc"]
     pub fn fputc(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fputs"]
     pub fn fputs(arg1: *const ::std::os::raw::c_char, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fread"]
     pub fn fread(
         __ptr: *mut ::std::os::raw::c_void,
         __size: ::std::os::raw::c_ulong,
@@ -13838,6 +14136,7 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_freopen"]
     pub fn freopen(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13845,6 +14144,7 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_fscanf"]
     pub fn fscanf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -13852,6 +14152,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fseek"]
     pub fn fseek(
         arg1: *mut FILE,
         arg2: ::std::os::raw::c_long,
@@ -13859,12 +14160,15 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_fsetpos"]
     pub fn fsetpos(arg1: *mut FILE, arg2: *const fpos_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ftell"]
     pub fn ftell(arg1: *mut FILE) -> ::std::os::raw::c_long;
 }
 extern "C" {
+    #[link_name = "\u{1}_fwrite"]
     pub fn fwrite(
         __ptr: *const ::std::os::raw::c_void,
         __size: ::std::os::raw::c_ulong,
@@ -13873,48 +14177,62 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
+    #[link_name = "\u{1}_getc"]
     pub fn getc(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getchar"]
     pub fn getchar() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_gets"]
     pub fn gets(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_perror"]
     pub fn perror(arg1: *const ::std::os::raw::c_char);
 }
 extern "C" {
+    #[link_name = "\u{1}_printf"]
     pub fn printf(arg1: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_putc"]
     pub fn putc(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_putchar"]
     pub fn putchar(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_puts"]
     pub fn puts(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_remove"]
     pub fn remove(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_rename"]
     pub fn rename(
         __old: *const ::std::os::raw::c_char,
         __new: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_rewind"]
     pub fn rewind(arg1: *mut FILE);
 }
 extern "C" {
+    #[link_name = "\u{1}_scanf"]
     pub fn scanf(arg1: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setbuf"]
     pub fn setbuf(arg1: *mut FILE, arg2: *mut ::std::os::raw::c_char);
 }
 extern "C" {
+    #[link_name = "\u{1}_setvbuf"]
     pub fn setvbuf(
         arg1: *mut FILE,
         arg2: *mut ::std::os::raw::c_char,
@@ -13923,6 +14241,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_sprintf"]
     pub fn sprintf(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13930,6 +14249,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_sscanf"]
     pub fn sscanf(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13937,15 +14257,19 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_tmpfile"]
     pub fn tmpfile() -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_tmpnam"]
     pub fn tmpnam(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_ungetc"]
     pub fn ungetc(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vfprintf"]
     pub fn vfprintf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -13953,12 +14277,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vprintf"]
     pub fn vprintf(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut __va_list_tag,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vsprintf"]
     pub fn vsprintf(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13966,27 +14292,34 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ctermid"]
     pub fn ctermid(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_fdopen"]
     pub fn fdopen(arg1: ::std::os::raw::c_int, arg2: *const ::std::os::raw::c_char) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_fileno"]
     pub fn fileno(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_pclose"]
     pub fn pclose(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_popen"]
     pub fn popen(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}___srget"]
     pub fn __srget(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}___svfscanf"]
     pub fn __svfscanf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -13994,36 +14327,51 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}___swbuf"]
     pub fn __swbuf(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}___sputc"]
+    pub fn __sputc(_c: ::std::os::raw::c_int, _p: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[link_name = "\u{1}_flockfile"]
     pub fn flockfile(arg1: *mut FILE);
 }
 extern "C" {
+    #[link_name = "\u{1}_ftrylockfile"]
     pub fn ftrylockfile(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_funlockfile"]
     pub fn funlockfile(arg1: *mut FILE);
 }
 extern "C" {
+    #[link_name = "\u{1}_getc_unlocked"]
     pub fn getc_unlocked(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getchar_unlocked"]
     pub fn getchar_unlocked() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_putc_unlocked"]
     pub fn putc_unlocked(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_putchar_unlocked"]
     pub fn putchar_unlocked(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getw"]
     pub fn getw(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_putw"]
     pub fn putw(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_tempnam"]
     pub fn tempnam(
         __dir: *const ::std::os::raw::c_char,
         __prefix: *const ::std::os::raw::c_char,
@@ -14031,6 +14379,7 @@ extern "C" {
 }
 pub type off_t = __darwin_off_t;
 extern "C" {
+    #[link_name = "\u{1}_fseeko"]
     pub fn fseeko(
         __stream: *mut FILE,
         __offset: off_t,
@@ -14038,9 +14387,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ftello"]
     pub fn ftello(__stream: *mut FILE) -> off_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_snprintf"]
     pub fn snprintf(
         __str: *mut ::std::os::raw::c_char,
         __size: ::std::os::raw::c_ulong,
@@ -14049,6 +14400,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vfscanf"]
     pub fn vfscanf(
         __stream: *mut FILE,
         __format: *const ::std::os::raw::c_char,
@@ -14056,12 +14408,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vscanf"]
     pub fn vscanf(
         __format: *const ::std::os::raw::c_char,
         arg1: *mut __va_list_tag,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vsnprintf"]
     pub fn vsnprintf(
         __str: *mut ::std::os::raw::c_char,
         __size: ::std::os::raw::c_ulong,
@@ -14070,6 +14424,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vsscanf"]
     pub fn vsscanf(
         __str: *const ::std::os::raw::c_char,
         __format: *const ::std::os::raw::c_char,
@@ -14077,6 +14432,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_dprintf"]
     pub fn dprintf(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -14084,6 +14440,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vdprintf"]
     pub fn vdprintf(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -14091,6 +14448,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_getdelim"]
     pub fn getdelim(
         __linep: *mut *mut ::std::os::raw::c_char,
         __linecapp: *mut usize,
@@ -14099,6 +14457,7 @@ extern "C" {
     ) -> isize;
 }
 extern "C" {
+    #[link_name = "\u{1}_getline"]
     pub fn getline(
         __linep: *mut *mut ::std::os::raw::c_char,
         __linecapp: *mut usize,
@@ -14106,6 +14465,7 @@ extern "C" {
     ) -> isize;
 }
 extern "C" {
+    #[link_name = "\u{1}_fmemopen"]
     pub fn fmemopen(
         __buf: *mut ::std::os::raw::c_void,
         __size: usize,
@@ -14113,12 +14473,14 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_open_memstream"]
     pub fn open_memstream(
         __bufp: *mut *mut ::std::os::raw::c_char,
         __sizep: *mut usize,
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_asprintf"]
     pub fn asprintf(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14126,21 +14488,26 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ctermid_r"]
     pub fn ctermid_r(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_fgetln"]
     pub fn fgetln(arg1: *mut FILE, arg2: *mut usize) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_fmtcheck"]
     pub fn fmtcheck(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_fpurge"]
     pub fn fpurge(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_setbuffer"]
     pub fn setbuffer(
         arg1: *mut FILE,
         arg2: *mut ::std::os::raw::c_char,
@@ -14148,9 +14515,11 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_setlinebuf"]
     pub fn setlinebuf(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_vasprintf"]
     pub fn vasprintf(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14158,6 +14527,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_zopen"]
     pub fn zopen(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14165,6 +14535,7 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_funopen"]
     pub fn funopen(
         arg1: *const ::std::os::raw::c_void,
         arg2: ::std::option::Option<
@@ -14194,6 +14565,7 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}___sprintf_chk"]
     pub fn __sprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
@@ -14203,6 +14575,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}___snprintf_chk"]
     pub fn __snprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: usize,
@@ -14213,6 +14586,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}___vsprintf_chk"]
     pub fn __vsprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
@@ -14222,6 +14596,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}___vsnprintf_chk"]
     pub fn __vsnprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: usize,
@@ -14234,27 +14609,34 @@ extern "C" {
 pub type jmp_buf = [::std::os::raw::c_int; 37usize];
 pub type sigjmp_buf = [::std::os::raw::c_int; 38usize];
 extern "C" {
+    #[link_name = "\u{1}_setjmp"]
     pub fn setjmp(arg1: *mut ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_longjmp"]
     pub fn longjmp(arg1: *mut ::std::os::raw::c_int, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}__setjmp"]
     pub fn _setjmp(arg1: *mut ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}__longjmp"]
     pub fn _longjmp(arg1: *mut ::std::os::raw::c_int, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_sigsetjmp"]
     pub fn sigsetjmp(
         arg1: *mut ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_siglongjmp"]
     pub fn siglongjmp(arg1: *mut ::std::os::raw::c_int, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_longjmperror"]
     pub fn longjmperror();
 }
 pub type clock_t = __darwin_clock_t;
@@ -14442,30 +14824,39 @@ impl Default for tm {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_asctime"]
     pub fn asctime(arg1: *const tm) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_clock"]
     pub fn clock() -> clock_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_ctime"]
     pub fn ctime(arg1: *const time_t) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_difftime"]
     pub fn difftime(arg1: time_t, arg2: time_t) -> f64;
 }
 extern "C" {
+    #[link_name = "\u{1}_getdate"]
     pub fn getdate(arg1: *const ::std::os::raw::c_char) -> *mut tm;
 }
 extern "C" {
+    #[link_name = "\u{1}_gmtime"]
     pub fn gmtime(arg1: *const time_t) -> *mut tm;
 }
 extern "C" {
+    #[link_name = "\u{1}_localtime"]
     pub fn localtime(arg1: *const time_t) -> *mut tm;
 }
 extern "C" {
+    #[link_name = "\u{1}_mktime"]
     pub fn mktime(arg1: *mut tm) -> time_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_strftime"]
     pub fn strftime(
         arg1: *mut ::std::os::raw::c_char,
         arg2: usize,
@@ -14474,6 +14865,7 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_strptime"]
     pub fn strptime(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14481,45 +14873,57 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_time"]
     pub fn time(arg1: *mut time_t) -> time_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_tzset"]
     pub fn tzset();
 }
 extern "C" {
+    #[link_name = "\u{1}_asctime_r"]
     pub fn asctime_r(
         arg1: *const tm,
         arg2: *mut ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_ctime_r"]
     pub fn ctime_r(
         arg1: *const time_t,
         arg2: *mut ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
+    #[link_name = "\u{1}_gmtime_r"]
     pub fn gmtime_r(arg1: *const time_t, arg2: *mut tm) -> *mut tm;
 }
 extern "C" {
+    #[link_name = "\u{1}_localtime_r"]
     pub fn localtime_r(arg1: *const time_t, arg2: *mut tm) -> *mut tm;
 }
 extern "C" {
+    #[link_name = "\u{1}_posix2time"]
     pub fn posix2time(arg1: time_t) -> time_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_tzsetwall"]
     pub fn tzsetwall();
 }
 extern "C" {
+    #[link_name = "\u{1}_time2posix"]
     pub fn time2posix(arg1: time_t) -> time_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_timelocal"]
     pub fn timelocal(arg1: *mut tm) -> time_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_timegm"]
     pub fn timegm(arg1: *mut tm) -> time_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_nanosleep"]
     pub fn nanosleep(__rqtp: *const timespec, __rmtp: *mut timespec) -> ::std::os::raw::c_int;
 }
 pub const clockid_t__CLOCK_REALTIME: clockid_t = 0;
@@ -14532,15 +14936,19 @@ pub const clockid_t__CLOCK_PROCESS_CPUTIME_ID: clockid_t = 12;
 pub const clockid_t__CLOCK_THREAD_CPUTIME_ID: clockid_t = 16;
 pub type clockid_t = u32;
 extern "C" {
+    #[link_name = "\u{1}_clock_getres"]
     pub fn clock_getres(__clock_id: clockid_t, __res: *mut timespec) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_clock_gettime"]
     pub fn clock_gettime(__clock_id: clockid_t, __tp: *mut timespec) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_clock_gettime_nsec_np"]
     pub fn clock_gettime_nsec_np(__clock_id: clockid_t) -> __uint64_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_clock_settime"]
     pub fn clock_settime(__clock_id: clockid_t, __tp: *const timespec) -> ::std::os::raw::c_int;
 }
 pub type png_byte = ::std::os::raw::c_uchar;
@@ -15342,12 +15750,15 @@ pub type png_malloc_ptr = ::std::option::Option<
 pub type png_free_ptr =
     ::std::option::Option<unsafe extern "C" fn(arg1: png_structp, arg2: png_voidp)>;
 extern "C" {
+    #[link_name = "\u{1}_png_access_version_number"]
     pub fn png_access_version_number() -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sig_bytes"]
     pub fn png_set_sig_bytes(png_ptr: png_structrp, num_bytes: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_sig_cmp"]
     pub fn png_sig_cmp(
         sig: png_const_bytep,
         start: usize,
@@ -15355,6 +15766,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_create_read_struct"]
     pub fn png_create_read_struct(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15363,6 +15775,7 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_create_write_struct"]
     pub fn png_create_write_struct(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15371,12 +15784,15 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_compression_buffer_size"]
     pub fn png_get_compression_buffer_size(png_ptr: png_const_structrp) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_compression_buffer_size"]
     pub fn png_set_compression_buffer_size(png_ptr: png_structrp, size: usize);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_longjmp_fn"]
     pub fn png_set_longjmp_fn(
         png_ptr: png_structrp,
         longjmp_fn: png_longjmp_ptr,
@@ -15384,12 +15800,15 @@ extern "C" {
     ) -> *mut jmp_buf;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_longjmp"]
     pub fn png_longjmp(png_ptr: png_const_structrp, val: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_reset_zstream"]
     pub fn png_reset_zstream(png_ptr: png_structrp) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_create_read_struct_2"]
     pub fn png_create_read_struct_2(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15401,6 +15820,7 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_create_write_struct_2"]
     pub fn png_create_write_struct_2(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15412,9 +15832,11 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_sig"]
     pub fn png_write_sig(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_chunk"]
     pub fn png_write_chunk(
         png_ptr: png_structrp,
         chunk_name: png_const_bytep,
@@ -15423,6 +15845,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_chunk_start"]
     pub fn png_write_chunk_start(
         png_ptr: png_structrp,
         chunk_name: png_const_bytep,
@@ -15430,64 +15853,83 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_chunk_data"]
     pub fn png_write_chunk_data(png_ptr: png_structrp, data: png_const_bytep, length: usize);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_chunk_end"]
     pub fn png_write_chunk_end(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_create_info_struct"]
     pub fn png_create_info_struct(png_ptr: png_const_structrp) -> png_infop;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_info_init_3"]
     pub fn png_info_init_3(info_ptr: png_infopp, png_info_struct_size: usize);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_info_before_PLTE"]
     pub fn png_write_info_before_PLTE(png_ptr: png_structrp, info_ptr: png_const_inforp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_info"]
     pub fn png_write_info(png_ptr: png_structrp, info_ptr: png_const_inforp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_info"]
     pub fn png_read_info(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_convert_to_rfc1123"]
     pub fn png_convert_to_rfc1123(png_ptr: png_structrp, ptime: png_const_timep)
         -> png_const_charp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_convert_to_rfc1123_buffer"]
     pub fn png_convert_to_rfc1123_buffer(
         out: *mut ::std::os::raw::c_char,
         ptime: png_const_timep,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_convert_from_struct_tm"]
     pub fn png_convert_from_struct_tm(ptime: png_timep, ttime: *const tm);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_convert_from_time_t"]
     pub fn png_convert_from_time_t(ptime: png_timep, ttime: time_t);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_expand"]
     pub fn png_set_expand(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_expand_gray_1_2_4_to_8"]
     pub fn png_set_expand_gray_1_2_4_to_8(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_palette_to_rgb"]
     pub fn png_set_palette_to_rgb(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_tRNS_to_alpha"]
     pub fn png_set_tRNS_to_alpha(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_expand_16"]
     pub fn png_set_expand_16(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_bgr"]
     pub fn png_set_bgr(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_gray_to_rgb"]
     pub fn png_set_gray_to_rgb(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_rgb_to_gray"]
     pub fn png_set_rgb_to_gray(
         png_ptr: png_structrp,
         error_action: ::std::os::raw::c_int,
@@ -15496,6 +15938,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_rgb_to_gray_fixed"]
     pub fn png_set_rgb_to_gray_fixed(
         png_ptr: png_structrp,
         error_action: ::std::os::raw::c_int,
@@ -15504,12 +15947,15 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_rgb_to_gray_status"]
     pub fn png_get_rgb_to_gray_status(png_ptr: png_const_structrp) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_build_grayscale_palette"]
     pub fn png_build_grayscale_palette(bit_depth: ::std::os::raw::c_int, palette: png_colorp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_alpha_mode"]
     pub fn png_set_alpha_mode(
         png_ptr: png_structrp,
         mode: ::std::os::raw::c_int,
@@ -15517,6 +15963,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_alpha_mode_fixed"]
     pub fn png_set_alpha_mode_fixed(
         png_ptr: png_structrp,
         mode: ::std::os::raw::c_int,
@@ -15524,18 +15971,23 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_strip_alpha"]
     pub fn png_set_strip_alpha(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_swap_alpha"]
     pub fn png_set_swap_alpha(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_invert_alpha"]
     pub fn png_set_invert_alpha(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_filler"]
     pub fn png_set_filler(png_ptr: png_structrp, filler: png_uint_32, flags: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_add_alpha"]
     pub fn png_set_add_alpha(
         png_ptr: png_structrp,
         filler: png_uint_32,
@@ -15543,24 +15995,31 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_swap"]
     pub fn png_set_swap(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_packing"]
     pub fn png_set_packing(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_packswap"]
     pub fn png_set_packswap(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_shift"]
     pub fn png_set_shift(png_ptr: png_structrp, true_bits: png_const_color_8p);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_interlace_handling"]
     pub fn png_set_interlace_handling(png_ptr: png_structrp) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_invert_mono"]
     pub fn png_set_invert_mono(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_background"]
     pub fn png_set_background(
         png_ptr: png_structrp,
         background_color: png_const_color_16p,
@@ -15570,6 +16029,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_background_fixed"]
     pub fn png_set_background_fixed(
         png_ptr: png_structrp,
         background_color: png_const_color_16p,
@@ -15579,12 +16039,15 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_scale_16"]
     pub fn png_set_scale_16(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_strip_16"]
     pub fn png_set_strip_16(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_quantize"]
     pub fn png_set_quantize(
         png_ptr: png_structrp,
         palette: png_colorp,
@@ -15595,9 +16058,11 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_gamma"]
     pub fn png_set_gamma(png_ptr: png_structrp, screen_gamma: f64, override_file_gamma: f64);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_gamma_fixed"]
     pub fn png_set_gamma_fixed(
         png_ptr: png_structrp,
         screen_gamma: png_fixed_point,
@@ -15605,18 +16070,23 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_flush"]
     pub fn png_set_flush(png_ptr: png_structrp, nrows: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_flush"]
     pub fn png_write_flush(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_start_read_image"]
     pub fn png_start_read_image(png_ptr: png_structrp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_update_info"]
     pub fn png_read_update_info(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_rows"]
     pub fn png_read_rows(
         png_ptr: png_structrp,
         row: png_bytepp,
@@ -15625,30 +16095,39 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_row"]
     pub fn png_read_row(png_ptr: png_structrp, row: png_bytep, display_row: png_bytep);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_image"]
     pub fn png_read_image(png_ptr: png_structrp, image: png_bytepp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_row"]
     pub fn png_write_row(png_ptr: png_structrp, row: png_const_bytep);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_rows"]
     pub fn png_write_rows(png_ptr: png_structrp, row: png_bytepp, num_rows: png_uint_32);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_image"]
     pub fn png_write_image(png_ptr: png_structrp, image: png_bytepp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_end"]
     pub fn png_write_end(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_end"]
     pub fn png_read_end(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_destroy_info_struct"]
     pub fn png_destroy_info_struct(png_ptr: png_const_structrp, info_ptr_ptr: png_infopp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_destroy_read_struct"]
     pub fn png_destroy_read_struct(
         png_ptr_ptr: png_structpp,
         info_ptr_ptr: png_infopp,
@@ -15656,9 +16135,11 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_destroy_write_struct"]
     pub fn png_destroy_write_struct(png_ptr_ptr: png_structpp, info_ptr_ptr: png_infopp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_crc_action"]
     pub fn png_set_crc_action(
         png_ptr: png_structrp,
         crit_action: ::std::os::raw::c_int,
@@ -15666,6 +16147,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_filter"]
     pub fn png_set_filter(
         png_ptr: png_structrp,
         method: ::std::os::raw::c_int,
@@ -15673,6 +16155,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_filter_heuristics"]
     pub fn png_set_filter_heuristics(
         png_ptr: png_structrp,
         heuristic_method: ::std::os::raw::c_int,
@@ -15682,6 +16165,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_filter_heuristics_fixed"]
     pub fn png_set_filter_heuristics_fixed(
         png_ptr: png_structrp,
         heuristic_method: ::std::os::raw::c_int,
@@ -15691,51 +16175,63 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_compression_level"]
     pub fn png_set_compression_level(png_ptr: png_structrp, level: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_compression_mem_level"]
     pub fn png_set_compression_mem_level(png_ptr: png_structrp, mem_level: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_compression_strategy"]
     pub fn png_set_compression_strategy(png_ptr: png_structrp, strategy: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_compression_window_bits"]
     pub fn png_set_compression_window_bits(
         png_ptr: png_structrp,
         window_bits: ::std::os::raw::c_int,
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_compression_method"]
     pub fn png_set_compression_method(png_ptr: png_structrp, method: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_text_compression_level"]
     pub fn png_set_text_compression_level(png_ptr: png_structrp, level: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_text_compression_mem_level"]
     pub fn png_set_text_compression_mem_level(
         png_ptr: png_structrp,
         mem_level: ::std::os::raw::c_int,
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_text_compression_strategy"]
     pub fn png_set_text_compression_strategy(
         png_ptr: png_structrp,
         strategy: ::std::os::raw::c_int,
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_text_compression_window_bits"]
     pub fn png_set_text_compression_window_bits(
         png_ptr: png_structrp,
         window_bits: ::std::os::raw::c_int,
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_text_compression_method"]
     pub fn png_set_text_compression_method(png_ptr: png_structrp, method: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_init_io"]
     pub fn png_init_io(png_ptr: png_structrp, fp: png_FILE_p);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_error_fn"]
     pub fn png_set_error_fn(
         png_ptr: png_structrp,
         error_ptr: png_voidp,
@@ -15744,9 +16240,11 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_error_ptr"]
     pub fn png_get_error_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_write_fn"]
     pub fn png_set_write_fn(
         png_ptr: png_structrp,
         io_ptr: png_voidp,
@@ -15755,18 +16253,23 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_read_fn"]
     pub fn png_set_read_fn(png_ptr: png_structrp, io_ptr: png_voidp, read_data_fn: png_rw_ptr);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_io_ptr"]
     pub fn png_get_io_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_read_status_fn"]
     pub fn png_set_read_status_fn(png_ptr: png_structrp, read_row_fn: png_read_status_ptr);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_write_status_fn"]
     pub fn png_set_write_status_fn(png_ptr: png_structrp, write_row_fn: png_write_status_ptr);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_mem_fn"]
     pub fn png_set_mem_fn(
         png_ptr: png_structrp,
         mem_ptr: png_voidp,
@@ -15775,21 +16278,25 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_mem_ptr"]
     pub fn png_get_mem_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_read_user_transform_fn"]
     pub fn png_set_read_user_transform_fn(
         png_ptr: png_structrp,
         read_user_transform_fn: png_user_transform_ptr,
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_write_user_transform_fn"]
     pub fn png_set_write_user_transform_fn(
         png_ptr: png_structrp,
         write_user_transform_fn: png_user_transform_ptr,
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_user_transform_info"]
     pub fn png_set_user_transform_info(
         png_ptr: png_structrp,
         user_transform_ptr: png_voidp,
@@ -15798,15 +16305,19 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_user_transform_ptr"]
     pub fn png_get_user_transform_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_current_row_number"]
     pub fn png_get_current_row_number(arg1: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_current_pass_number"]
     pub fn png_get_current_pass_number(arg1: png_const_structrp) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_read_user_chunk_fn"]
     pub fn png_set_read_user_chunk_fn(
         png_ptr: png_structrp,
         user_chunk_ptr: png_voidp,
@@ -15814,9 +16325,11 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_user_chunk_ptr"]
     pub fn png_get_user_chunk_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_progressive_read_fn"]
     pub fn png_set_progressive_read_fn(
         png_ptr: png_structrp,
         progressive_ptr: png_voidp,
@@ -15826,9 +16339,11 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_progressive_ptr"]
     pub fn png_get_progressive_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_process_data"]
     pub fn png_process_data(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -15837,12 +16352,15 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_process_data_pause"]
     pub fn png_process_data_pause(arg1: png_structrp, save: ::std::os::raw::c_int) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_process_data_skip"]
     pub fn png_process_data_skip(arg1: png_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_progressive_combine_row"]
     pub fn png_progressive_combine_row(
         png_ptr: png_const_structrp,
         old_row: png_bytep,
@@ -15850,18 +16368,23 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_malloc"]
     pub fn png_malloc(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_calloc"]
     pub fn png_calloc(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_malloc_warn"]
     pub fn png_malloc_warn(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_free"]
     pub fn png_free(png_ptr: png_const_structrp, ptr: png_voidp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_free_data"]
     pub fn png_free_data(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -15870,6 +16393,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_data_freer"]
     pub fn png_data_freer(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -15878,33 +16402,43 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_malloc_default"]
     pub fn png_malloc_default(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_free_default"]
     pub fn png_free_default(png_ptr: png_const_structrp, ptr: png_voidp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_error"]
     pub fn png_error(png_ptr: png_const_structrp, error_message: png_const_charp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_chunk_error"]
     pub fn png_chunk_error(png_ptr: png_const_structrp, error_message: png_const_charp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_warning"]
     pub fn png_warning(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_chunk_warning"]
     pub fn png_chunk_warning(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_benign_error"]
     pub fn png_benign_error(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_chunk_benign_error"]
     pub fn png_chunk_benign_error(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_benign_errors"]
     pub fn png_set_benign_errors(png_ptr: png_structrp, allowed: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_valid"]
     pub fn png_get_valid(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -15912,12 +16446,15 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_rowbytes"]
     pub fn png_get_rowbytes(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> usize;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_rows"]
     pub fn png_get_rows(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_bytepp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_rows"]
     pub fn png_set_rows(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -15925,103 +16462,122 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_channels"]
     pub fn png_get_channels(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_image_width"]
     pub fn png_get_image_width(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_image_height"]
     pub fn png_get_image_height(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_bit_depth"]
     pub fn png_get_bit_depth(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_color_type"]
     pub fn png_get_color_type(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_filter_type"]
     pub fn png_get_filter_type(png_ptr: png_const_structrp, info_ptr: png_const_inforp)
         -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_interlace_type"]
     pub fn png_get_interlace_type(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_compression_type"]
     pub fn png_get_compression_type(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_byte;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pixels_per_meter"]
     pub fn png_get_pixels_per_meter(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_x_pixels_per_meter"]
     pub fn png_get_x_pixels_per_meter(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_y_pixels_per_meter"]
     pub fn png_get_y_pixels_per_meter(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pixel_aspect_ratio"]
     pub fn png_get_pixel_aspect_ratio(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> f32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pixel_aspect_ratio_fixed"]
     pub fn png_get_pixel_aspect_ratio_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_fixed_point;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_x_offset_pixels"]
     pub fn png_get_x_offset_pixels(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_y_offset_pixels"]
     pub fn png_get_y_offset_pixels(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_x_offset_microns"]
     pub fn png_get_x_offset_microns(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_y_offset_microns"]
     pub fn png_get_y_offset_microns(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_signature"]
     pub fn png_get_signature(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_const_bytep;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_bKGD"]
     pub fn png_get_bKGD(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16029,6 +16585,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_bKGD"]
     pub fn png_set_bKGD(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16036,6 +16593,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_cHRM"]
     pub fn png_get_cHRM(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16050,6 +16608,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_cHRM_XYZ"]
     pub fn png_get_cHRM_XYZ(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16065,6 +16624,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_cHRM_fixed"]
     pub fn png_get_cHRM_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16079,6 +16639,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_cHRM_XYZ_fixed"]
     pub fn png_get_cHRM_XYZ_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16094,6 +16655,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_cHRM"]
     pub fn png_set_cHRM(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16108,6 +16670,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_cHRM_XYZ"]
     pub fn png_set_cHRM_XYZ(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16123,6 +16686,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_cHRM_fixed"]
     pub fn png_set_cHRM_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16137,6 +16701,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_cHRM_XYZ_fixed"]
     pub fn png_set_cHRM_XYZ_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16152,6 +16717,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_eXIf"]
     pub fn png_get_eXIf(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16159,9 +16725,11 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_eXIf"]
     pub fn png_set_eXIf(png_ptr: png_const_structrp, info_ptr: png_inforp, exif: png_bytep);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_eXIf_1"]
     pub fn png_get_eXIf_1(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16170,6 +16738,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_eXIf_1"]
     pub fn png_set_eXIf_1(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16178,6 +16747,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_gAMA"]
     pub fn png_get_gAMA(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16185,6 +16755,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_gAMA_fixed"]
     pub fn png_get_gAMA_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16192,9 +16763,11 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_gAMA"]
     pub fn png_set_gAMA(png_ptr: png_const_structrp, info_ptr: png_inforp, file_gamma: f64);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_gAMA_fixed"]
     pub fn png_set_gAMA_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16202,6 +16775,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_hIST"]
     pub fn png_get_hIST(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16209,6 +16783,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_hIST"]
     pub fn png_set_hIST(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16216,6 +16791,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_IHDR"]
     pub fn png_get_IHDR(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16229,6 +16805,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_IHDR"]
     pub fn png_set_IHDR(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16242,6 +16819,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_oFFs"]
     pub fn png_get_oFFs(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16251,6 +16829,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_oFFs"]
     pub fn png_set_oFFs(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16260,6 +16839,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pCAL"]
     pub fn png_get_pCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16273,6 +16853,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_pCAL"]
     pub fn png_set_pCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16286,6 +16867,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pHYs"]
     pub fn png_get_pHYs(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16295,6 +16877,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_pHYs"]
     pub fn png_set_pHYs(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16304,6 +16887,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_PLTE"]
     pub fn png_get_PLTE(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16312,6 +16896,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_PLTE"]
     pub fn png_set_PLTE(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -16320,6 +16905,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_sBIT"]
     pub fn png_get_sBIT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16327,6 +16913,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sBIT"]
     pub fn png_set_sBIT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16334,6 +16921,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_sRGB"]
     pub fn png_get_sRGB(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16341,6 +16929,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sRGB"]
     pub fn png_set_sRGB(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16348,6 +16937,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sRGB_gAMA_and_cHRM"]
     pub fn png_set_sRGB_gAMA_and_cHRM(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16355,6 +16945,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_iCCP"]
     pub fn png_get_iCCP(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16365,6 +16956,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_iCCP"]
     pub fn png_set_iCCP(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16375,6 +16967,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_sPLT"]
     pub fn png_get_sPLT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16382,6 +16975,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sPLT"]
     pub fn png_set_sPLT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16390,6 +16984,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_text"]
     pub fn png_get_text(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16398,6 +16993,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_text"]
     pub fn png_set_text(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16406,6 +17002,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_tIME"]
     pub fn png_get_tIME(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16413,6 +17010,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_tIME"]
     pub fn png_set_tIME(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16420,6 +17018,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_tRNS"]
     pub fn png_get_tRNS(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16429,6 +17028,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_tRNS"]
     pub fn png_set_tRNS(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -16438,6 +17038,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_sCAL"]
     pub fn png_get_sCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16447,6 +17048,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_sCAL_fixed"]
     pub fn png_get_sCAL_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16456,6 +17058,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_sCAL_s"]
     pub fn png_get_sCAL_s(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16465,6 +17068,7 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sCAL"]
     pub fn png_set_sCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16474,6 +17078,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sCAL_fixed"]
     pub fn png_set_sCAL_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16483,6 +17088,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_sCAL_s"]
     pub fn png_set_sCAL_s(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16492,6 +17098,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_keep_unknown_chunks"]
     pub fn png_set_keep_unknown_chunks(
         png_ptr: png_structrp,
         keep: ::std::os::raw::c_int,
@@ -16500,12 +17107,14 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_handle_as_unknown"]
     pub fn png_handle_as_unknown(
         png_ptr: png_const_structrp,
         chunk_name: png_const_bytep,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_unknown_chunks"]
     pub fn png_set_unknown_chunks(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16514,6 +17123,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_unknown_chunk_location"]
     pub fn png_set_unknown_chunk_location(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16522,6 +17132,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_unknown_chunks"]
     pub fn png_get_unknown_chunks(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16529,6 +17140,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_invalid"]
     pub fn png_set_invalid(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16536,6 +17148,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_read_png"]
     pub fn png_read_png(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -16544,6 +17157,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_write_png"]
     pub fn png_write_png(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -16552,24 +17166,30 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_copyright"]
     pub fn png_get_copyright(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_header_ver"]
     pub fn png_get_header_ver(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_header_version"]
     pub fn png_get_header_version(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_libpng_ver"]
     pub fn png_get_libpng_ver(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_permit_mng_features"]
     pub fn png_permit_mng_features(
         png_ptr: png_structrp,
         mng_features_permitted: png_uint_32,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_user_limits"]
     pub fn png_set_user_limits(
         png_ptr: png_structrp,
         user_width_max: png_uint_32,
@@ -16577,60 +17197,74 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_user_width_max"]
     pub fn png_get_user_width_max(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_user_height_max"]
     pub fn png_get_user_height_max(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_chunk_cache_max"]
     pub fn png_set_chunk_cache_max(png_ptr: png_structrp, user_chunk_cache_max: png_uint_32);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_chunk_cache_max"]
     pub fn png_get_chunk_cache_max(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_chunk_malloc_max"]
     pub fn png_set_chunk_malloc_max(png_ptr: png_structrp, user_chunk_cache_max: png_alloc_size_t);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_chunk_malloc_max"]
     pub fn png_get_chunk_malloc_max(png_ptr: png_const_structrp) -> png_alloc_size_t;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pixels_per_inch"]
     pub fn png_get_pixels_per_inch(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_x_pixels_per_inch"]
     pub fn png_get_x_pixels_per_inch(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_y_pixels_per_inch"]
     pub fn png_get_y_pixels_per_inch(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_x_offset_inches"]
     pub fn png_get_x_offset_inches(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> f32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_x_offset_inches_fixed"]
     pub fn png_get_x_offset_inches_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_fixed_point;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_y_offset_inches"]
     pub fn png_get_y_offset_inches(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> f32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_y_offset_inches_fixed"]
     pub fn png_get_y_offset_inches_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_fixed_point;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_pHYs_dpi"]
     pub fn png_get_pHYs_dpi(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16640,36 +17274,47 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_io_state"]
     pub fn png_get_io_state(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_io_chunk_type"]
     pub fn png_get_io_chunk_type(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_uint_32"]
     pub fn png_get_uint_32(buf: png_const_bytep) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_uint_16"]
     pub fn png_get_uint_16(buf: png_const_bytep) -> png_uint_16;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_int_32"]
     pub fn png_get_int_32(buf: png_const_bytep) -> png_int_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_uint_31"]
     pub fn png_get_uint_31(png_ptr: png_const_structrp, buf: png_const_bytep) -> png_uint_32;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_save_uint_32"]
     pub fn png_save_uint_32(buf: png_bytep, i: png_uint_32);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_save_int_32"]
     pub fn png_save_int_32(buf: png_bytep, i: png_int_32);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_save_uint_16"]
     pub fn png_save_uint_16(buf: png_bytep, i: ::std::os::raw::c_uint);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_check_for_invalid_index"]
     pub fn png_set_check_for_invalid_index(png_ptr: png_structrp, allowed: ::std::os::raw::c_int);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_get_palette_max"]
     pub fn png_get_palette_max(
         png_ptr: png_const_structp,
         info_ptr: png_const_infop,
@@ -16804,18 +17449,21 @@ impl Default for png_image {
 }
 pub type png_imagep = *mut png_image;
 extern "C" {
+    #[link_name = "\u{1}_png_image_begin_read_from_file"]
     pub fn png_image_begin_read_from_file(
         image: png_imagep,
         file_name: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_begin_read_from_stdio"]
     pub fn png_image_begin_read_from_stdio(
         image: png_imagep,
         file: *mut FILE,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_begin_read_from_memory"]
     pub fn png_image_begin_read_from_memory(
         image: png_imagep,
         memory: png_const_voidp,
@@ -16823,6 +17471,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_finish_read"]
     pub fn png_image_finish_read(
         image: png_imagep,
         background: png_const_colorp,
@@ -16832,9 +17481,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_free"]
     pub fn png_image_free(image: png_imagep);
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_write_to_file"]
     pub fn png_image_write_to_file(
         image: png_imagep,
         file: *const ::std::os::raw::c_char,
@@ -16845,6 +17496,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_write_to_stdio"]
     pub fn png_image_write_to_stdio(
         image: png_imagep,
         file: *mut FILE,
@@ -16855,6 +17507,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_image_write_to_memory"]
     pub fn png_image_write_to_memory(
         image: png_imagep,
         memory: *mut ::std::os::raw::c_void,
@@ -16866,6 +17519,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_png_set_option"]
     pub fn png_set_option(
         png_ptr: png_structrp,
         option: ::std::os::raw::c_int,
@@ -16873,6 +17527,17 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ReadJPEG"]
+    pub fn ReadJPEG(
+        data: *const u8,
+        data_size: usize,
+        pic: *mut WebPPicture,
+        keep_alpha: ::std::os::raw::c_int,
+        metadata: *mut Metadata,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[link_name = "\u{1}_ReadPNG"]
     pub fn ReadPNG(
         data: *const u8,
         data_size: usize,
@@ -16882,9 +17547,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ImgIoUtilSetBinaryMode"]
     pub fn ImgIoUtilSetBinaryMode(file: *mut FILE) -> *mut FILE;
 }
 extern "C" {
+    #[link_name = "\u{1}_ImgIoUtilReadFile"]
     pub fn ImgIoUtilReadFile(
         file_name: *const ::std::os::raw::c_char,
         data: *mut *const u8,
@@ -16892,12 +17559,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ImgIoUtilReadFromStdin"]
     pub fn ImgIoUtilReadFromStdin(
         data: *mut *const u8,
         data_size: *mut usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ImgIoUtilWriteFile"]
     pub fn ImgIoUtilWriteFile(
         file_name: *const ::std::os::raw::c_char,
         data: *const u8,
@@ -16905,6 +17574,7 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    #[link_name = "\u{1}_ImgIoUtilCopyPlane"]
     pub fn ImgIoUtilCopyPlane(
         src: *const u8,
         src_stride: ::std::os::raw::c_int,
@@ -16915,6 +17585,7 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_ImgIoUtilCheckSizeArgumentsOverflow"]
     pub fn ImgIoUtilCheckSizeArgumentsOverflow(nmemb: u64, size: usize) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
@@ -17017,15 +17688,19 @@ impl Default for Metadata {
     }
 }
 extern "C" {
+    #[link_name = "\u{1}_MetadataInit"]
     pub fn MetadataInit(metadata: *mut Metadata);
 }
 extern "C" {
+    #[link_name = "\u{1}_MetadataPayloadDelete"]
     pub fn MetadataPayloadDelete(payload: *mut MetadataPayload);
 }
 extern "C" {
+    #[link_name = "\u{1}_MetadataFree"]
     pub fn MetadataFree(metadata: *mut Metadata);
 }
 extern "C" {
+    #[link_name = "\u{1}_MetadataCopy"]
     pub fn MetadataCopy(
         metadata: *const ::std::os::raw::c_char,
         metadata_len: usize,
