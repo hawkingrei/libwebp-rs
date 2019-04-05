@@ -86,7 +86,7 @@ fn main() {
     println!("cargo:rerun-if-changed=build.rs");
     if cfg!(target_os = "linux") {
         println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
-        println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/include");
+        println!("cargo:rustc-link-search=/opt/libjpeg-turbo/include");
     }
     println!("cargo:rustc-link-search=/usr/local/lib");
     println!("cargo:rustc-link-search=/usr/local/include");
