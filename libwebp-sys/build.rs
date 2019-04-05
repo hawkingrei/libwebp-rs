@@ -84,6 +84,9 @@ fn main() {
     println!("cargo:rustc-link-lib=static=webp");
     println!("cargo:rustc-link-lib=static=z");
     println!("cargo:rerun-if-changed=build.rs");
+    if cfg!(target_os = "linux") {
+        println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
+    }
     println!("cargo:rustc-link-search=/usr/local/lib");
     println!("cargo:rustc-link-search=/usr/local/include");
     println!("cargo:rustc-link-search=native=/usr/local/include/webp");
