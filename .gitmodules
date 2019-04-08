@@ -1,3 +1,0 @@
-[submodule "dataset"]
-	path = dataset
-	url = https://github.com/hawkingrei/image_test_dataset.git
