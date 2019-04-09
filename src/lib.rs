@@ -17,10 +17,11 @@ pub use webp::webp_encode_webp;
 pub use webp::WebPConfig;
 pub use webp::WebPPicture;
 
-use std::fmt;
-
 use actix_web::HttpResponse;
 use actix_web::ResponseError;
+
+use std::error::Error;
+use std::fmt;
 
 pub type ImageResult<T> = Result<T, ImageError>;
 
@@ -114,7 +115,7 @@ impl std::error::Error for ImageError {
             ImageError::FormatError(ref e) => &"Format error",
             ImageError::UnsupportedError(ref f) => &"The Decoder does not support the image format",
             ImageError::TranformError(ref f) => &"Tranform error",
-            ImageError::ServiceError(ref f) => &"Tranform error",
+            ImageError::ServiceError(ref f) => &"Service error",
         }
     }
 }
@@ -132,12 +133,12 @@ pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
 
 impl ResponseError for ImageError {
     fn error_response(&self) -> HttpResponse {
-        HttpResponse::InternalServerError().body(format!("{}", self))
+        HttpResponse::InternalServerError().body(format!("{}", self.description()))
     }
 }
 
 impl From<actix_web::error::Error> for ImageError {
-    fn from(mut err: actix_web::error::Error) -> Self {
+    fn from(err: actix_web::error::Error) -> Self {
         ImageError::ServiceError("actix error".to_string())
     }
 }
