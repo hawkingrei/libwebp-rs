@@ -17,6 +17,7 @@ pub use webp::webp_encode_webp;
 pub use webp::WebPConfig;
 pub use webp::WebPPicture;
 
+use actix_web::client::SendRequestError;
 use actix_web::HttpResponse;
 use actix_web::ResponseError;
 
@@ -91,6 +92,8 @@ pub enum ImageError {
     TranformError(String),
 
     ServiceError(String),
+
+    NotFoundOrigin(String),
 }
 
 impl fmt::Display for ImageError {
@@ -105,6 +108,7 @@ impl fmt::Display for ImageError {
             ),
             ImageError::TranformError(ref f) => write!(fmt, "Tranform error: {}", f),
             ImageError::ServiceError(ref f) => write!(fmt, "service error: {}", f),
+            ImageError::NotFoundOrigin(ref f) => write!(fmt, "not found image: {}", f),
         }
     }
 }
@@ -112,10 +116,13 @@ impl fmt::Display for ImageError {
 impl std::error::Error for ImageError {
     fn description(&self) -> &str {
         match *self {
-            ImageError::FormatError(ref e) => &"Format error",
-            ImageError::UnsupportedError(ref f) => &"The Decoder does not support the image format",
-            ImageError::TranformError(ref f) => &"Tranform error",
-            ImageError::ServiceError(ref f) => &"Service error",
+            ImageError::FormatError(ref _e) => &"Format error",
+            ImageError::UnsupportedError(ref _f) => {
+                &"The Decoder does not support the image format"
+            }
+            ImageError::TranformError(ref _f) => &"Tranform error",
+            ImageError::ServiceError(ref _f) => &"Service error",
+            ImageError::NotFoundOrigin(ref _f) => &"not found image",
         }
     }
 }
@@ -140,5 +147,11 @@ impl ResponseError for ImageError {
 impl From<actix_web::error::Error> for ImageError {
     fn from(err: actix_web::error::Error) -> Self {
         ImageError::ServiceError("actix error".to_string())
+    }
+}
+
+impl From<SendRequestError> for ImageError {
+    fn from(err: SendRequestError) -> Self {
+        ImageError::ServiceError(format!("actix http client error: {}", err.to_string()))
     }
 }
