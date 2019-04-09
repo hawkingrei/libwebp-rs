@@ -17,7 +17,10 @@ pub use webp::webp_encode_webp;
 pub use webp::WebPConfig;
 pub use webp::WebPPicture;
 
+<<<<<<< HEAD
 use actix_web::client::SendRequestError;
+=======
+>>>>>>> 0631c66e858a9e9027deeaba8375ab655bac97b7
 use actix_web::HttpResponse;
 use actix_web::ResponseError;
 
