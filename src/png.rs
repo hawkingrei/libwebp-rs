@@ -74,6 +74,6 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
             return Ok(result);
         }
         libwebp_sys::WebPPictureFree(wp);
-        return Err(ImageError::FormatError("png encode png error".to_string()));
+        return Err(ImageError::FormatError("png encode webp error".to_string()));
     }
 }

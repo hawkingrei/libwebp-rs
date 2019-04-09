@@ -3,10 +3,7 @@ use crate::webp::WebPConfig;
 use crate::webp::WebPPicture;
 use crate::ImageError;
 use crate::ImageResult;
-
 use libjpeg_turbo_sys;
-
-use std::mem;
 
 use crate::webp::webp_config_init;
 
