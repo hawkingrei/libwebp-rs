@@ -50,9 +50,9 @@ fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Resul
     let mut digest_output = crc32::Digest::new(crc32::IEEE);
     let mut digest_expected = crc32::Digest::new(crc32::IEEE);
     digest_expected.write(expected_data.as_slice());
-    digest_output.write(result.as_slice());
+    digest_output.write(result.pic.as_slice());
 
-    fs::write(Path::new(Path::new(&fact_output)), result);
+    fs::write(Path::new(Path::new(&fact_output)), result.pic);
 
     if digest_expected.sum32() != digest_output.sum32() {
         return Err(format!("{} fail to test", input));
@@ -77,7 +77,7 @@ wali_test!(
                 .set_auto_crop(true)
         )
 );
-// face/fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg 
+// face/fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg
 wali_test!(
     test_fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h,
     tranform_jpg_to_webp,

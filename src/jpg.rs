@@ -1,16 +1,19 @@
 use crate::param::ImageHandler;
 use crate::webp::WebPConfig;
 use crate::webp::WebPPicture;
+use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
 use libjpeg_turbo_sys;
 
 use crate::webp::webp_config_init;
 
-pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
+pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
+        let mut image_result: Image = Default::default();
+
         libwebp_sys::WebPPictureAlloc(wp);
 
         libwebp_sys::WebPConfigInitInternal(
@@ -32,7 +35,8 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
         if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, &mut metadata) != 1 {
             return Err(ImageError::FormatError("jpg format error".to_string()));
         }
-
+        image_result.set_height((*wp).height);
+        image_result.set_width((*wp).width);
         let param = p
             .set_height((*wp).height as i32)
             .set_width((*wp).width as i32)
@@ -52,6 +56,8 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                         ));
                     }
                 }
+                image_result.set_height(r.height);
+                image_result.set_width(r.width);
             }
             None => {}
         }
@@ -62,14 +68,17 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> 
                         "jpg WebPPictureView error".to_string(),
                     ));
                 }
+                image_result.set_height(c.height);
+                image_result.set_width(c.width);
             }
             None => {}
         }
 
         if libwebp_sys::WebPEncode(config, wp) == 1 {
-            let result = Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
+            image_result.pic =
+                Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
             libwebp_sys::WebPPictureFree(wp);
-            return Ok(result);
+            return Ok(image_result);
         }
         libwebp_sys::WebPPictureFree(wp);
         return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
