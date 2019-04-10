@@ -1,4 +1,5 @@
 use crate::param::ImageHandler;
+use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
 
@@ -154,11 +155,11 @@ pub enum WebPError {
     ImportRGBError,
 }
 
-pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>> {
+pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
-
+        let mut image_result: Image = Default::default();
         libwebp_sys::WebPPictureAlloc(wp);
 
         libwebp_sys::WebPConfigInitInternal(
@@ -191,6 +192,9 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
         (*wp).use_argb = (*bitstream).has_alpha;
         (*wp).height = (*bitstream).height as i32;
         (*wp).width = (*bitstream).width as i32;
+        image_result.set_height((*wp).height);
+        image_result.set_width((*wp).width);
+
         let param = p
             .set_height((*wp).height)
             .set_width((*wp).width)
@@ -223,6 +227,8 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
         match param.resize {
             Some(r) => {
                 libwebp_sys::WebPPictureRescale(wp, r.width, r.height);
+                image_result.set_height(r.height);
+                image_result.set_width(r.width);
             }
             None => {}
         }
@@ -230,14 +236,17 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Vec<u8>>
         match param.crop {
             Some(c) => {
                 libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
+                image_result.set_height(c.height);
+                image_result.set_width(c.width);
             }
             None => {}
         }
 
         if libwebp_sys::WebPEncode(config, wp) == 1 {
-            let result = Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
+            image_result.pic =
+                Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
             libwebp_sys::WebPPictureFree(wp);
-            return Ok(result);
+            return Ok(image_result);
         }
         libwebp_sys::WebPPictureFree(wp);
         return Err(ImageError::FormatError("png format error".to_string()));

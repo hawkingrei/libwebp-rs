@@ -24,6 +24,23 @@ use std::fmt;
 
 pub type ImageResult<T> = Result<T, ImageError>;
 
+#[derive(Default)]
+pub struct Image {
+    pub pic: Vec<u8>,
+    pub height: i32,
+    pub width: i32,
+}
+
+impl Image {
+    pub fn set_height(&mut self, height: i32) {
+        self.height = height;
+    }
+
+    pub fn set_width(&mut self, width: i32) {
+        self.width = width;
+    }
+}
+
 /// An enumeration of supported image formats.
 /// Not all formats support both encoding and decoding.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]

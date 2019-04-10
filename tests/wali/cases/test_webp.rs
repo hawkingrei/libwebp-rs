@@ -50,9 +50,9 @@ fn tranform_webp_to_webp(config: &test_config, case: case<ImageHandler>) -> Resu
     let mut digest_output = crc32::Digest::new(crc32::IEEE);
     let mut digest_expected = crc32::Digest::new(crc32::IEEE);
     digest_expected.write(expected_data.as_slice());
-    digest_output.write(result.as_slice());
+    digest_output.write(result.pic.as_slice());
 
-    fs::write(Path::new(Path::new(&fact_output)), result);
+    fs::write(Path::new(Path::new(&fact_output)), result.pic);
 
     if digest_expected.sum32() != digest_output.sum32() {
         return Err(format!("{} fail to test", input));
