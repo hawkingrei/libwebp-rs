@@ -117,6 +117,7 @@ fn main() {
             let result = png_encode_webp(&data.clone(), param).unwrap();
             println!("height: {}", result.height);
             println!("width: {}", result.width);
+
             fs::write(output, result.pic).unwrap();
         }
         ImageFormat::JPEG => {

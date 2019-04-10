@@ -58,6 +58,8 @@ pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     image_result.set_height(r.height);
                     image_result.set_width(r.width);
                 }
+                image_result.set_height(r.height);
+                image_result.set_width(r.width);
             }
             None => {}
         }
