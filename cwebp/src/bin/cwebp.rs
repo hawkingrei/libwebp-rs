@@ -115,14 +115,21 @@ fn main() {
     match ptype {
         ImageFormat::PNG => {
             let result = png_encode_webp(&data.clone(), param).unwrap();
+            println!("height: {}", result.height);
+            println!("width: {}", result.width);
+
             fs::write(output, result.pic).unwrap();
         }
         ImageFormat::JPEG => {
             let result = jpg_encode_webp(&data.clone(), param).unwrap();
+            println!("height: {}", result.height);
+            println!("width: {}", result.width);
             fs::write(output, result.pic).unwrap();
         }
         ImageFormat::WEBP => {
             let result = webp_encode_webp(&data.clone(), param).unwrap();
+            println!("height: {}", result.height);
+            println!("width: {}", result.width);
             fs::write(output, result.pic).unwrap();
         }
         _ => println!("not support "),
