@@ -1,4 +1,5 @@
 use std::default::Default;
+use std::fmt;
 use std::result::Result;
 
 use crate::ImageFormat;
@@ -16,7 +17,7 @@ pub enum ParamError {
 
 pub type ParamResult<T> = Result<T, ParamError>;
 
-#[derive(Default, Clone, Copy, PartialEq)]
+#[derive(Default, Clone, Copy, PartialEq, Debug)]
 pub struct Crop {
     pub x: i32,
     pub y: i32,
@@ -24,14 +25,14 @@ pub struct Crop {
     pub width: i32,
 }
 
-#[derive(Default, Copy, Clone, PartialEq)]
+#[derive(Default, Copy, Clone, PartialEq, Debug)]
 pub struct RegionCrop {
     pub height: i32,
     pub width: i32,
     pub region: i32,
 }
 
-#[derive(Default, Copy, Clone, PartialEq)]
+#[derive(Default, Copy, Clone, PartialEq, Debug)]
 pub struct Resize {
     pub height: i32,
     pub width: i32,
@@ -63,6 +64,19 @@ pub struct ImageHandler {
     */
     pub c: i8,
     pub long_side: i32,
+}
+
+impl fmt::Debug for ImageHandler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("ImageHandler")
+            .field("height", &self.height)
+            .field("width", &self.width)
+            .field("edge", &self.edge)
+            .field("p", &self.p)
+            .field("c", &self.c)
+            .field("long_side", &self.long_side)
+            .finish()
+    }
 }
 
 impl ImageHandler {
