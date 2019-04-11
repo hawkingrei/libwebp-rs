@@ -37,7 +37,7 @@ pub struct Resize {
     pub width: i32,
 }
 
-#[derive(Default, Copy, Clone)]
+#[derive(Default, Copy, Clone, PartialEq)]
 pub struct ImageHandler {
     pub height: i32,
     pub width: i32,
