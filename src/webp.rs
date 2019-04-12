@@ -155,7 +155,7 @@ pub enum WebPError {
     ImportRGBError,
 }
 
-pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
@@ -194,12 +194,10 @@ pub fn webp_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
         (*wp).width = (*bitstream).width as i32;
         image_result.set_height((*wp).height);
         image_result.set_width((*wp).width);
+        p.set_height((*wp).height as i32);
+        p.set_width((*wp).width as i32);
+        let param = p.adapt().unwrap();
 
-        let param = p
-            .set_height((*wp).height)
-            .set_width((*wp).width)
-            .adapt()
-            .unwrap();
         if (*wp).use_argb == 1 {
             let d = libwebp_sys::WebPDecodeRGBA(
                 data.as_ptr(),

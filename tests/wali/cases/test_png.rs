@@ -1,4 +1,5 @@
 use imagers::ImageHandler;
+use imagers::ImageHandlerBuilder;
 
 use crate::case;
 use crate::test_config;
@@ -68,13 +69,14 @@ wali_test!(
         .set_input("080fec32d3e0eeb407aafa1fbad7637c21e51601.png")
         .set_expected("080fec32d3e0eeb407aafa1fbad7637c21e51601_472w_265h_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 472,
                     height: 265,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -168,13 +170,14 @@ wali_test!(
         .set_input("basn0g01.png")
         .set_expected("basn0g01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -184,13 +187,14 @@ wali_test!(
         .set_input("basi4a08.png")
         .set_expected("basi4a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -200,13 +204,14 @@ wali_test!(
         .set_input("basn0g02.png")
         .set_expected("basn0g02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -216,13 +221,14 @@ wali_test!(
         .set_input("basn0g04.png")
         .set_expected("basn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -232,13 +238,14 @@ wali_test!(
         .set_input("basn0g08.png")
         .set_expected("basn0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -248,13 +255,14 @@ wali_test!(
         .set_input("basn0g16.png")
         .set_expected("basn0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -264,13 +272,14 @@ wali_test!(
         .set_input("basn2c08.png")
         .set_expected("basn2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -280,13 +289,14 @@ wali_test!(
         .set_input("basn2c16.png")
         .set_expected("basn2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -296,13 +306,14 @@ wali_test!(
         .set_input("basn3p01.png")
         .set_expected("basn3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -312,13 +323,14 @@ wali_test!(
         .set_input("basn3p02.png")
         .set_expected("basn3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -328,13 +340,14 @@ wali_test!(
         .set_input("basn3p04.png")
         .set_expected("basn3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -344,13 +357,14 @@ wali_test!(
         .set_input("basn3p08.png")
         .set_expected("basn3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -360,13 +374,14 @@ wali_test!(
         .set_input("basn4a08.png")
         .set_expected("basn4a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -376,13 +391,14 @@ wali_test!(
         .set_input("basn4a16.png")
         .set_expected("basn4a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -392,13 +408,14 @@ wali_test!(
         .set_input("basn6a08.png")
         .set_expected("basn6a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -408,13 +425,14 @@ wali_test!(
         .set_input("basn6a16.png")
         .set_expected("basn6a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -424,13 +442,14 @@ wali_test!(
         .set_input("basi0g01.png")
         .set_expected("basi0g01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -440,13 +459,14 @@ wali_test!(
         .set_input("basi0g02.png")
         .set_expected("basi0g02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -456,13 +476,14 @@ wali_test!(
         .set_input("basi0g04.png")
         .set_expected("basi0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -472,13 +493,14 @@ wali_test!(
         .set_input("basi0g08.png")
         .set_expected("basi0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -488,13 +510,14 @@ wali_test!(
         .set_input("basi0g16.png")
         .set_expected("basi0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -504,13 +527,14 @@ wali_test!(
         .set_input("basi2c08.png")
         .set_expected("basi2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -520,13 +544,14 @@ wali_test!(
         .set_input("basi2c16.png")
         .set_expected("basi2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -536,13 +561,14 @@ wali_test!(
         .set_input("basi3p01.png")
         .set_expected("basi3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -552,13 +578,14 @@ wali_test!(
         .set_input("basi3p02.png")
         .set_expected("basi3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -568,13 +595,14 @@ wali_test!(
         .set_input("basi3p04.png")
         .set_expected("basi3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -584,13 +612,14 @@ wali_test!(
         .set_input("basi3p08.png")
         .set_expected("basi3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -600,13 +629,14 @@ wali_test!(
         .set_input("basi4a16.png")
         .set_expected("basi4a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -616,13 +646,14 @@ wali_test!(
         .set_input("basi6a08.png")
         .set_expected("basi6a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -632,13 +663,14 @@ wali_test!(
         .set_input("basi6a16.png")
         .set_expected("basi6a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -648,13 +680,14 @@ wali_test!(
         .set_input("s01i3p01.png")
         .set_expected("s01i3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -664,13 +697,14 @@ wali_test!(
         .set_input("s01n3p01.png")
         .set_expected("s01n3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -680,13 +714,14 @@ wali_test!(
         .set_input("s02i3p01.png")
         .set_expected("s02i3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -696,13 +731,14 @@ wali_test!(
         .set_input("s02n3p01.png")
         .set_expected("s02n3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -712,13 +748,14 @@ wali_test!(
         .set_input("s03i3p01.png")
         .set_expected("s03i3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -728,13 +765,14 @@ wali_test!(
         .set_input("s03n3p01.png")
         .set_expected("s03n3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -744,13 +782,14 @@ wali_test!(
         .set_input("s04i3p01.png")
         .set_expected("s04i3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -760,13 +799,14 @@ wali_test!(
         .set_input("s04n3p01.png")
         .set_expected("s04n3p01_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -776,13 +816,14 @@ wali_test!(
         .set_input("s05i3p02.png")
         .set_expected("s05i3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -792,13 +833,14 @@ wali_test!(
         .set_input("s05n3p02.png")
         .set_expected("s05n3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -808,13 +850,14 @@ wali_test!(
         .set_input("s06i3p02.png")
         .set_expected("s06i3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -824,13 +867,14 @@ wali_test!(
         .set_input("s06n3p02.png")
         .set_expected("s06n3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -840,13 +884,14 @@ wali_test!(
         .set_input("s07i3p02.png")
         .set_expected("s07i3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -856,13 +901,14 @@ wali_test!(
         .set_input("s07n3p02.png")
         .set_expected("s07n3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -872,13 +918,14 @@ wali_test!(
         .set_input("s08i3p02.png")
         .set_expected("s08i3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -888,13 +935,14 @@ wali_test!(
         .set_input("s08n3p02.png")
         .set_expected("s08n3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -904,13 +952,14 @@ wali_test!(
         .set_input("s09i3p02.png")
         .set_expected("s09i3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -920,13 +969,14 @@ wali_test!(
         .set_input("s09n3p02.png")
         .set_expected("s09n3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -936,13 +986,14 @@ wali_test!(
         .set_input("s32i3p04.png")
         .set_expected("s32i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -952,13 +1003,14 @@ wali_test!(
         .set_input("s32n3p04.png")
         .set_expected("s32n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -968,13 +1020,14 @@ wali_test!(
         .set_input("s33i3p04.png")
         .set_expected("s33i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -984,13 +1037,14 @@ wali_test!(
         .set_input("s33n3p04.png")
         .set_expected("s33n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1000,13 +1054,14 @@ wali_test!(
         .set_input("s34i3p04.png")
         .set_expected("s34i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1016,13 +1071,14 @@ wali_test!(
         .set_input("s34n3p04.png")
         .set_expected("s34n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1032,13 +1088,14 @@ wali_test!(
         .set_input("s35i3p04.png")
         .set_expected("s35i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1048,13 +1105,14 @@ wali_test!(
         .set_input("s35n3p04.png")
         .set_expected("s35n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1064,13 +1122,14 @@ wali_test!(
         .set_input("s36i3p04.png")
         .set_expected("s36i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1080,13 +1139,14 @@ wali_test!(
         .set_input("s36n3p04.png")
         .set_expected("s36n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1096,13 +1156,14 @@ wali_test!(
         .set_input("s37i3p04.png")
         .set_expected("s37i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1112,13 +1173,14 @@ wali_test!(
         .set_input("s37n3p04.png")
         .set_expected("s37n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1128,13 +1190,14 @@ wali_test!(
         .set_input("s38i3p04.png")
         .set_expected("s38i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1144,13 +1207,14 @@ wali_test!(
         .set_input("s38n3p04.png")
         .set_expected("s38n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1160,13 +1224,14 @@ wali_test!(
         .set_input("s39i3p04.png")
         .set_expected("s39i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1176,13 +1241,14 @@ wali_test!(
         .set_input("s39n3p04.png")
         .set_expected("s39n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1192,13 +1258,14 @@ wali_test!(
         .set_input("s40i3p04.png")
         .set_expected("s40i3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1208,13 +1275,14 @@ wali_test!(
         .set_input("s40n3p04.png")
         .set_expected("s40n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1224,13 +1292,14 @@ wali_test!(
         .set_input("bgai4a08.png")
         .set_expected("bgai4a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1240,13 +1309,14 @@ wali_test!(
         .set_input("bgai4a16.png")
         .set_expected("bgai4a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1256,13 +1326,14 @@ wali_test!(
         .set_input("bgan6a08.png")
         .set_expected("bgan6a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1272,13 +1343,14 @@ wali_test!(
         .set_input("bgan6a16.png")
         .set_expected("bgan6a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1288,13 +1360,14 @@ wali_test!(
         .set_input("bgbn4a08.png")
         .set_expected("bgbn4a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1304,13 +1377,14 @@ wali_test!(
         .set_input("bggn4a16.png")
         .set_expected("bggn4a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1320,13 +1394,14 @@ wali_test!(
         .set_input("bgwn6a08.png")
         .set_expected("bgwn6a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1336,13 +1411,14 @@ wali_test!(
         .set_input("bgyn6a16.png")
         .set_expected("bgyn6a16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1352,13 +1428,14 @@ wali_test!(
         .set_input("tbbn0g04.png")
         .set_expected("tbbn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1368,13 +1445,14 @@ wali_test!(
         .set_input("tbbn2c16.png")
         .set_expected("tbbn2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1384,13 +1462,14 @@ wali_test!(
         .set_input("tbbn3p08.png")
         .set_expected("tbbn3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1400,13 +1479,14 @@ wali_test!(
         .set_input("tbgn2c16.png")
         .set_expected("tbgn2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1416,13 +1496,14 @@ wali_test!(
         .set_input("tbgn3p08.png")
         .set_expected("tbgn3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1432,13 +1513,14 @@ wali_test!(
         .set_input("tbrn2c08.png")
         .set_expected("tbrn2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1448,13 +1530,14 @@ wali_test!(
         .set_input("tbwn0g16.png")
         .set_expected("tbwn0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1464,13 +1547,14 @@ wali_test!(
         .set_input("tbwn3p08.png")
         .set_expected("tbwn3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1480,13 +1564,14 @@ wali_test!(
         .set_input("tbyn3p08.png")
         .set_expected("tbyn3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1496,13 +1581,14 @@ wali_test!(
         .set_input("tm3n3p02.png")
         .set_expected("tm3n3p02_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1512,13 +1598,14 @@ wali_test!(
         .set_input("tp0n0g08.png")
         .set_expected("tp0n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1528,13 +1615,14 @@ wali_test!(
         .set_input("tp0n2c08.png")
         .set_expected("tp0n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1544,13 +1632,14 @@ wali_test!(
         .set_input("tp0n3p08.png")
         .set_expected("tp0n3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1560,13 +1649,14 @@ wali_test!(
         .set_input("tp1n3p08.png")
         .set_expected("tp1n3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1576,13 +1666,14 @@ wali_test!(
         .set_input("g03n0g16.png")
         .set_expected("g03n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1592,13 +1683,14 @@ wali_test!(
         .set_input("g03n2c08.png")
         .set_expected("g03n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1608,13 +1700,14 @@ wali_test!(
         .set_input("g03n3p04.png")
         .set_expected("g03n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1624,13 +1717,14 @@ wali_test!(
         .set_input("g04n0g16.png")
         .set_expected("g04n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1640,13 +1734,14 @@ wali_test!(
         .set_input("g04n2c08.png")
         .set_expected("g04n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1656,13 +1751,14 @@ wali_test!(
         .set_input("g04n3p04.png")
         .set_expected("g04n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1672,13 +1768,14 @@ wali_test!(
         .set_input("g05n0g16.png")
         .set_expected("g05n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1688,13 +1785,14 @@ wali_test!(
         .set_input("g05n2c08.png")
         .set_expected("g05n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1704,13 +1802,14 @@ wali_test!(
         .set_input("g05n3p04.png")
         .set_expected("g05n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1720,13 +1819,14 @@ wali_test!(
         .set_input("g07n0g16.png")
         .set_expected("g07n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1736,13 +1836,14 @@ wali_test!(
         .set_input("g07n2c08.png")
         .set_expected("g07n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1752,13 +1853,14 @@ wali_test!(
         .set_input("g07n3p04.png")
         .set_expected("g07n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1768,13 +1870,14 @@ wali_test!(
         .set_input("g10n0g16.png")
         .set_expected("g10n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1784,13 +1887,14 @@ wali_test!(
         .set_input("g10n2c08.png")
         .set_expected("g10n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1800,13 +1904,14 @@ wali_test!(
         .set_input("g10n3p04.png")
         .set_expected("g10n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1816,13 +1921,14 @@ wali_test!(
         .set_input("g25n0g16.png")
         .set_expected("g25n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1832,13 +1938,14 @@ wali_test!(
         .set_input("g25n2c08.png")
         .set_expected("g25n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1848,13 +1955,14 @@ wali_test!(
         .set_input("g25n3p04.png")
         .set_expected("g25n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1864,13 +1972,14 @@ wali_test!(
         .set_input("z00n2c08.png")
         .set_expected("z00n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1880,13 +1989,14 @@ wali_test!(
         .set_input("z03n2c08.png")
         .set_expected("z03n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1896,13 +2006,14 @@ wali_test!(
         .set_input("z06n2c08.png")
         .set_expected("z06n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1912,13 +2023,14 @@ wali_test!(
         .set_input("z09n2c08.png")
         .set_expected("z09n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1928,13 +2040,14 @@ wali_test!(
         .set_input("oi1n0g16.png")
         .set_expected("oi1n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1944,13 +2057,14 @@ wali_test!(
         .set_input("oi1n2c16.png")
         .set_expected("oi1n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1960,13 +2074,14 @@ wali_test!(
         .set_input("oi2n0g16.png")
         .set_expected("oi2n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1976,13 +2091,14 @@ wali_test!(
         .set_input("oi2n2c16.png")
         .set_expected("oi2n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -1992,13 +2108,14 @@ wali_test!(
         .set_input("oi4n0g16.png")
         .set_expected("oi4n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2008,13 +2125,14 @@ wali_test!(
         .set_input("oi4n2c16.png")
         .set_expected("oi4n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2024,13 +2142,14 @@ wali_test!(
         .set_input("oi9n0g16.png")
         .set_expected("oi9n0g16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2040,13 +2159,14 @@ wali_test!(
         .set_input("oi9n2c16.png")
         .set_expected("oi9n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2056,13 +2176,14 @@ wali_test!(
         .set_input("ccwn2c08.png")
         .set_expected("ccwn2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2072,13 +2193,14 @@ wali_test!(
         .set_input("ccwn3p08.png")
         .set_expected("ccwn3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2088,13 +2210,14 @@ wali_test!(
         .set_input("cdfn2c08.png")
         .set_expected("cdfn2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2104,13 +2227,14 @@ wali_test!(
         .set_input("cdhn2c08.png")
         .set_expected("cdhn2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2120,13 +2244,14 @@ wali_test!(
         .set_input("cdsn2c08.png")
         .set_expected("cdsn2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2136,13 +2261,14 @@ wali_test!(
         .set_input("cdun2c08.png")
         .set_expected("cdun2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2152,13 +2278,14 @@ wali_test!(
         .set_input("ch1n3p04.png")
         .set_expected("ch1n3p04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2168,13 +2295,14 @@ wali_test!(
         .set_input("ch2n3p08.png")
         .set_expected("ch2n3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2184,13 +2312,14 @@ wali_test!(
         .set_input("cm0n0g04.png")
         .set_expected("cm0n0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2200,13 +2329,14 @@ wali_test!(
         .set_input("cm7n0g04.png")
         .set_expected("cm7n0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2216,13 +2346,14 @@ wali_test!(
         .set_input("cm9n0g04.png")
         .set_expected("cm9n0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2232,13 +2363,14 @@ wali_test!(
         .set_input("cs3n2c16.png")
         .set_expected("cs3n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2248,13 +2380,14 @@ wali_test!(
         .set_input("cs3n3p08.png")
         .set_expected("cs3n3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2264,13 +2397,14 @@ wali_test!(
         .set_input("cs5n2c08.png")
         .set_expected("cs5n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2280,13 +2414,14 @@ wali_test!(
         .set_input("cs5n3p08.png")
         .set_expected("cs5n3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2296,13 +2431,14 @@ wali_test!(
         .set_input("cs8n2c08.png")
         .set_expected("cs8n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2312,13 +2448,14 @@ wali_test!(
         .set_input("cs8n3p08.png")
         .set_expected("cs8n3p08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2328,13 +2465,14 @@ wali_test!(
         .set_input("ct0n0g04.png")
         .set_expected("ct0n0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2344,13 +2482,14 @@ wali_test!(
         .set_input("ct1n0g04.png")
         .set_expected("ct1n0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2360,13 +2499,14 @@ wali_test!(
         .set_input("cten0g04.png")
         .set_expected("cten0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2376,13 +2516,14 @@ wali_test!(
         .set_input("ctfn0g04.png")
         .set_expected("ctfn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2392,13 +2533,14 @@ wali_test!(
         .set_input("ctgn0g04.png")
         .set_expected("ctgn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2408,13 +2550,14 @@ wali_test!(
         .set_input("cthn0g04.png")
         .set_expected("cthn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2424,13 +2567,14 @@ wali_test!(
         .set_input("ctjn0g04.png")
         .set_expected("ctjn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2440,13 +2584,14 @@ wali_test!(
         .set_input("ctzn0g04.png")
         .set_expected("ctzn0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2456,13 +2601,14 @@ wali_test!(
         .set_input("pp0n2c16.png")
         .set_expected("pp0n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2472,13 +2618,14 @@ wali_test!(
         .set_input("pp0n6a08.png")
         .set_expected("pp0n6a08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2488,13 +2635,14 @@ wali_test!(
         .set_input("ps1n0g08.png")
         .set_expected("ps1n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2504,13 +2652,14 @@ wali_test!(
         .set_input("ps1n2c16.png")
         .set_expected("ps1n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2520,13 +2669,14 @@ wali_test!(
         .set_input("ps2n0g08.png")
         .set_expected("ps2n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2536,13 +2686,14 @@ wali_test!(
         .set_input("ps2n2c16.png")
         .set_expected("ps2n2c16_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2552,13 +2703,14 @@ wali_test!(
         .set_input("f00n0g08.png")
         .set_expected("f00n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2568,13 +2720,14 @@ wali_test!(
         .set_input("f00n2c08.png")
         .set_expected("f00n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2584,13 +2737,14 @@ wali_test!(
         .set_input("f01n0g08.png")
         .set_expected("f01n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2600,13 +2754,14 @@ wali_test!(
         .set_input("f01n2c08.png")
         .set_expected("f01n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2616,13 +2771,14 @@ wali_test!(
         .set_input("f02n0g08.png")
         .set_expected("f02n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2632,13 +2788,14 @@ wali_test!(
         .set_input("f02n2c08.png")
         .set_expected("f02n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2648,13 +2805,14 @@ wali_test!(
         .set_input("f03n0g08.png")
         .set_expected("f03n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2664,13 +2822,14 @@ wali_test!(
         .set_input("f03n2c08.png")
         .set_expected("f03n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2680,13 +2839,14 @@ wali_test!(
         .set_input("f04n0g08.png")
         .set_expected("f04n0g08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2696,13 +2856,14 @@ wali_test!(
         .set_input("f04n2c08.png")
         .set_expected("f04n2c08_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );
 wali_test!(
@@ -2712,12 +2873,13 @@ wali_test!(
         .set_input("f99n0g04.png")
         .set_expected("f99n0g04_100h_100w_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_edge(1)
                 .set_auto_crop(true)
                 .set_resize(Some(Resize {
                     width: 100,
                     height: 100,
                 }))
+                .finish()
         )
 );

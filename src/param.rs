@@ -96,58 +96,48 @@ impl ImageHandler {
         self.edge
     }
 
-    pub fn set_height(mut self, height: i32) -> Self {
+    pub fn set_height(&mut self, height: i32) {
         self.height = height;
-        self
     }
 
-    pub fn set_width(mut self, width: i32) -> Self {
+    pub fn set_width(&mut self, width: i32) {
         self.width = width;
-        self
     }
 
-    pub fn set_edge(mut self, edge: i32) -> Self {
+    pub fn set_edge(&mut self, edge: i32) {
         self.edge = edge;
-        self
     }
 
-    pub fn set_longside(mut self, longside: i32) -> Self {
+    pub fn set_longside(&mut self, longside: i32) {
         self.long_side = longside;
-        self
     }
 
-    pub fn set_region_crop(mut self, rc: Option<RegionCrop>) -> Self {
+    pub fn set_region_crop(&mut self, rc: Option<RegionCrop>) {
         self.region_crop = rc;
-        self
     }
 
-    pub fn set_target_format(mut self, ift: Option<ImageFormat>) -> Self {
+    pub fn set_target_format(&mut self, ift: Option<ImageFormat>) {
         self.target_format = ift;
-        self
     }
 
-    pub fn set_resize(mut self, resize: Option<Resize>) -> Self {
+    pub fn set_resize(&mut self, resize: Option<Resize>) {
         self.resize = resize;
-        self
     }
 
-    pub fn set_crop(mut self, crop: Option<Crop>) -> Self {
+    pub fn set_crop(&mut self, crop: Option<Crop>) {
         self.crop = crop;
-        self
     }
 
-    pub fn set_proportion(mut self, p: i32) -> Self {
+    pub fn set_proportion(&mut self, p: i32) {
         self.p = p;
-        self
     }
 
-    pub fn set_auto_crop(mut self, ac: bool) -> Self {
+    pub fn set_auto_crop(&mut self, ac: bool) {
         if ac {
             self.c = 1;
         } else {
             self.c = 0;
         }
-        self
     }
 
     pub fn adapt(&mut self) -> ParamResult<ImageHandler> {
@@ -358,6 +348,9 @@ impl ImageHandler {
                     _ => {}
                 }
             } else {
+                dbg!(self.edge);
+                dbg!(result.c);
+                dbg!(result.edge);
                 if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
                     match result.long_side {
                         1 => {
@@ -408,7 +401,6 @@ impl ImageHandler {
                 }
             }
         }
-
         Ok(result)
     }
 }
@@ -453,4 +445,67 @@ fn caluat_size(ori_h: i32, ori_w: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, 
         ref_w = (ori_w as f64 / ratio) as i32;
     }
     return (ref_h, ref_w, longside);
+}
+
+#[derive(Default, Copy, Clone)]
+pub struct ImageHandlerBuilder(ImageHandler);
+
+impl ImageHandlerBuilder {
+    pub fn new() -> Self {
+        return Default::default();
+    }
+
+    pub fn set_height(mut self, height: i32) -> Self {
+        self.0.height = height;
+        self
+    }
+
+    pub fn set_width(mut self, width: i32) -> Self {
+        self.0.set_width(width);
+        self
+    }
+
+    pub fn set_edge(mut self, edge: i32) -> Self {
+        self.0.set_edge(edge);
+        self
+    }
+
+    pub fn set_longside(mut self, longside: i32) -> Self {
+        self.0.set_longside(longside);
+        self
+    }
+
+    pub fn set_region_crop(mut self, rc: Option<RegionCrop>) -> Self {
+        self.0.region_crop = rc;
+        self
+    }
+
+    pub fn set_target_format(mut self, ift: Option<ImageFormat>) -> Self {
+        self.0.target_format = ift;
+        self
+    }
+
+    pub fn set_resize(mut self, resize: Option<Resize>) -> Self {
+        self.0.set_resize(resize);
+        self
+    }
+
+    pub fn set_crop(mut self, crop: Option<Crop>) -> Self {
+        self.0.set_crop(crop);
+        self
+    }
+
+    pub fn set_proportion(mut self, p: i32) -> Self {
+        self.0.p = p;
+        self
+    }
+
+    pub fn set_auto_crop(mut self, ac: bool) -> Self {
+        self.0.set_auto_crop(ac);
+        self
+    }
+
+    pub fn finish(self) -> ImageHandler {
+        return self.0;
+    }
 }

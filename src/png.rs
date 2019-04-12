@@ -10,7 +10,7 @@ use crate::webp::webp_config_init;
 
 use crate::param::ImageHandler;
 
-pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+pub fn png_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
@@ -39,11 +39,9 @@ pub fn png_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
         }
         image_result.set_height((*wp).height);
         image_result.set_width((*wp).width);
-        let param = p
-            .set_height((*wp).height as i32)
-            .set_width((*wp).width as i32)
-            .adapt()
-            .unwrap();
+        p.set_height((*wp).height as i32);
+        p.set_width((*wp).width as i32);
+        let param = p.adapt().unwrap();
 
         let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
         libwebp_sys::WebPMemoryWriterInit(writer);
