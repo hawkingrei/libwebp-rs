@@ -9,6 +9,7 @@ use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
 use imagers::Crop;
 use imagers::ImageHandler;
+use imagers::ImageHandlerBuilder;
 use imagers::RegionCrop;
 use imagers::Resize;
 
@@ -78,7 +79,7 @@ fn main() {
     let output = matches.value_of("o").unwrap_or("out.webp");
     let input = matches.value_of("i").unwrap();
 
-    let param = ImageHandler::new()
+    let param = ImageHandlerBuilder::new()
         .set_proportion(proportion)
         .set_edge(edge)
         .set_auto_crop(auto_crop)
@@ -108,7 +109,8 @@ fn main() {
             })
         } else {
             None
-        });
+        })
+        .finish();
 
     let data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(&data).unwrap();
