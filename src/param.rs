@@ -454,3 +454,83 @@ fn caluat_size(ori_h: i32, ori_w: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, 
     }
     return (ref_h, ref_w, longside);
 }
+
+#[derive(Default, Copy, Clone)]
+pub struct ImageHandlerBuilder(ImageHandler)
+
+
+impl ImageHandlerBuilder {
+    pub fn new() -> Self {
+        return Default::default();
+    }
+
+    pub fn height(&self) -> i32 {
+        self.0.height
+    }
+
+    pub fn width(&self) -> i32 {
+        self.0.width
+    }
+
+    pub fn edge(&self) -> i32 {
+        self.0.edge
+    }
+
+    pub fn set_height(mut self, height: i32) -> Self {
+        self.0.height = height;
+        self
+    }
+
+    pub fn set_width(mut self, width: i32) -> Self {
+        self.0.width = width;
+        self
+    }
+
+    pub fn set_edge(mut self, edge: i32) -> Self {
+        self.0.edge = edge;
+        self
+    }
+
+    pub fn set_longside(mut self, longside: i32) -> Self {
+        self.0.long_side = longside;
+        self
+    }
+
+    pub fn set_region_crop(mut self, rc: Option<RegionCrop>) -> Self {
+        self.0.region_crop = rc;
+        self
+    }
+
+    pub fn set_target_format(mut self, ift: Option<ImageFormat>) -> Self {
+        self.0.target_format = ift;
+        self
+    }
+
+    pub fn set_resize(mut self, resize: Option<Resize>) -> Self {
+        self.0.resize = resize;
+        self
+    }
+
+    pub fn set_crop(mut self, crop: Option<Crop>) -> Self {
+        self.0.crop = crop;
+        self
+    }
+
+    pub fn set_proportion(mut self, p: i32) -> Self {
+        self.0.p = p;
+        self
+    }
+
+    pub fn set_auto_crop(mut self, ac: bool) -> Self {
+        if ac {
+            self.0.c = 1;
+        } else {
+            self.0.c = 0;
+        }
+        self
+    }
+
+    pub fn finish(mut self) -> ImageHandler {
+        return self.0
+    }
+}
