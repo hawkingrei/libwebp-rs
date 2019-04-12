@@ -8,7 +8,7 @@ use libjpeg_turbo_sys;
 
 use crate::webp::webp_config_init;
 
-pub fn jpg_encode_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
         let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
