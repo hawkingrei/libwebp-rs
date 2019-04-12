@@ -96,43 +96,43 @@ impl ImageHandler {
         self.edge
     }
 
-    pub fn set_height(mut self, height: i32) {
+    pub fn set_height(&mut self, height: i32) {
         self.height = height;
     }
 
-    pub fn set_width(mut self, width: i32) {
+    pub fn set_width(&mut self, width: i32) {
         self.width = width;
     }
 
-    pub fn set_edge(mut self, edge: i32) {
+    pub fn set_edge(&mut self, edge: i32) {
         self.edge = edge;
     }
 
-    pub fn set_longside(mut self, longside: i32) {
+    pub fn set_longside(&mut self, longside: i32) {
         self.long_side = longside;
     }
 
-    pub fn set_region_crop(mut self, rc: Option<RegionCrop>) {
+    pub fn set_region_crop(&mut self, rc: Option<RegionCrop>) {
         self.region_crop = rc;
     }
 
-    pub fn set_target_format(mut self, ift: Option<ImageFormat>) {
+    pub fn set_target_format(&mut self, ift: Option<ImageFormat>) {
         self.target_format = ift;
     }
 
-    pub fn set_resize(mut self, resize: Option<Resize>) {
+    pub fn set_resize(&mut self, resize: Option<Resize>) {
         self.resize = resize;
     }
 
-    pub fn set_crop(mut self, crop: Option<Crop>) {
+    pub fn set_crop(&mut self, crop: Option<Crop>) {
         self.crop = crop;
     }
 
-    pub fn set_proportion(mut self, p: i32) {
+    pub fn set_proportion(&mut self, p: i32) {
         self.p = p;
     }
 
-    pub fn set_auto_crop(mut self, ac: bool) {
+    pub fn set_auto_crop(&mut self, ac: bool) {
         if ac {
             self.c = 1;
         } else {
@@ -149,6 +149,8 @@ impl ImageHandler {
                 height: 0,
             }),
         };
+
+        println!("{} {}", self.height, self.width);
 
         let crop = self.crop.clone();
         let region_crop = self.region_crop.clone();
@@ -229,6 +231,7 @@ impl ImageHandler {
             check_w = refh_refw_longside.1;
             caluate = true;
         }
+        println!("{} {} {}", result.height(), result.width(), self.c);
         if caluate
             && (result.height() * result.width() > HEIGHT_LIMIT * WIDTH_LIMIT
                 || result.height() >= HEIGHT_LIMIT * 4
@@ -398,7 +401,11 @@ impl ImageHandler {
                 }
             }
         }
-
+        if let Some(data) = result.crop {
+            println!("fuck {:?}", data);
+        } else {
+            println!("fuck None");
+        }
         Ok(result)
     }
 }
@@ -453,35 +460,23 @@ impl ImageHandlerBuilder {
         return Default::default();
     }
 
-    pub fn height(&self) -> i32 {
-        self.0.height
-    }
-
-    pub fn width(&self) -> i32 {
-        self.0.width
-    }
-
-    pub fn edge(&self) -> i32 {
-        self.0.edge
-    }
-
     pub fn set_height(mut self, height: i32) -> Self {
         self.0.height = height;
         self
     }
 
     pub fn set_width(mut self, width: i32) -> Self {
-        self.0.width = width;
+        self.0.set_width(width);
         self
     }
 
     pub fn set_edge(mut self, edge: i32) -> Self {
-        self.0.edge = edge;
+        self.0.set_width(edge);
         self
     }
 
     pub fn set_longside(mut self, longside: i32) -> Self {
-        self.0.long_side = longside;
+        self.0.set_longside(longside);
         self
     }
 
@@ -496,12 +491,12 @@ impl ImageHandlerBuilder {
     }
 
     pub fn set_resize(mut self, resize: Option<Resize>) -> Self {
-        self.0.resize = resize;
+        self.0.set_resize(resize);
         self
     }
 
     pub fn set_crop(mut self, crop: Option<Crop>) -> Self {
-        self.0.crop = crop;
+        self.0.set_crop(crop);
         self
     }
 
@@ -511,11 +506,7 @@ impl ImageHandlerBuilder {
     }
 
     pub fn set_auto_crop(mut self, ac: bool) -> Self {
-        if ac {
-            self.0.c = 1;
-        } else {
-            self.0.c = 0;
-        }
+        self.0.set_auto_crop(ac);
         self
     }
 
