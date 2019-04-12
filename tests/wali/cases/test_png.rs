@@ -85,7 +85,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xs1n0g01.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xs2n0g01_png,
@@ -93,7 +92,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xs2n0g01.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xs4n0g01_png,
@@ -101,7 +99,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xs4n0g01.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xs7n0g01_png,
@@ -109,7 +106,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xs7n0g01.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xcrn0g04_png,
@@ -117,7 +113,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xcrn0g04.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xlfn0g04_png,
@@ -125,7 +120,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xlfn0g04.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xhdn0g08_png,
@@ -133,7 +127,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xhdn0g08.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xc1n0g08_png,
@@ -141,7 +134,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xc1n0g08.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xc9n2c08_png,
@@ -149,7 +141,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xc9n2c08.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xd0n2c08_png,
@@ -157,7 +148,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xd0n2c08.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xd3n2c08_png,
@@ -165,7 +155,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xd3n2c08.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_xd9n2c08_png,
@@ -173,7 +162,6 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("xd9n2c08.png")
         .corrupted()
-        .finish()
 );
 wali_test!(
     test_basn0g01_100h_100w_1e_1c,
