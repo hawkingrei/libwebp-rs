@@ -150,8 +150,6 @@ impl ImageHandler {
             }),
         };
 
-        println!("{} {}", self.height, self.width);
-
         let crop = self.crop.clone();
         let region_crop = self.region_crop.clone();
 
@@ -231,7 +229,6 @@ impl ImageHandler {
             check_w = refh_refw_longside.1;
             caluate = true;
         }
-        println!("{} {} {}", result.height(), result.width(), self.c);
         if caluate
             && (result.height() * result.width() > HEIGHT_LIMIT * WIDTH_LIMIT
                 || result.height() >= HEIGHT_LIMIT * 4
@@ -404,11 +401,6 @@ impl ImageHandler {
                 }
             }
         }
-        if let Some(data) = result.crop {
-            println!("fuck {:?}", data);
-        } else {
-            println!("fuck None");
-        }
         Ok(result)
     }
 }
@@ -474,7 +466,7 @@ impl ImageHandlerBuilder {
     }
 
     pub fn set_edge(mut self, edge: i32) -> Self {
-        self.0.set_width(edge);
+        self.0.set_edge(edge);
         self
     }
 

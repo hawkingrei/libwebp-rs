@@ -37,10 +37,10 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         }
         image_result.set_height((*wp).height);
         image_result.set_width((*wp).width);
-        println!("jpeg {} {}", (*wp).height, (*wp).width);
+
         p.set_height((*wp).height as i32);
         p.set_width((*wp).width as i32);
-        println!("jpeg {:?}", p);
+
         let param = p.adapt().unwrap();
 
         let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
