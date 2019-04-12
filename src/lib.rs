@@ -10,6 +10,7 @@ pub mod webp;
 pub use jpg::jpg_encode_webp;
 pub use param::Crop;
 pub use param::ImageHandler;
+pub use param::ImageHandlerBuilder;
 pub use param::RegionCrop;
 pub use param::Resize;
 pub use png::png_encode_webp;
