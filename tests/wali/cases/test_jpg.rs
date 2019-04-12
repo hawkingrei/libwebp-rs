@@ -1,4 +1,5 @@
 use imagers::ImageHandler;
+use imagers::ImageHandlerBuilder;
 
 use crate::case;
 use crate::test_config;
@@ -68,13 +69,14 @@ wali_test!(
         .set_input("f946c1d2884e16301d5d43f3ccf917cc14015619.jpg")
         .set_expected("f946c1d2884e16301d5d43f3ccf917cc14015619_702w_212h_1e_1c.webp")
         .set_param(
-            ImageHandler::new()
+            ImageHandlerBuilder::new()
                 .set_resize(Some(Resize {
                     width: 702,
                     height: 212,
                 }))
                 .set_edge(1)
                 .set_auto_crop(true)
+                .finish()
         )
 );
 // face/fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg
@@ -84,8 +86,13 @@ wali_test!(
     case::<ImageHandler>::new()
         .set_input("fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg")
         .set_expected("fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h.webp")
-        .set_param(ImageHandler::new().set_resize(Some(Resize {
-            width: 80,
-            height: 80,
-        })))
+        .set_param(
+            ImageHandlerBuilder::new().set_resize(
+                Some(Resize {
+                    width: 80,
+                    height: 80,
+                })
+                .finish()
+            )
+        )
 );

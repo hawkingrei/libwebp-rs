@@ -448,7 +448,6 @@ fn caluat_size(ori_h: i32, ori_w: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, 
 #[derive(Default, Copy, Clone)]
 pub struct ImageHandlerBuilder(ImageHandler);
 
-
 impl ImageHandlerBuilder {
     pub fn new() -> Self {
         return Default::default();
