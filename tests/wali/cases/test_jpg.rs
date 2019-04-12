@@ -1,6 +1,6 @@
 use imagers::jpg_encode_webp;
+use imagers::ImageHandler;
 use imagers::Resize;
-
 
 use crate::case;
 use crate::test_config;
