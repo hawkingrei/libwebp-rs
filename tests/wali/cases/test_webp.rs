@@ -1,4 +1,3 @@
-
 use imagers::webp_encode_webp;
 use imagers::ImageHandler;
 use imagers::ImageHandlerBuilder;

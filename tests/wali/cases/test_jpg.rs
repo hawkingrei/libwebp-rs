@@ -9,7 +9,6 @@ use crc::{crc32, Hasher32};
 use std::fs;
 use std::path::Path;
 
-
 fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Result<(), String> {
     let mut input: String = case.input;
     let mut expected: String = case.expected;
