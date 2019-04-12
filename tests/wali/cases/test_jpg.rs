@@ -1,5 +1,6 @@
 use imagers::jpg_encode_webp;
 use imagers::ImageHandler;
+use imagers::ImageHandlerBuilder;
 use imagers::Resize;
 
 use crate::case;
