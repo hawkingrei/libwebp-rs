@@ -519,7 +519,7 @@ impl ImageHandlerBuilder {
         self
     }
 
-    pub fn finish(mut self) -> ImageHandler {
+    pub fn finish(self) -> ImageHandler {
         return self.0;
     }
 }
