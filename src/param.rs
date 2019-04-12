@@ -351,6 +351,9 @@ impl ImageHandler {
                     _ => {}
                 }
             } else {
+                dbg!(self.edge);
+                dbg!(result.c);
+                dbg!(result.edge);
                 if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
                     match result.long_side {
                         1 => {
