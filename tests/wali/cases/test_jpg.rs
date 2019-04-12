@@ -1,13 +1,13 @@
-use imagers::ImageHandler;
-use imagers::ImageHandlerBuilder;
+use imagers::jpg_encode_webp;
+use imagers::Resize;
+
 
 use crate::case;
 use crate::test_config;
 use crc::{crc32, Hasher32};
-use imagers::jpg_encode_webp;
-use imagers::Resize;
 use std::fs;
 use std::path::Path;
+
 
 fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Result<(), String> {
     let mut input: String = case.input;
