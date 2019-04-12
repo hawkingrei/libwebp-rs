@@ -1,11 +1,10 @@
-use imagers::ImageHandler;
-use imagers::ImageHandlerBuilder;
 
 use crate::case;
 use crate::test_config;
 use crc::{crc32, Hasher32};
 use imagers::webp_encode_webp;
-use imagers::Resize;
+use imagers::ImageHandler;
+use imagers::ImageHandlerBuilder;
 use std::fs;
 use std::path::Path;
 

@@ -87,12 +87,11 @@ wali_test!(
         .set_input("fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg")
         .set_expected("fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h.webp")
         .set_param(
-            ImageHandlerBuilder::new().set_resize(
-                Some(Resize {
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
                     width: 80,
                     height: 80,
-                })
+                }))
                 .finish()
-            )
         )
 );
