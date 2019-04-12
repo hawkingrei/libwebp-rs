@@ -138,7 +138,6 @@ impl ImageHandler {
         } else {
             self.c = 0;
         }
-        self
     }
 
     pub fn adapt(&mut self) -> ParamResult<ImageHandler> {
