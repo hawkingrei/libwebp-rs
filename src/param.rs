@@ -239,7 +239,7 @@ impl ImageHandler {
 
         if result.height() > 0
             && result.width() > 0
-            && (result.height() != ori_h && result.width() != ori_w)
+            && (result.height() != ori_h || result.width() != ori_w)
         {
             if result.width() > MAX_HEIGHT {
                 result.width =
