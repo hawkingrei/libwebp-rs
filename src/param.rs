@@ -330,8 +330,6 @@ impl ImageHandler {
                             2 => crop_pos_y = (rc_yst * region_h) + (region_h - rc_h),
                             _ => {}
                         }
-                        dbg!(rc_w);
-                        dbg!(check_w);
                         if rc_h > check_h {
                             rc_h = check_h
                         }
@@ -348,20 +346,13 @@ impl ImageHandler {
                     _ => {}
                 }
             } else {
-                dbg!(self.edge);
-                dbg!(result.c);
-                dbg!(result.edge);
                 if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
                     match result.long_side {
                         1 => {
                             let mut crop_w = fw;
                             let mut crop_h = result.height();
-                            dbg!(result.width());
-                            dbg!(crop_w);
-                            let crop_pos_x = dbg!((result.width() - crop_w) / 2);
+                            let crop_pos_x = (result.width() - crop_w) / 2;
                             let crop_pos_y = 0;
-                            dbg!(crop_w);
-                            dbg!(check_w);
                             if crop_h > check_h {
                                 crop_h = check_h
                             }
@@ -381,8 +372,6 @@ impl ImageHandler {
 
                             let crop_pos_x = 0;
                             let crop_pos_y = (result.height() - crop_h) / 2;
-                            dbg!(crop_w);
-                            dbg!(check_w);
                             if crop_h > check_h {
                                 crop_h = check_h
                             }
