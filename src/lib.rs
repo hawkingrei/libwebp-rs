@@ -162,7 +162,7 @@ impl ResponseError for ImageError {
 
 impl From<actix_web::error::Error> for ImageError {
     fn from(err: actix_web::error::Error) -> Self {
-        ImageError::ServiceError("actix error".to_string())
+        ImageError::ServiceError(err.to_string())
     }
 }
 
