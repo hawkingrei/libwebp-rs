@@ -30,9 +30,9 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         *output_buffer = (*decoder_config).output;
         *bitstream = (*decoder_config).input;
 
-        let mut metadata: libwebp_sys::Metadata = Default::default();
-        libwebp_sys::MetadataInit(&mut metadata);
-        if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, &mut metadata) != 1 {
+        let mut metadata: *mut libwebp_sys::Metadata = &mut Default::default();
+        libwebp_sys::MetadataInit(metadata);
+        if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, metadata) != 1 {
             return Err(ImageError::FormatError("jpg format error".to_string()));
         }
         image_result.set_height((*wp).height);
@@ -75,11 +75,18 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         }
 
         if libwebp_sys::WebPEncode(config, wp) == 1 {
-            image_result.pic =
-                Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
+
+            let out: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
+            libwebp_sys::WebPMemoryWriterInit(out);
+            let mut writen_len = &mut Default::default();
+            libwebp_sys::WriteWebPWithMetadata(out, wp, writer, metadata, 1, writen_len);
+
+            image_result.pic = Vec::from_raw_parts((*out).mem, (*out).size, (*out).size).clone();
             libwebp_sys::WebPPictureFree(wp);
             return Ok(image_result);
         }
+
+
         libwebp_sys::WebPPictureFree(wp);
         return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
     }
