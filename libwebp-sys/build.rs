@@ -50,6 +50,7 @@ impl<'a> Generator<'a> {
         cc::Build::new()
             .define("WEBP_HAVE_PNG", None)
             .define("WEBP_HAVE_JPEG", None)
+            .flag("-std=c++11");
             .file("pngwebp/util.c")
             .file("pngwebp/jpegdec.c")
             .file("pngwebp/pngdec.c")
