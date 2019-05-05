@@ -1,16 +1,6 @@
 #ifndef WEBP_UTILS_UTILS_H_
 #define WEBP_UTILS_UTILS_H_
 
-#ifndef WEBP_EXTERN
-// This explicitly marks library functions and allows for changing the
-// signature for e.g., Windows DLL builds.
-#if defined(__GNUC__) && __GNUC__ >= 4
-#define WEBP_EXTERN extern __attribute__((visibility("default")))
-#else
-#define WEBP_EXTERN extern
-#endif /* __GNUC__ >= 4 */
-#endif /* WEBP_EXTERN */
-
 #ifdef HAVE_CONFIG_H
 #include "webp/config.h"
 #endif
@@ -42,7 +32,7 @@ extern "C"
     // somewhere (like: malloc(num_pixels * sizeof(*something))). That's why this
     // safe malloc() borrows the signature from calloc(), pointing at the dangerous
     // underlying multiply involved.
-    WEBP_EXTERN void *WebPSafeMalloc(uint64_t nmemb, size_t size);
+    void *WebPSafeMalloc(uint64_t nmemb, size_t size);
     // Note that WebPSafeCalloc() expects the second argument type to be 'size_t'
     // in order to favor the "calloc(num_foo, sizeof(foo))" pattern.
     //------------------------------------------------------------------------------
