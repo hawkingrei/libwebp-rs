@@ -82,11 +82,12 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
             libwebp_sys::WriteWebPWithMetadata(out, wp, writer, metadata, 1, writen_len);
 
             image_result.pic = Vec::from_raw_parts((*out).mem, (*out).size, (*out).size).clone();
+            libwebp_sys::MetadataFree(metadata);
             libwebp_sys::WebPPictureFree(wp);
             return Ok(image_result);
         }
 
-
+        libwebp_sys::MetadataFree(metadata);
         libwebp_sys::WebPPictureFree(wp);
         return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
     }
