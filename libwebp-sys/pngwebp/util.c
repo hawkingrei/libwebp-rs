@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 
 static int num_malloc_calls = 0;
 static int num_calloc_calls = 0;
