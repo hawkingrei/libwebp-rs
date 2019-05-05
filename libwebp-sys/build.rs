@@ -51,6 +51,7 @@ impl<'a> Generator<'a> {
             .cpp(false)
             .define("WEBP_HAVE_PNG", None)
             .define("WEBP_HAVE_JPEG", None)
+            .file("pngwebp/util.c")
             .file("pngwebp/jpegdec.c")
             .file("pngwebp/pngdec.c")
             .file("pngwebp/imageio_util.c")

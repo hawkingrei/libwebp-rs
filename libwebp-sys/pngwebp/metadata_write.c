@@ -1,24 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "webp/encode.h"
 #include "./metadata.h"
+#include "./util.h"
 
 int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
-                          WebPMemoryWriter *w)
+                          const WebPMemoryWriter *input)
 {
+    WebPMemoryWriter *const w = input;
     uint64_t next_size;
     if (w == NULL)
     {
         return 1;
     }
     next_size = (uint64_t)w->size + data_size;
-    printf("addr %x\n", w->mem);
-    printf("size %d\n", w->max_size);
     if (next_size > w->max_size)
     {
-        printf("%s", "OK\n");
         uint8_t *new_mem;
         uint64_t next_max_size = 2ULL * w->max_size;
         if (next_max_size < next_size)
@@ -26,7 +26,6 @@ int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
         if (next_max_size < 8192ULL)
             next_max_size = 8192ULL;
 
-        printf("WebPSafeMalloc %d\n", next_max_size);
         new_mem = (uint8_t *)WebPSafeMalloc(next_max_size, 1);
         if (new_mem == NULL)
         {
@@ -36,26 +35,15 @@ int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
         {
             memcpy(new_mem, w->mem, w->size);
         }
-        printf("addr %x\n", w->mem);
         WebPSafeFree(w->mem);
         w->mem = new_mem;
-        printf("addr %x\n", w->mem);
         // down-cast is ok, thanks to WebPSafeMalloc
         w->max_size = (size_t)next_max_size;
     }
-    printf("addr %x\n", w->mem);
-    printf("mac size %d\n", w->max_size);
-    printf("size %d\n", w->size);
 
     if (data_size > 0)
     {
-        printf("%s", "down\n");
-        printf("data_size %d\n", data_size);
-        printf("memaddr %x\n", w->mem);
-        printf("memaddr offset %x\n", w->mem + w->size);
-
         memcpy(w->mem + w->size, data, data_size);
-        printf("%s", "up\n");
         w->size += data_size;
     }
     return 1;
@@ -166,8 +154,6 @@ int WriteWebPWithMetadata(WebPMemoryWriter *const out,
     const int write_xmp = UpdateFlagsAndSize(&metadata->xmp,
                                              !!(keep_metadata & METADATA_XMP),
                                              kXMPFlag, &flags, &metadata_size);
-
-    printf("origin size %d\n", memory_writer->size);
     uint8_t *webp = memory_writer->mem;
     size_t webp_size = memory_writer->size;
 
@@ -192,7 +178,6 @@ int WriteWebPWithMetadata(WebPMemoryWriter *const out,
                                               metadata_size);
 
         // RIFF
-        printf("%s", "xxx.\n");
         int ok = (CustomWebPMemoryWrite(webp, kTagSize, out) == 1);
 
         // RIFF size (file header size is not recorded)
