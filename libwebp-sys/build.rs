@@ -48,7 +48,6 @@ impl<'a> Generator<'a> {
             Path::new("/usr/local/include")
         };
         cc::Build::new()
-            .cpp(false)
             .define("WEBP_HAVE_PNG", None)
             .define("WEBP_HAVE_JPEG", None)
             .file("pngwebp/util.c")
