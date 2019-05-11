@@ -154,7 +154,13 @@ pub fn guess_format(buffer: &Vec<u8>) -> ImageResult<ImageFormat> {
 
 impl ResponseError for ImageError {
     fn error_response(&self) -> HttpResponse {
-        HttpResponse::InternalServerError().body(format!("{}", self.description()))
+        match self {
+            ImageError::UnsupportedError(_) => {
+                HttpResponse::UnsupportedMediaType().body(format!("{}", self.description()))
+            }
+            _ => HttpResponse::Conflict().body(format!("{}", self.description())),
+        }
+
     }
 }
 
