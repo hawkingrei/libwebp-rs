@@ -281,6 +281,7 @@ int ReadJPEG(const uint8_t* const data, size_t data_size,
   if (setjmp(jerr.setjmp_buffer)) {
  Error:
     MetadataFree(metadata);
+    jpeg_finish_decompress((j_decompress_ptr)&dinfo);
     jpeg_destroy_decompress((j_decompress_ptr)&dinfo);
     goto End;
   }
