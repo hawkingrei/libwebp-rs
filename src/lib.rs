@@ -160,7 +160,6 @@ impl ResponseError for ImageError {
             }
             _ => HttpResponse::Conflict().body(format!("{}", self.description())),
         }
-
     }
 }
 

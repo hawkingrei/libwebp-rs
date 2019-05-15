@@ -6,6 +6,8 @@ use crate::ImageError;
 use crate::ImageResult;
 use libjpeg_turbo_sys;
 
+use std::convert::TryInto;
+
 use crate::webp::webp_config_init;
 
 pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
@@ -77,7 +79,15 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         if libwebp_sys::WebPEncode(config, wp) == 1 {
             image_result.pic =
                 Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
-
+            if (*metadata).exif.size != 0 {
+                let orientation =
+                    libwebp_sys::ReadMetadata(data.as_ptr(), data.len().try_into().unwrap());
+                println!("orientation {}", orientation);
+                match orientation {
+                    6 => println!("not implement"),
+                    _ => println!("not implement"),
+                }
+            }
             libwebp_sys::MetadataFree(metadata);
             libwebp_sys::WebPPictureFree(wp);
             return Ok(image_result);

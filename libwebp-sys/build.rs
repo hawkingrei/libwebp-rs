@@ -56,6 +56,7 @@ impl<'a> Generator<'a> {
             .file("pngwebp/imageio_util.c")
             .file("pngwebp/metadata.c")
             .file("pngwebp/metadata_write.c")
+            .file("pngwebp/metadata_read.c")
             .include(jpeg_library_path)
             .include(png_library_path)
             .include(zlib_library_path)
@@ -70,6 +71,7 @@ impl<'a> Generator<'a> {
             .header("pngwebp/imageio_util.h")
             .header("pngwebp/metadata.h")
             .header("pngwebp/metadata_write.h")
+            .header("pngwebp/metadata_read.h")
             .generate_inline_functions(true)
             // If there are linking errors and the generated bindings have weird looking
             // #link_names (that start with \u{1}), the make sure to flip that to false.
@@ -91,10 +93,16 @@ fn main() {
     println!("cargo:rustc-link-lib=static=jpeg");
     println!("cargo:rustc-link-lib=static=webp");
     println!("cargo:rustc-link-lib=static=z");
+    println!("cargo:rustc-link-lib=static=exif");
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=pngwebp");
+    println!("cargo:rerun-if-changed=pngwebp/jpegdec.h");
+    println!("cargo:rerun-if-changed=pngwebp/jpegdec.c");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.h");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.c");
+    println!("cargo:rerun-if-changed=pngwebp/metadata_read.h");
+    println!("cargo:rerun-if-changed=pngwebp/metadata_read.c");
+
     if cfg!(target_os = "linux") {
         println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
         println!("cargo:rustc-link-search=/opt/libjpeg-turbo/include");
