@@ -21,6 +21,8 @@ use actix_web::{client::SendRequestError, HttpResponse, ResponseError};
 use std::error::Error;
 use std::fmt;
 
+use crate::param::ParamError;
+
 pub type ImageResult<T> = Result<T, ImageError>;
 
 #[derive(Default)]
@@ -173,5 +175,17 @@ impl From<actix_web::error::Error> for ImageError {
 impl From<SendRequestError> for ImageError {
     fn from(err: SendRequestError) -> Self {
         ImageError::ServiceError(format!("actix http client error: {}", err.to_string()))
+    }
+}
+
+impl From<ParamError> for ImageError {
+    fn from(err: ParamError) -> Self {
+        match err {
+            ParamError::ErrCropParams => ImageError::ServiceError("crop params error".to_string()),
+            ParamError::ErrResizeParams => {
+                ImageError::ServiceError("resize params error".to_string())
+            }
+        }
+
     }
 }
