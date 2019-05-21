@@ -136,6 +136,7 @@ impl ImageHandler {
     pub fn set_auto_crop(&mut self, ac: bool) {
         if ac {
             self.c = 1;
+            self.edge = 1;
         } else {
             self.c = 0;
         }
