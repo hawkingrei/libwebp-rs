@@ -38,6 +38,12 @@ pub struct Resize {
     pub width: i32,
 }
 
+#[derive(Default, Copy, Clone, PartialEq, Debug)]
+pub struct Blur {
+    pub radius: i32,
+    pub sigma: f64,
+}
+
 #[derive(Default, Copy, Clone, PartialEq)]
 pub struct ImageHandler {
     pub height: i32,
@@ -46,6 +52,7 @@ pub struct ImageHandler {
     pub resize: Option<Resize>,
     pub region_crop: Option<RegionCrop>,
     pub target_format: Option<ImageFormat>,
+    pub blur: Option<Blur>,
 
     /**
       e: 图片缩放, 缩放尺寸比例与原图比例不同时的优先缩放边, 格式[edge]e, 默认为0表示长边优先, 1表示短边优先, 2表示强制缩放(改变比例), 4表示短边缩略并且用指定颜色填充剩余区域
