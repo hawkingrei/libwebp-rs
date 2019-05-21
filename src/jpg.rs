@@ -37,6 +37,15 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, metadata) != 1 {
             return Err(ImageError::FormatError("jpg format error".to_string()));
         }
+        if (*metadata).exif.size != 0 {
+            let orientation =
+                libwebp_sys::ReadMetadata(data.as_ptr(), data.len().try_into().unwrap());
+            println!("orientation {}", orientation);
+            match orientation {
+                6 => println!("not implement"),
+                _ => println!("not implement"),
+            }
+        }
         image_result.set_height((*wp).height);
         image_result.set_width((*wp).width);
 
@@ -79,15 +88,6 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         if libwebp_sys::WebPEncode(config, wp) == 1 {
             image_result.pic =
                 Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
-            if (*metadata).exif.size != 0 {
-                let orientation =
-                    libwebp_sys::ReadMetadata(data.as_ptr(), data.len().try_into().unwrap());
-                println!("orientation {}", orientation);
-                match orientation {
-                    6 => println!("not implement"),
-                    _ => println!("not implement"),
-                }
-            }
             libwebp_sys::MetadataFree(metadata);
             libwebp_sys::WebPPictureFree(wp);
             return Ok(image_result);
