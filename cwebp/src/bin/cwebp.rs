@@ -38,6 +38,7 @@ fn main() {
                 .help("-rc width height rc"),
         )
         .arg(Arg::with_name("c").help("auto crop").short("c"))
+        .arg(Arg::with_name("profile").help("profile"))
         .arg(Arg::with_name("e").long("e").takes_value(true).help("edge"))
         .arg(
             Arg::with_name("p")
@@ -63,6 +64,7 @@ fn main() {
     let edge: i32 = matches.value_of("e").unwrap_or("0").parse::<i32>().unwrap();
 
     let auto_crop: bool = matches.is_present("c");
+    let profile: bool = matches.is_present("profile");
     let crop: Vec<i32> = match matches.values_of("crop") {
         Some(data) => data.map(|param| param.parse().unwrap()).collect(),
         None => vec![],
@@ -114,26 +116,36 @@ fn main() {
 
     let data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(&data).unwrap();
-    match ptype {
-        ImageFormat::PNG => {
-            let result = png_encode_webp(&data.clone(), param).unwrap();
-            println!("height: {}", result.height);
-            println!("width: {}", result.width);
-
-            fs::write(output, result.pic).unwrap();
+    while true {
+        match ptype {
+            ImageFormat::PNG => {
+                let result = png_encode_webp(&data.clone(), param).unwrap();
+                println!("height: {}", result.height);
+                println!("width: {}", result.width);
+                if !profile {
+                    fs::write(output, result.pic).unwrap();
+                }
+            }
+            ImageFormat::JPEG => {
+                let result = jpg_encode_webp(&data.clone(), param).unwrap();
+                println!("height: {}", result.height);
+                println!("width: {}", result.width);
+                if !profile {
+                    fs::write(output, result.pic).unwrap();
+                }
+            }
+            ImageFormat::WEBP => {
+                let result = webp_encode_webp(&data.clone(), param).unwrap();
+                println!("height: {}", result.height);
+                println!("width: {}", result.width);
+                if !profile {
+                    fs::write(output, result.pic).unwrap();
+                }
+            }
+            _ => println!("not support "),
         }
-        ImageFormat::JPEG => {
-            let result = jpg_encode_webp(&data.clone(), param).unwrap();
-            println!("height: {}", result.height);
-            println!("width: {}", result.width);
-            fs::write(output, result.pic).unwrap();
+        if !profile {
+            break;
         }
-        ImageFormat::WEBP => {
-            let result = webp_encode_webp(&data.clone(), param).unwrap();
-            println!("height: {}", result.height);
-            println!("width: {}", result.width);
-            fs::write(output, result.pic).unwrap();
-        }
-        _ => println!("not support "),
     }
 }
