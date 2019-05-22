@@ -185,6 +185,5 @@ impl From<ParamError> for ImageError {
                 ImageError::ServiceError("resize params error".to_string())
             }
         }
-
     }
 }
