@@ -196,7 +196,7 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
         image_result.set_width((*wp).width);
         p.set_height((*wp).height as i32);
         p.set_width((*wp).width as i32);
-        let param = p.adapt().unwrap();
+        let param = p.adapt()?;
 
         if (*wp).use_argb == 1 {
             let d = libwebp_sys::WebPDecodeRGBA(
