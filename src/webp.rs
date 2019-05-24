@@ -187,7 +187,7 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
             libwebp_sys::WEBP_ENCODER_ABI_VERSION,
         );
         if (status != libwebp_sys::VP8StatusCode_VP8_STATUS_OK) {
-            return Err(ImageError::FormatError("png format error".to_string()));
+            return Err(ImageError::FormatError("webp WebPGetFeaturesInternal error".to_string()));
         }
         (*wp).use_argb = (*bitstream).has_alpha;
         (*wp).height = (*bitstream).height as i32;
@@ -247,6 +247,6 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
             return Ok(image_result);
         }
         libwebp_sys::WebPPictureFree(wp);
-        return Err(ImageError::FormatError("png format error".to_string()));
+        return Err(ImageError::FormatError("webp format error".to_string()));
     }
 }
