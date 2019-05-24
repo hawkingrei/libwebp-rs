@@ -47,6 +47,7 @@ pub struct ImageHandler {
     pub resize: Option<Resize>,
     pub region_crop: Option<RegionCrop>,
     pub target_format: Option<ImageFormat>,
+    pub quality: i32,
 
     /**
       e: 图片缩放, 缩放尺寸比例与原图比例不同时的优先缩放边, 格式[edge]e, 默认为0表示长边优先, 1表示短边优先, 2表示强制缩放(改变比例), 4表示短边缩略并且用指定颜色填充剩余区域
@@ -85,6 +86,10 @@ impl ImageHandler {
         return Default::default();
     }
 
+    pub fn quality(&self) -> i32 {
+        self.quality
+    }
+
     pub fn height(&self) -> i32 {
         self.height
     }
@@ -95,6 +100,10 @@ impl ImageHandler {
 
     pub fn edge(&self) -> i32 {
         self.edge
+    }
+
+    pub fn set_quality(&self, quality: i32) {
+        self.quality = qualityl
     }
 
     pub fn set_height(&mut self, height: i32) {
