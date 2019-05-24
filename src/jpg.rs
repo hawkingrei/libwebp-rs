@@ -14,13 +14,22 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         let mut image_result: Image = Default::default();
 
         libwebp_sys::WebPPictureAlloc(wp);
-
-        libwebp_sys::WebPConfigInitInternal(
-            config,
-            libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
-            75.0 as f32,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        );
+        
+        if p.quality() >= 75 {
+            libwebp_sys::WebPConfigInitInternal(
+                config,
+                libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+                p.quality() as f32,
+                libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+            );
+        } else {
+            libwebp_sys::WebPConfigInitInternal(
+                config,
+                libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
+                75.0 as f32,
+                libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+            );
+        }
 
         let decoder_config: *mut libwebp_sys::WebPDecoderConfig = &mut Default::default();
         let output_buffer: *mut libwebp_sys::WebPDecBuffer = &mut Default::default();
