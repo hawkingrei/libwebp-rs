@@ -8,8 +8,6 @@ edition = "2018"
 actix-web = "0.7.19"
 bindgen = "0.49.0"
 libwebp-sys = { path = "libwebp-sys" }
-libjpeg-turbo-sys = { path = "libjpeg-turbo-sys" }
-libpng-sys = { path = "libpng-sys" }
 libc = "0.2.54"
 
 [dev-dependencies]
@@ -17,15 +15,11 @@ crc = "1.8.1"
 
 [workspace]
 members = [
-  "libjpeg-turbo-sys",
-  "libpng-sys",
   "libwebp-sys",
   "cwebp",
   "./"
 ]
 default-members = [
-  "libjpeg-turbo-sys",
-  "libpng-sys",
   "libwebp-sys",
   "cwebp",
   "./"

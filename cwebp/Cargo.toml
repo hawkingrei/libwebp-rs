@@ -7,8 +7,6 @@ edition = "2018"
 [dependencies]
 clap = "2.32.0"
 libwebp-sys = { path = "../libwebp-sys" }
-libjpeg-turbo-sys = { path = "../libjpeg-turbo-sys" }
-libpng-sys = { path = "../libpng-sys" }
 imagers = { path = "../" }
 rgb = "0.8"
 libc = "0.2.54"

@@ -4,7 +4,6 @@ use crate::webp::WebPPicture;
 use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
-use libjpeg_turbo_sys;
 
 use crate::webp::webp_config_init;
 
