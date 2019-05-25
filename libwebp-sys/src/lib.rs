@@ -7,8 +7,6 @@ extern crate test;
 
 use std::default::Default;
 
-use libc;
-
 include!("./webp_bindings.rs");
 
 pub const WEBP_ENCODER_ABI_VERSION: i32 = 526;

@@ -8,7 +8,6 @@ use imagers::jpg_encode_webp;
 use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
 use imagers::Crop;
-use imagers::ImageHandler;
 use imagers::ImageHandlerBuilder;
 use imagers::RegionCrop;
 use imagers::Resize;
@@ -116,7 +115,7 @@ fn main() {
 
     let data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(&data).unwrap();
-    while true {
+    loop {
         match ptype {
             ImageFormat::PNG => {
                 let result = png_encode_webp(&data.clone(), param).unwrap();

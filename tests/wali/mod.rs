@@ -1,20 +1,18 @@
-use std::path::Path;
-
 #[macro_use]
 pub mod macros;
 mod cases;
 
-pub struct case<T: Clone + Sized + Default> {
+pub struct Case<T: Clone + Sized + Default> {
     input: String,
     expected: String,
     param: T,
     is_corrupted: bool,
 }
 
-impl<T: Clone + Sized + Default> Default for case<T> {
+impl<T: Clone + Sized + Default> Default for Case<T> {
     #[inline(always)]
     fn default() -> Self {
-        case {
+        Case {
             expected: "".to_string(),
             input: "".to_string(),
             param: Default::default(),
@@ -23,7 +21,7 @@ impl<T: Clone + Sized + Default> Default for case<T> {
     }
 }
 
-impl<T: Clone + Sized + Default> case<T> {
+impl<T: Clone + Sized + Default> Case<T> {
     pub fn new() -> Self {
         Default::default()
     }
@@ -49,16 +47,16 @@ impl<T: Clone + Sized + Default> case<T> {
     }
 }
 
-pub struct test_config {
+pub struct TestConfig {
     output: String,
     input: String,
     expected: String,
 }
 
-impl Default for test_config {
+impl Default for TestConfig {
     #[inline(always)]
     fn default() -> Self {
-        test_config {
+        TestConfig {
             output: String::from("./_output/"),
             input: String::from("./dataset/images/"),
             expected: String::from("./dataset/reference/"),

@@ -3,17 +3,17 @@ use imagers::ImageHandler;
 use imagers::ImageHandlerBuilder;
 use imagers::Resize;
 
-use crate::case;
-use crate::test_config;
+use crate::Case;
+use crate::TestConfig;
 use crc::{crc32, Hasher32};
 use std::fs;
 use std::path::Path;
 
-fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Result<(), String> {
-    let mut input: String = case.input;
-    let mut expected: String = case.expected;
-    let mut is_corrupted: bool = case.is_corrupted;
-    let mut im: ImageHandler = case.param;
+fn tranform_jpg_to_webp(config: &TestConfig, case: Case<ImageHandler>) -> Result<(), String> {
+    let input: String = case.input;
+    let expected: String = case.expected;
+    let is_corrupted: bool = case.is_corrupted;
+    let im: ImageHandler = case.param;
     let mut fact_input = config.input.clone();
     fact_input.push_str("jpg/");
     fact_input.push_str(input.as_str());
@@ -53,7 +53,7 @@ fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Resul
     digest_expected.write(expected_data.as_slice());
     digest_output.write(result.pic.as_slice());
 
-    fs::write(Path::new(Path::new(&fact_output)), result.pic);
+    fs::write(Path::new(Path::new(&fact_output)), result.pic).unwrap();
 
     if digest_expected.sum32() != digest_output.sum32() {
         return Err(format!("{} fail to test", input));
@@ -65,7 +65,7 @@ fn tranform_jpg_to_webp(config: &test_config, case: case<ImageHandler>) -> Resul
 wali_test!(
     test_f946c1d2884e16301d5d43f3ccf917cc14015619_702w_212h_1e_1c,
     tranform_jpg_to_webp,
-    case::<ImageHandler>::new()
+    Case::<ImageHandler>::new()
         .set_input("f946c1d2884e16301d5d43f3ccf917cc14015619.jpg")
         .set_expected("f946c1d2884e16301d5d43f3ccf917cc14015619_702w_212h_1e_1c.webp")
         .set_param(
@@ -83,7 +83,7 @@ wali_test!(
 wali_test!(
     test_fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h,
     tranform_jpg_to_webp,
-    case::<ImageHandler>::new()
+    Case::<ImageHandler>::new()
         .set_input("fc0c7f707fcc4266ab074037f5a9d8fd028d702a.jpg")
         .set_expected("fc0c7f707fcc4266ab074037f5a9d8fd028d702a_80w_80h.webp")
         .set_param(

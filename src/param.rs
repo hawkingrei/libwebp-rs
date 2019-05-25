@@ -2,7 +2,6 @@ use std::default::Default;
 use std::fmt;
 use std::result::Result;
 
-use crate::ImageError;
 use crate::ImageFormat;
 
 const MAX_WIDTH: i32 = 8192;
