@@ -102,8 +102,8 @@ impl ImageHandler {
         self.edge
     }
 
-    pub fn set_quality(&self, quality: i32) {
-        self.quality = qualityl
+    pub fn set_quality(&mut self, quality: i32) {
+        self.quality = quality;
     }
 
     pub fn set_height(&mut self, height: i32) {
@@ -472,6 +472,11 @@ impl ImageHandlerBuilder {
 
     pub fn set_longside(mut self, longside: i32) -> Self {
         self.0.set_longside(longside);
+        self
+    }
+
+      pub fn set_quality(mut self, quality: i32) -> Self {
+        self.0.set_quality(quality);
         self
     }
 
