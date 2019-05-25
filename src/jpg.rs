@@ -10,7 +10,7 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         let mut image_result: Image = Default::default();
 
         libwebp_sys::WebPPictureAlloc(wp);
-        
+
         if p.quality() >= 75 {
             libwebp_sys::WebPConfigInitInternal(
                 config,

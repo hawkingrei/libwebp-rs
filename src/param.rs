@@ -474,7 +474,7 @@ impl ImageHandlerBuilder {
         self
     }
 
-      pub fn set_quality(mut self, quality: i32) -> Self {
+    pub fn set_quality(mut self, quality: i32) -> Self {
         self.0.set_quality(quality);
         self
     }

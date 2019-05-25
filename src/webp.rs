@@ -179,12 +179,14 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
             decoder_config,
             libwebp_sys::WEBP_ENCODER_ABI_VERSION,
         );
-        if libwebp_sys::VP8StatusCode_VP8_STATUS_OK != libwebp_sys::WebPGetFeaturesInternal(
-            data.as_ptr(),
-            data.len(),
-            bitstream,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        ) {
+        if libwebp_sys::VP8StatusCode_VP8_STATUS_OK
+            != libwebp_sys::WebPGetFeaturesInternal(
+                data.as_ptr(),
+                data.len(),
+                bitstream,
+                libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+            )
+        {
             return Err(ImageError::FormatError(
                 "webp WebPGetFeaturesInternal error".to_string(),
             ));

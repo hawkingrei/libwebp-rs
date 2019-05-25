@@ -1,7 +1,7 @@
-use crate::Image;
-use crate::ImageResult;
-use crate::ImageError;
 use crate::param::ImageHandler;
+use crate::Image;
+use crate::ImageError;
+use crate::ImageResult;
 
 pub fn png_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
