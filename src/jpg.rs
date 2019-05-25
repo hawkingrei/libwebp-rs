@@ -1,11 +1,7 @@
 use crate::param::ImageHandler;
-use crate::webp::WebPConfig;
-use crate::webp::WebPPicture;
 use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
-
-use crate::webp::webp_config_init;
 
 pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
@@ -14,7 +10,7 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         let mut image_result: Image = Default::default();
 
         libwebp_sys::WebPPictureAlloc(wp);
-        
+
         if p.quality() >= 75 {
             libwebp_sys::WebPConfigInitInternal(
                 config,
@@ -38,7 +34,7 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         *output_buffer = (*decoder_config).output;
         *bitstream = (*decoder_config).input;
 
-        let mut metadata: *mut libwebp_sys::Metadata = &mut Default::default();
+        let metadata: *mut libwebp_sys::Metadata = &mut Default::default();
         libwebp_sys::MetadataInit(metadata);
         if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, metadata) != 1 {
             return Err(ImageError::FormatError("jpg format error".to_string()));

@@ -129,7 +129,7 @@ impl WebPPicture {
     }
 
     #[inline(always)]
-    pub fn encode(&mut self, mut config: &WebPConfig) -> WebPResult<Vec<u8>> {
+    pub fn encode(&mut self, config: &WebPConfig) -> WebPResult<Vec<u8>> {
         unsafe {
             let writer: *mut libwebp_sys::WebPMemoryWriter = &mut Default::default();
             libwebp_sys::WebPMemoryWriterInit(writer);
@@ -179,14 +179,14 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
             decoder_config,
             libwebp_sys::WEBP_ENCODER_ABI_VERSION,
         );
-        let mut status: libwebp_sys::VP8StatusCode = libwebp_sys::VP8StatusCode_VP8_STATUS_OK;
-        status = libwebp_sys::WebPGetFeaturesInternal(
-            data.as_ptr(),
-            data.len(),
-            bitstream,
-            libwebp_sys::WEBP_ENCODER_ABI_VERSION,
-        );
-        if (status != libwebp_sys::VP8StatusCode_VP8_STATUS_OK) {
+        if libwebp_sys::VP8StatusCode_VP8_STATUS_OK
+            != libwebp_sys::WebPGetFeaturesInternal(
+                data.as_ptr(),
+                data.len(),
+                bitstream,
+                libwebp_sys::WEBP_ENCODER_ABI_VERSION,
+            )
+        {
             return Err(ImageError::FormatError(
                 "webp WebPGetFeaturesInternal error".to_string(),
             ));
