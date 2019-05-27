@@ -42,3 +42,27 @@ static int CheckSizeArgumentsOverflow(uint64_t nmemb, size_t size) {
 
   return 1;
 }
+
+void* MyWebPSafeMalloc(uint64_t nmemb, size_t size) {
+  void* ptr;
+  Increment(&num_malloc_calls);
+  if (!CheckSizeArgumentsOverflow(nmemb, size)) return NULL;
+  assert(nmemb * size > 0);
+  ptr = malloc((size_t)(nmemb * size));
+  AddMem(ptr, (size_t)(nmemb * size));
+  return ptr;
+}
+
+
+void MyWebPSafeFree(void* const ptr) {
+  if (ptr != NULL) {
+    Increment(&num_free_calls);
+    SubMem(ptr);
+  }
+  free(ptr);
+}
+
+// Public API function.
+void MyWebPFree(void* ptr) {
+  free(ptr);
+}

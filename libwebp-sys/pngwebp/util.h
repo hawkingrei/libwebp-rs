@@ -35,6 +35,12 @@ extern "C" {
 #endif
 #endif  // WEBP_MAX_ALLOCABLE_MEMORY   
 
+WEBP_EXTERN void* MyWebPSafeMalloc(uint64_t nmemb, size_t size);
+
+// Companion deallocation function to the above allocations.
+WEBP_EXTERN void MyWebPSafeFree(void* const ptr);
+
+
 #define WEBP_ALIGN_CST 31
 #define WEBP_ALIGN(PTR) (((uintptr_t)(PTR) + WEBP_ALIGN_CST) & ~WEBP_ALIGN_CST)
 

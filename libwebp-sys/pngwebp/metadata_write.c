@@ -25,7 +25,7 @@ int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
         if (next_max_size < 8192ULL)
             next_max_size = 8192ULL;
 
-        new_mem = (uint8_t *)WebPSafeMalloc(next_max_size, 1);
+        new_mem = (uint8_t *)MyWebPSafeMalloc(next_max_size, 1);
         if (new_mem == NULL)
         {
             return 0;
@@ -34,9 +34,9 @@ int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
         {
             memcpy(new_mem, input->mem, input->size);
         }
-        WebPSafeFree(input->mem);
+        MyWebPSafeFree(input->mem);
         input->mem = new_mem;
-        // down-cast is ok, thanks to WebPSafeMalloc
+        // down-cast is ok, thanks to MyWebPSafeMalloc
         input->max_size = (size_t)next_max_size;
     }
 
