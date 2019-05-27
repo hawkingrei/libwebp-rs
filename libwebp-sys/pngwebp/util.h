@@ -47,8 +47,7 @@ extern "C"
     // in order to favor the "calloc(num_foo, sizeof(foo))" pattern.
     //------------------------------------------------------------------------------
     // Alignment
-    // Companion deallocation function to the above allocations.
-    WEBP_EXTERN void WebPSafeFree(void* const ptr);
+
 
 #define WEBP_ALIGN_CST 31
 #define WEBP_ALIGN(PTR) (((uintptr_t)(PTR) + WEBP_ALIGN_CST) & ~WEBP_ALIGN_CST)
