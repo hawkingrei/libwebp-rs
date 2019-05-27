@@ -8,7 +8,7 @@
 #include "./util.h"
 
 int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
-                        WebPMemoryWriter *input)
+                        WebPMemoryWriter* const input)
 {
     uint64_t next_size;
     if (input == NULL)
@@ -102,10 +102,10 @@ static int WriteMetadataChunk(const WebPMemoryWriter *const out, const char four
 {
     const uint8_t zero = 0;
     const size_t need_padding = payload->size & 1;
-    int ok = (CustomWebPMemoryWrite(fourcc, kTagSize, out) == 1);
-    ok = ok && WriteLE32(out, (uint32_t)payload->size);
-    ok = ok && (CustomWebPMemoryWrite(payload->bytes, payload->size, out) == 1);
-    return ok && (CustomWebPMemoryWriteN(&zero, need_padding, need_padding, out) == need_padding);
+    int ok = (CustomWebPMemoryWrite((uint8_t*)fourcc, kTagSize, (WebPMemoryWriter*)out) == 1);
+    ok = ok && WriteLE32((WebPMemoryWriter*)out, (uint32_t)payload->size);
+    ok = ok && (CustomWebPMemoryWrite(payload->bytes, payload->size, (WebPMemoryWriter*)out) == 1);
+    return ok && (CustomWebPMemoryWriteN(&zero, need_padding, need_padding, (WebPMemoryWriter*)out) == need_padding);
 }
 
 // Sets 'flag' in 'vp8x_flags' and updates 'metadata_size' with the size of the
@@ -205,7 +205,7 @@ int WriteWebPWithMetadata(WebPMemoryWriter *const out,
                 if (webp[kChunkHeaderSize + 4] & (1 << 4))
                     flags |= kAlphaFlag;
             }
-            ok = ok && (CustomWebPMemoryWrite(kVP8XHeader, kChunkHeaderSize, out) == 1);
+            ok = ok && (CustomWebPMemoryWrite((uint8_t*)kVP8XHeader, kChunkHeaderSize, out) == 1);
             ok = ok && WriteLE32(out, flags);
             ok = ok && WriteLE24(out, picture->width - 1);
             ok = ok && WriteLE24(out, picture->height - 1);
