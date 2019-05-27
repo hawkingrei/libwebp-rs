@@ -35,6 +35,17 @@ extern "C" {
 #endif
 #endif  // WEBP_MAX_ALLOCABLE_MEMORY   
 
+// size-checking safe malloc/calloc: verify that the requested size is not too
+// large, or return NULL. You don't need to call these for constructs like
+// malloc(sizeof(foo)), but only if there's picture-dependent size involved
+// somewhere (like: malloc(num_pixels * sizeof(*something))). That's why this
+// safe malloc() borrows the signature from calloc(), pointing at the dangerous
+// underlying multiply involved.
+WEBP_EXTERN void* WebPSafeMalloc(uint64_t nmemb, size_t size);
+
+// Companion deallocation function to the above allocations.
+WEBP_EXTERN void WebPSafeFree(void* const ptr);
+
 #define WEBP_ALIGN_CST 31
 #define WEBP_ALIGN(PTR) (((uintptr_t)(PTR) + WEBP_ALIGN_CST) & ~WEBP_ALIGN_CST)
 
