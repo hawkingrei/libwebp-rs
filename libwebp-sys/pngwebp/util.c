@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "util.h"
+#include "./util.h"
 
 #if defined(PRINT_MEM_INFO)
 

@@ -36,6 +36,11 @@ extern "C"
 #endif
 #endif // WEBP_MAX_ALLOCABLE_MEMORY
 
+   
+   
+
+#define WEBP_ALIGN_CST 31
+#define WEBP_ALIGN(PTR) (((uintptr_t)(PTR) + WEBP_ALIGN_CST) & ~WEBP_ALIGN_CST)
     // size-checking safe malloc/calloc: verify that the requested size is not too
     // large, or return NULL. You don't need to call these for constructs like
     // malloc(sizeof(foo)), but only if there's picture-dependent size involved
@@ -49,10 +54,6 @@ extern "C"
     // Alignment
     // Companion deallocation function to the above allocations.
     void WebPSafeFree(void* const ptr);
-
-#define WEBP_ALIGN_CST 31
-#define WEBP_ALIGN(PTR) (((uintptr_t)(PTR) + WEBP_ALIGN_CST) & ~WEBP_ALIGN_CST)
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
