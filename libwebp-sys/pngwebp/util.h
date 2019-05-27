@@ -19,8 +19,7 @@
 #include <limits.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 //------------------------------------------------------------------------------
@@ -34,26 +33,23 @@ extern "C"
 // For 32-bit targets keep this below INT_MAX to avoid valgrind warnings.
 #define WEBP_MAX_ALLOCABLE_MEMORY ((1ULL << 31) - (1 << 16))
 #endif
-#endif // WEBP_MAX_ALLOCABLE_MEMORY
+#endif  // WEBP_MAX_ALLOCABLE_MEMORY
 
-   
+// size-checking safe malloc/calloc: verify that the requested size is not too
+// large, or return NULL. You don't need to call these for constructs like
+// malloc(sizeof(foo)), but only if there's picture-dependent size involved
+// somewhere (like: malloc(num_pixels * sizeof(*something))). That's why this
+// safe malloc() borrows the signature from calloc(), pointing at the dangerous
+// underlying multiply involved.
+WEBP_EXTERN void* WebPSafeMalloc(uint64_t nmemb, size_t size);
+
+// Companion deallocation function to the above allocations.
+WEBP_EXTERN void WebPSafeFree(void* const ptr);
    
 
 #define WEBP_ALIGN_CST 31
 #define WEBP_ALIGN(PTR) (((uintptr_t)(PTR) + WEBP_ALIGN_CST) & ~WEBP_ALIGN_CST)
-    // size-checking safe malloc/calloc: verify that the requested size is not too
-    // large, or return NULL. You don't need to call these for constructs like
-    // malloc(sizeof(foo)), but only if there's picture-dependent size involved
-    // somewhere (like: malloc(num_pixels * sizeof(*something))). That's why this
-    // safe malloc() borrows the signature from calloc(), pointing at the dangerous
-    // underlying multiply involved.
-    void *WebPSafeMalloc(uint64_t nmemb, size_t size);
-    // Note that WebPSafeCalloc() expects the second argument type to be 'size_t'
-    // in order to favor the "calloc(num_foo, sizeof(foo))" pattern.
-    //------------------------------------------------------------------------------
-    // Alignment
-    // Companion deallocation function to the above allocations.
-    void WebPSafeFree(void* const ptr);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
