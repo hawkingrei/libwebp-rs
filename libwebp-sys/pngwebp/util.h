@@ -43,8 +43,6 @@ extern "C" {
 // underlying multiply involved.
 WEBP_EXTERN void* WebPSafeMalloc(uint64_t nmemb, size_t size);
 
-// Companion deallocation function to the above allocations.
-WEBP_EXTERN void WebPSafeFree(void* const ptr);
    
 
 #define WEBP_ALIGN_CST 31
