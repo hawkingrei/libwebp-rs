@@ -95,6 +95,8 @@ fn main() {
     println!("cargo:rerun-if-changed=pngwebp");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.h");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.c");
+    println!("cargo:rerun-if-changed=pngwebp/util.h");
+    println!("cargo:rerun-if-changed=pngwebp/util.c");
     if cfg!(target_os = "linux") {
         println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
         println!("cargo:rustc-link-search=/opt/libjpeg-turbo/include");

@@ -8,19 +8,18 @@
 #include "./util.h"
 
 int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
-                          const WebPMemoryWriter *input)
+                        WebPMemoryWriter *input)
 {
-    WebPMemoryWriter *const w = input;
     uint64_t next_size;
-    if (w == NULL)
+    if (input == NULL)
     {
         return 1;
     }
-    next_size = (uint64_t)w->size + data_size;
-    if (next_size > w->max_size)
+    next_size = (uint64_t)input->size + data_size;
+    if (next_size > input->max_size)
     {
         uint8_t *new_mem;
-        uint64_t next_max_size = 2ULL * w->max_size;
+        uint64_t next_max_size = 2ULL * input->max_size;
         if (next_max_size < next_size)
             next_max_size = next_size;
         if (next_max_size < 8192ULL)
@@ -31,27 +30,27 @@ int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
         {
             return 0;
         }
-        if (w->size > 0)
+        if (input->size > 0)
         {
-            memcpy(new_mem, w->mem, w->size);
+            memcpy(new_mem, input->mem, input->size);
         }
-        WebPSafeFree(w->mem);
-        w->mem = new_mem;
+        WebPSafeFree(input->mem);
+        input->mem = new_mem;
         // down-cast is ok, thanks to WebPSafeMalloc
-        w->max_size = (size_t)next_max_size;
+        input->max_size = (size_t)next_max_size;
     }
 
     if (data_size > 0)
     {
-        memcpy(w->mem + w->size, data, data_size);
-        w->size += data_size;
+        memcpy(input->mem + input->size, data, data_size);
+        input->size += data_size;
     }
     return 1;
 }
 
 int CustomWebPMemoryWriteN(const uint8_t *data, size_t data_size, size_t count, WebPMemoryWriter *const w)
 {
-    for (size_t n = 0; n < count; count + 1)
+    for (size_t n = 0; n < count; n = n + 1)
     {
         if (CustomWebPMemoryWrite(data, data_size, w) == 1)
         {
@@ -76,7 +75,7 @@ static const int kChunkHeaderSize = 8;
 static const int kTagSize = 4;
 
 // Outputs, in little endian, 'num' bytes from 'val' to 'out'.
-static int WriteLE(const WebPMemoryWriter *const out, uint32_t val, int num)
+static int WriteLE(WebPMemoryWriter *const out, uint32_t val, int num)
 {
     uint8_t buf[4];
     int i;
@@ -88,12 +87,12 @@ static int WriteLE(const WebPMemoryWriter *const out, uint32_t val, int num)
     return (CustomWebPMemoryWrite(buf, num, out) == 1);
 }
 
-static int WriteLE24(const WebPMemoryWriter *const out, uint32_t val)
+static int WriteLE24(WebPMemoryWriter *const out, uint32_t val)
 {
     return WriteLE(out, val, 3);
 }
 
-static int WriteLE32(const WebPMemoryWriter *const out, uint32_t val)
+static int WriteLE32(WebPMemoryWriter *const out, uint32_t val)
 {
     return WriteLE(out, val, 4);
 }
