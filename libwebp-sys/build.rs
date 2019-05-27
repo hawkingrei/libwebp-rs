@@ -65,6 +65,7 @@ impl<'a> Generator<'a> {
             .derive_default(true)
             .with_codegen_config(codegen_config)
             .header("png.h")
+            .header("pngwebp/util.h")
             .header("pngwebp/jpegdec.h")
             .header("pngwebp/pngdec.h")
             .header("pngwebp/imageio_util.h")
