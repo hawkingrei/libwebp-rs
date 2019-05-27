@@ -20,14 +20,6 @@ struct MemBlock {
   MemBlock* next_;
 };
 
-static MemBlock* all_blocks = NULL;
-static size_t total_mem = 0;
-static size_t total_mem_allocated = 0;
-static size_t high_water_mark = 0;
-static size_t mem_limit = 0;
-
-static int exit_registered = 0;
-
 #define Increment(v) do {} while (0)
 #define AddMem(p, s) do {} while (0)
 #define SubMem(p)    do {} while (0)
