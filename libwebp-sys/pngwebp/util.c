@@ -154,3 +154,16 @@ void *WebPSafeMalloc(uint64_t nmemb, size_t size)
     AddMem(ptr, (size_t)(nmemb * size));
     return ptr;
 }
+
+void WebPSafeFree(void* const ptr) {
+  if (ptr != NULL) {
+    Increment(&num_free_calls);
+    SubMem(ptr);
+  }
+  free(ptr);
+}
+
+// Public API function.
+void WebPFree(void* ptr) {
+  free(ptr);
+}
