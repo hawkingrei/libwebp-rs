@@ -65,6 +65,7 @@ impl<'a> Generator<'a> {
             .derive_default(true)
             .with_codegen_config(codegen_config)
             .header("png.h")
+            .header("pngwebp/util.h")
             .header("pngwebp/jpegdec.h")
             .header("pngwebp/pngdec.h")
             .header("pngwebp/imageio_util.h")
@@ -95,6 +96,8 @@ fn main() {
     println!("cargo:rerun-if-changed=pngwebp");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.h");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.c");
+    println!("cargo:rerun-if-changed=pngwebp/util.h");
+    println!("cargo:rerun-if-changed=pngwebp/util.c");
     if cfg!(target_os = "linux") {
         println!("cargo:rustc-link-search=native=/opt/libjpeg-turbo/lib64");
         println!("cargo:rustc-link-search=/opt/libjpeg-turbo/include");

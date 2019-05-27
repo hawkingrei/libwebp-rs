@@ -3,82 +3,42 @@
 #include <stdio.h>
 #include <stdint.h>
 
-static int num_malloc_calls = 0;
-static int num_calloc_calls = 0;
-static int num_free_calls = 0;
-static int countdown_to_fail = 0; // 0 = off
+#include "./util.h"
+
+
+#include <stdio.h>
 
 typedef struct MemBlock MemBlock;
-struct MemBlock
-{
-    void *ptr_;
-    size_t size_;
-    MemBlock *next_;
+struct MemBlock {
+  void* ptr_;
+  size_t size_;
+  MemBlock* next_;
 };
 
-static MemBlock *all_blocks = NULL;
-static size_t total_mem = 0;
-static size_t total_mem_allocated = 0;
-static size_t high_water_mark = 0;
-static size_t mem_limit = 0;
+#define Increment(v) do {} while (0)
+#define AddMem(p, s) do {} while (0)
+#define SubMem(p)    do {} while (0)
 
-static int exit_registered = 0;
-
-static void PrintMemInfo(void)
-{
-    fprintf(stderr, "\nMEMORY INFO:\n");
-    fprintf(stderr, "num calls to: malloc = %4d\n", num_malloc_calls);
-    fprintf(stderr, "              calloc = %4d\n", num_calloc_calls);
-    fprintf(stderr, "              free   = %4d\n", num_free_calls);
-    fprintf(stderr, "total_mem: %u\n", (uint32_t)total_mem);
-    fprintf(stderr, "total_mem allocated: %u\n", (uint32_t)total_mem_allocated);
-    fprintf(stderr, "high-water mark: %u\n", (uint32_t)high_water_mark);
-    while (all_blocks != NULL)
-    {
-        MemBlock *b = all_blocks;
-        all_blocks = b->next_;
-        free(b);
-    }
-}
-
-static void Increment(int *const v)
-{
-    if (!exit_registered)
-    {
-#if defined(MALLOC_FAIL_AT)
-        {
-            const char *const malloc_fail_at_str = getenv("MALLOC_FAIL_AT");
-            if (malloc_fail_at_str != NULL)
-            {
-                countdown_to_fail = atoi(malloc_fail_at_str);
-            }
-        }
+// Returns 0 in case of overflow of nmemb * size.
+static int CheckSizeArgumentsOverflow(uint64_t nmemb, size_t size) {
+  const uint64_t total_size = nmemb * size;
+  if (nmemb == 0) return 1;
+  if ((uint64_t)size > WEBP_MAX_ALLOCABLE_MEMORY / nmemb) return 0;
+  if (total_size != (size_t)total_size) return 0;
+#if defined(PRINT_MEM_INFO) && defined(MALLOC_FAIL_AT)
+  if (countdown_to_fail > 0 && --countdown_to_fail == 0) {
+    return 0;    // fake fail!
+  }
 #endif
 #if defined(MALLOC_LIMIT)
-        {
-            const char *const malloc_limit_str = getenv("MALLOC_LIMIT");
-            if (malloc_limit_str != NULL)
-            {
-                mem_limit = atoi(malloc_limit_str);
-            }
-        }
-#endif
-        (void)countdown_to_fail;
-        (void)mem_limit;
-        atexit(PrintMemInfo);
-        exit_registered = 1;
+  if (mem_limit > 0) {
+    const uint64_t new_total_mem = (uint64_t)total_mem + total_size;
+    if (new_total_mem != (size_t)new_total_mem ||
+        new_total_mem > mem_limit) {
+      return 0;   // fake fail!
     }
-    ++*v;
-}
+  }
+#endif
 
-void *WebPSafeMalloc(uint64_t nmemb, size_t size)
-{
-    void *ptr;
-    Increment(&num_malloc_calls);
-    if (!CheckSizeArgumentsOverflow(nmemb, size))
-        return NULL;
-    assert(nmemb * size > 0);
-    ptr = malloc((size_t)(nmemb * size));
-    AddMem(ptr, (size_t)(nmemb * size));
-    return ptr;
+  return 1;
 }

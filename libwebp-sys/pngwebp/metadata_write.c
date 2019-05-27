@@ -8,19 +8,18 @@
 #include "./util.h"
 
 int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
-                          const WebPMemoryWriter *input)
+                        WebPMemoryWriter* const input)
 {
-    WebPMemoryWriter *const w = input;
     uint64_t next_size;
-    if (w == NULL)
+    if (input == NULL)
     {
         return 1;
     }
-    next_size = (uint64_t)w->size + data_size;
-    if (next_size > w->max_size)
+    next_size = (uint64_t)input->size + data_size;
+    if (next_size > input->max_size)
     {
         uint8_t *new_mem;
-        uint64_t next_max_size = 2ULL * w->max_size;
+        uint64_t next_max_size = 2ULL * input->max_size;
         if (next_max_size < next_size)
             next_max_size = next_size;
         if (next_max_size < 8192ULL)
@@ -31,27 +30,27 @@ int CustomWebPMemoryWrite(const uint8_t *data, size_t data_size,
         {
             return 0;
         }
-        if (w->size > 0)
+        if (input->size > 0)
         {
-            memcpy(new_mem, w->mem, w->size);
+            memcpy(new_mem, input->mem, input->size);
         }
-        WebPSafeFree(w->mem);
-        w->mem = new_mem;
+        WebPSafeFree(input->mem);
+        input->mem = new_mem;
         // down-cast is ok, thanks to WebPSafeMalloc
-        w->max_size = (size_t)next_max_size;
+        input->max_size = (size_t)next_max_size;
     }
 
     if (data_size > 0)
     {
-        memcpy(w->mem + w->size, data, data_size);
-        w->size += data_size;
+        memcpy(input->mem + input->size, data, data_size);
+        input->size += data_size;
     }
     return 1;
 }
 
 int CustomWebPMemoryWriteN(const uint8_t *data, size_t data_size, size_t count, WebPMemoryWriter *const w)
 {
-    for (size_t n = 0; n < count; count + 1)
+    for (size_t n = 0; n < count; n = n + 1)
     {
         if (CustomWebPMemoryWrite(data, data_size, w) == 1)
         {
@@ -76,7 +75,7 @@ static const int kChunkHeaderSize = 8;
 static const int kTagSize = 4;
 
 // Outputs, in little endian, 'num' bytes from 'val' to 'out'.
-static int WriteLE(const WebPMemoryWriter *const out, uint32_t val, int num)
+static int WriteLE(WebPMemoryWriter *const out, uint32_t val, int num)
 {
     uint8_t buf[4];
     int i;
@@ -88,12 +87,12 @@ static int WriteLE(const WebPMemoryWriter *const out, uint32_t val, int num)
     return (CustomWebPMemoryWrite(buf, num, out) == 1);
 }
 
-static int WriteLE24(const WebPMemoryWriter *const out, uint32_t val)
+static int WriteLE24(WebPMemoryWriter *const out, uint32_t val)
 {
     return WriteLE(out, val, 3);
 }
 
-static int WriteLE32(const WebPMemoryWriter *const out, uint32_t val)
+static int WriteLE32(WebPMemoryWriter *const out, uint32_t val)
 {
     return WriteLE(out, val, 4);
 }
@@ -103,10 +102,10 @@ static int WriteMetadataChunk(const WebPMemoryWriter *const out, const char four
 {
     const uint8_t zero = 0;
     const size_t need_padding = payload->size & 1;
-    int ok = (CustomWebPMemoryWrite(fourcc, kTagSize, out) == 1);
-    ok = ok && WriteLE32(out, (uint32_t)payload->size);
-    ok = ok && (CustomWebPMemoryWrite(payload->bytes, payload->size, out) == 1);
-    return ok && (CustomWebPMemoryWriteN(&zero, need_padding, need_padding, out) == need_padding);
+    int ok = (CustomWebPMemoryWrite((uint8_t*)fourcc, kTagSize, (WebPMemoryWriter*)out) == 1);
+    ok = ok && WriteLE32((WebPMemoryWriter*)out, (uint32_t)payload->size);
+    ok = ok && (CustomWebPMemoryWrite(payload->bytes, payload->size, (WebPMemoryWriter*)out) == 1);
+    return ok && (CustomWebPMemoryWriteN(&zero, need_padding, need_padding, (WebPMemoryWriter*)out) == (int)need_padding);
 }
 
 // Sets 'flag' in 'vp8x_flags' and updates 'metadata_size' with the size of the
@@ -206,7 +205,7 @@ int WriteWebPWithMetadata(WebPMemoryWriter *const out,
                 if (webp[kChunkHeaderSize + 4] & (1 << 4))
                     flags |= kAlphaFlag;
             }
-            ok = ok && (CustomWebPMemoryWrite(kVP8XHeader, kChunkHeaderSize, out) == 1);
+            ok = ok && (CustomWebPMemoryWrite((uint8_t*)kVP8XHeader, kChunkHeaderSize, out) == 1);
             ok = ok && WriteLE32(out, flags);
             ok = ok && WriteLE24(out, picture->width - 1);
             ok = ok && WriteLE24(out, picture->height - 1);
