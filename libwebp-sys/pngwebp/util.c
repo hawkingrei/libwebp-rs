@@ -8,11 +8,6 @@
 
 #include <stdio.h>
 
-static int num_malloc_calls = 0;
-static int num_calloc_calls = 0;
-static int num_free_calls = 0;
-static int countdown_to_fail = 0;     // 0 = off
-
 typedef struct MemBlock MemBlock;
 struct MemBlock {
   void* ptr_;
