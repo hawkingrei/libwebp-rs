@@ -105,7 +105,7 @@ static int WriteMetadataChunk(const WebPMemoryWriter *const out, const char four
     int ok = (CustomWebPMemoryWrite((uint8_t*)fourcc, kTagSize, (WebPMemoryWriter*)out) == 1);
     ok = ok && WriteLE32((WebPMemoryWriter*)out, (uint32_t)payload->size);
     ok = ok && (CustomWebPMemoryWrite(payload->bytes, payload->size, (WebPMemoryWriter*)out) == 1);
-    return ok && (CustomWebPMemoryWriteN(&zero, need_padding, need_padding, (WebPMemoryWriter*)out) == need_padding);
+    return ok && (CustomWebPMemoryWriteN(&zero, need_padding, need_padding, (WebPMemoryWriter*)out) == (int)need_padding);
 }
 
 // Sets 'flag' in 'vp8x_flags' and updates 'metadata_size' with the size of the
