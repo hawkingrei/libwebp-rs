@@ -191,9 +191,12 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
                 "webp WebPGetFeaturesInternal error".to_string(),
             ));
         }
+        // "not support an animated WebP file webp"
         if  1 == ((*bitstream).has_animation) {
-            libwebp_sys::WebPPictureFree(wp);
-            return Err(ImageError::UnsupportedError("not support an animated WebP file webp".to_string()));
+                image_result.pic = data.to_vec();
+                image_result.set_height((*bitstream).height);
+                image_result.set_width((*bitstream).width );
+            return Ok(image_result);
         }
         (*wp).use_argb = (*bitstream).has_alpha;
         (*wp).height = (*bitstream).height as i32;
