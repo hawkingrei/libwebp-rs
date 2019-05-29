@@ -101,7 +101,7 @@ static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
 pub enum ImageError {
     /// The Image is not formatted properly
     FormatError(String),
-
+    
     /// The Decoder does not support this image format
     UnsupportedError(String),
 
