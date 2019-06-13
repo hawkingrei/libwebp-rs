@@ -11,7 +11,7 @@ pub fn png_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
 
         libwebp_sys::WebPPictureAlloc(wp);
 
-        if p.quality() >= 75 {
+        if p.quality() > 0 {
             libwebp_sys::WebPConfigInitInternal(
                 config,
                 libwebp_sys::WebPPreset_WEBP_PRESET_DEFAULT,
