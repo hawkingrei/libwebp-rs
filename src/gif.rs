@@ -3,11 +3,10 @@ use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
 
-use std::ptr;
 use std::convert::TryInto;
+use std::ptr;
 
 use libc;
-
 
 pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
@@ -19,7 +18,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         let mut loop_count: i32 = 0;
         let mut stored_loop_count: i32 = 0;
 
-        let mut webp_data: *mut libwebp_sys::WebPData = &mut libwebp_sys::WebPData{
+        let mut webp_data: *mut libwebp_sys::WebPData = &mut libwebp_sys::WebPData {
             bytes: ptr::null_mut(),
             size: 0,
         };
@@ -29,7 +28,8 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         let mut prev_canvas: libwebp_sys::WebPPicture = Default::default();
         let mut enc_options: libwebp_sys::WebPAnimEncoderOptions = Default::default();
         let mut enc: *mut libwebp_sys::WebPAnimEncoder = ptr::null_mut();
-        let mut mux: *mut libwebp_sys::WebPMux = ptr::null_mut();
+        let mut mux: *mut libwebp_sys::WebPMux =
+            libwebp_sys::WebPNewInternal(libwebp_sys::WEBP_ENCODER_ABI_VERSION);
         let mut orig_dispose: libwebp_sys::GIFDisposeMethod =
             libwebp_sys::GIFDisposeMethod_GIF_DISPOSE_NONE;
         libwebp_sys::PWebPDataInit(webp_data);
@@ -60,7 +60,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         let mut frame_timestamp: i32 = 0;
         let mut frame_number = 0;
         let mut gif_err: i32 = 0;
-        let mut buf_src: *mut  libwebp_sys::BufferSource = &mut libwebp_sys::BufferSource{
+        let mut buf_src: *mut libwebp_sys::BufferSource = &mut libwebp_sys::BufferSource {
             buf: ptr::null_mut(),
             p: ptr::null_mut(),
             remain: 0,
@@ -75,14 +75,18 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         );
         if gif.is_null() {
             //goto end
-            return Err(ImageError::FormatError("jpg encode jpg error 1".to_string()));
+            return Err(ImageError::FormatError(
+                "jpg encode jpg error 1".to_string(),
+            ));
         }
         let mut done = 0;
         loop {
             let mut gtype: libwebp_sys::GifRecordType = 0;
             if libwebp_sys::DGifGetRecordType(gif, &mut gtype) == 0 {
                 //goto End;
-                return Err(ImageError::FormatError("jpg encode jpg error 2".to_string()));
+                return Err(ImageError::FormatError(
+                    "jpg encode jpg error 2".to_string(),
+                ));
             }
 
             match gtype {
@@ -92,7 +96,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
 
                     if libwebp_sys::DGifGetImageDesc(gif) != 0 {
                         //goto end
-                        return Err(ImageError::FormatError("jpg encode jpg error 3".to_string()));
+                        return Err(ImageError::FormatError(
+                            "jpg encode jpg error 3".to_string(),
+                        ));
                     }
                     if frame_number == 0 {
                         if (*gif).SWidth == 0 || (*gif).SHeight == 0 {
@@ -152,7 +158,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                         != 0
                     {
                         //goto end
-                        return Err(ImageError::FormatError("jpg encode jpg error 7".to_string()));
+                        return Err(ImageError::FormatError(
+                            "jpg encode jpg error 7".to_string(),
+                        ));
                     }
 
                     // Blend frame rectangle with previous canvas to compose full canvas.
@@ -167,7 +175,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                     ) != 0
                     {
                         //goto End;
-                        return Err(ImageError::FormatError("jpg encode jpg error 8".to_string()));
+                        return Err(ImageError::FormatError(
+                            "jpg encode jpg error 8".to_string(),
+                        ));
                     } else {
                         frame_number = frame_number + 1;
                     }
@@ -203,7 +213,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                     let mut data: *mut libwebp_sys::GifByteType = ptr::null_mut();
                     if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 0 {
                         // goto end
-                        return Err(ImageError::FormatError("jpg encode jpg error 9".to_string()));
+                        return Err(ImageError::FormatError(
+                            "jpg encode jpg error 9".to_string(),
+                        ));
                     }
                     if (data.is_null()) {
                         continue;
@@ -276,7 +288,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                     done = 1;
                 }
                 _ => {
-                    return Err(ImageError::FormatError("jpg encode jpg error 13".to_string()));
+                    return Err(ImageError::FormatError(
+                        "jpg encode jpg error 13".to_string(),
+                    ));
                 }
             }
             if done == 1 {
@@ -288,7 +302,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
 
         if libwebp_sys::WebPAnimEncoderAssemble(enc, webp_data) != 0 {
             //goto End;
-            return Err(ImageError::FormatError("jpg encode jpg error 14".to_string()));
+            return Err(ImageError::FormatError(
+                "jpg encode jpg error 14".to_string(),
+            ));
         }
 
         if loop_compatibility != 0 {
@@ -318,7 +334,9 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
             );
             if mux.is_null() {
                 //goto End;
-                return Err(ImageError::FormatError("jpg encode jpg error 15".to_string()));
+                return Err(ImageError::FormatError(
+                    "jpg encode jpg error 15".to_string(),
+                ));
             }
             libwebp_sys::PWebPDataClear(webp_data);
 
@@ -327,19 +345,25 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                 let mut err = libwebp_sys::WebPMuxGetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
                     //goto End;
-                    return Err(ImageError::FormatError("jpg encode jpg error 16".to_string()));
+                    return Err(ImageError::FormatError(
+                        "jpg encode jpg error 16".to_string(),
+                    ));
                 }
                 new_params.loop_count = loop_count;
                 err = libwebp_sys::WebPMuxSetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
                     //goto End;
-                    return Err(ImageError::FormatError("jpg encode jpg error 17".to_string()));
+                    return Err(ImageError::FormatError(
+                        "jpg encode jpg error 17".to_string(),
+                    ));
                 }
 
                 err = libwebp_sys::WebPMuxAssemble(mux, webp_data);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
                     //goto End;
-                    return Err(ImageError::FormatError("jpg encode jpg error 18".to_string()));
+                    return Err(ImageError::FormatError(
+                        "jpg encode jpg error 18".to_string(),
+                    ));
                 }
             }
         }
