@@ -57,7 +57,11 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         let mut frame_timestamp: i32 = 0;
         let mut frame_number = 0;
         let mut gif_err: i32 = 0;
-        let mut buf_src: *mut libwebp_sys::BufferSource = ptr::null_mut();
+        let mut buf_src: *mut  libwebp_sys::BufferSource = &mut libwebp_sys::BufferSource{
+            buf: ptr::null_mut(),
+            p: ptr::null_mut(),
+            remain: 0,
+        };
         (*buf_src).buf = data.as_mut_ptr();
         (*buf_src).p = data.as_mut_ptr();
         (*buf_src).remain = data.len().try_into().unwrap();
