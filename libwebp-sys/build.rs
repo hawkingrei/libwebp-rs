@@ -12,7 +12,7 @@ fn generate_bindings() {
         output_path: Path::new(&output_path),
     };
 
-    let headers = ["mux","encode", "decode", "types"];
+    let headers = ["mux", "encode", "decode", "types"];
     generator.generate(&headers)
 }
 

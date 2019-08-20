@@ -3,8 +3,11 @@ use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
 
-use libc;
 use std::ptr;
+use std::convert::TryInto;
+
+use libc;
+
 
 pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
@@ -54,8 +57,12 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         let mut frame_timestamp: i32 = 0;
         let mut frame_number = 0;
         let mut gif_err: i32 = 0;
+        let mut buf_src: *mut libwebp_sys::BufferSource = ptr::null_mut();
+        (*buf_src).buf = data.as_mut_ptr();
+        (*buf_src).p = data.as_mut_ptr();
+        (*buf_src).remain = data.len().try_into().unwrap();
         let gif: *mut libwebp_sys::GifFileType = libwebp_sys::DGifOpen(
-            data.as_mut_ptr() as *mut core::ffi::c_void,
+            buf_src as *mut core::ffi::c_void,
             Some(libwebp_sys::readGifBuffer),
             &mut gif_err,
         );

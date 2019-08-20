@@ -4,10 +4,10 @@ use std::fs;
 
 use imagers::ImageFormat;
 
+use imagers::gif_encode_webp;
 use imagers::jpg_encode_webp;
 use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
-use imagers::gif_encode_webp;
 use imagers::Crop;
 use imagers::ImageHandlerBuilder;
 use imagers::RegionCrop;
