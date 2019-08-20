@@ -198,7 +198,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                 libwebp_sys::GifRecordType_EXTENSION_RECORD_TYPE => {
                     let mut extension: i32 = 0;
                     let mut data: *mut libwebp_sys::GifByteType = ptr::null_mut();
-                    if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 1 {
+                    if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 0 {
                         // goto end
                         return Err(ImageError::FormatError("jpg encode jpg error 9".to_string()));
                     }
