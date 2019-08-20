@@ -19,7 +19,10 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         let mut loop_count: i32 = 0;
         let mut stored_loop_count: i32 = 0;
 
-        let mut webp_data: *mut libwebp_sys::WebPData = ptr::null_mut();
+        let mut webp_data: *mut libwebp_sys::WebPData = &mut libwebp_sys::WebPData{
+            bytes: ptr::null_mut(),
+            size: 0,
+        };
         let config: *mut libwebp_sys::WebPConfig = &mut Default::default();
         let mut frame: libwebp_sys::WebPPicture = Default::default();
         let mut curr_canvas: libwebp_sys::WebPPicture = Default::default();
