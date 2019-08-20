@@ -7,6 +7,7 @@ use imagers::ImageFormat;
 use imagers::jpg_encode_webp;
 use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
+use imagers::gif_encode_webp;
 use imagers::Crop;
 use imagers::ImageHandlerBuilder;
 use imagers::RegionCrop;
@@ -113,7 +114,7 @@ fn main() {
         })
         .finish();
 
-    let data = fs::read(input).unwrap();
+    let mut data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(&data).unwrap();
     loop {
         match ptype {
@@ -141,7 +142,13 @@ fn main() {
                     fs::write(output, result.pic).unwrap();
                 }
             }
-            _ => println!("not support "),
+            ImageFormat::GIF => {
+                let result = gif_encode_webp(&mut data.clone(), param).unwrap();
+                if !profile {
+                    fs::write(output, result.pic).unwrap();
+                }
+            }
+            _ => println!("not support"),
         }
         if !profile {
             break;

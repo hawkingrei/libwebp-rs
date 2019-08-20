@@ -2,21 +2,20 @@
 
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct __BindgenBitfieldUnit<Storage, Align>
-where
-    Storage: AsRef<[u8]> + AsMut<[u8]>,
-{
+pub struct __BindgenBitfieldUnit<Storage, Align> {
     storage: Storage,
     align: [Align; 0],
+}
+impl<Storage, Align> __BindgenBitfieldUnit<Storage, Align> {
+    #[inline]
+    pub const fn new(storage: Storage) -> Self {
+        Self { storage, align: [] }
+    }
 }
 impl<Storage, Align> __BindgenBitfieldUnit<Storage, Align>
 where
     Storage: AsRef<[u8]> + AsMut<[u8]>,
 {
-    #[inline]
-    pub fn new(storage: Storage) -> Self {
-        Self { storage, align: [] }
-    }
     #[inline]
     pub fn get_bit(&self, index: usize) -> bool {
         debug_assert!(index / 8 < self.storage.as_ref().len());
@@ -82,8 +81,6 @@ where
         }
     }
 }
-pub type wchar_t = ::std::os::raw::c_int;
-pub type max_align_t = u128;
 pub type __int8_t = ::std::os::raw::c_schar;
 pub type __uint8_t = ::std::os::raw::c_uchar;
 pub type __int16_t = ::std::os::raw::c_short;
@@ -650,22 +647,13 @@ pub type __darwin_pthread_t = *mut _opaque_pthread_t;
 pub type __darwin_nl_item = ::std::os::raw::c_int;
 pub type __darwin_wctrans_t = ::std::os::raw::c_int;
 pub type __darwin_wctype_t = __uint32_t;
-pub type int_least8_t = i8;
-pub type int_least16_t = i16;
-pub type int_least32_t = i32;
-pub type int_least64_t = i64;
-pub type uint_least8_t = u8;
-pub type uint_least16_t = u16;
-pub type uint_least32_t = u32;
-pub type uint_least64_t = u64;
-pub type int_fast8_t = i8;
-pub type int_fast16_t = i16;
-pub type int_fast32_t = i32;
-pub type int_fast64_t = i64;
-pub type uint_fast8_t = u8;
-pub type uint_fast16_t = u16;
-pub type uint_fast32_t = u32;
-pub type uint_fast64_t = u64;
+pub const idtype_t_P_ALL: idtype_t = 0;
+pub const idtype_t_P_PID: idtype_t = 1;
+pub const idtype_t_P_PGID: idtype_t = 2;
+pub type idtype_t = u32;
+pub type pid_t = __darwin_pid_t;
+pub type id_t = __darwin_id_t;
+pub type sig_atomic_t = ::std::os::raw::c_int;
 pub type u_int8_t = ::std::os::raw::c_uchar;
 pub type u_int16_t = ::std::os::raw::c_ushort;
 pub type u_int32_t = ::std::os::raw::c_uint;
@@ -679,2409 +667,6 @@ pub type user_ulong_t = u_int64_t;
 pub type user_time_t = i64;
 pub type user_off_t = i64;
 pub type syscall_arg_t = u_int64_t;
-pub type intmax_t = ::std::os::raw::c_long;
-pub type uintmax_t = ::std::os::raw::c_ulong;
-extern "C" {
-    #[link_name = "\u{1}_imaxabs"]
-    pub fn imaxabs(j: intmax_t) -> intmax_t;
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone)]
-pub struct imaxdiv_t {
-    pub quot: intmax_t,
-    pub rem: intmax_t,
-}
-#[test]
-fn bindgen_test_layout_imaxdiv_t() {
-    assert_eq!(
-        ::std::mem::size_of::<imaxdiv_t>(),
-        16usize,
-        concat!("Size of: ", stringify!(imaxdiv_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<imaxdiv_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(imaxdiv_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<imaxdiv_t>())).quot as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(imaxdiv_t),
-            "::",
-            stringify!(quot)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<imaxdiv_t>())).rem as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(imaxdiv_t),
-            "::",
-            stringify!(rem)
-        )
-    );
-}
-extern "C" {
-    #[link_name = "\u{1}_imaxdiv"]
-    pub fn imaxdiv(__numer: intmax_t, __denom: intmax_t) -> imaxdiv_t;
-}
-extern "C" {
-    #[link_name = "\u{1}_strtoimax"]
-    pub fn strtoimax(
-        __nptr: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> intmax_t;
-}
-extern "C" {
-    #[link_name = "\u{1}_strtoumax"]
-    pub fn strtoumax(
-        __nptr: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> uintmax_t;
-}
-extern "C" {
-    #[link_name = "\u{1}_wcstoimax"]
-    pub fn wcstoimax(
-        __nptr: *const wchar_t,
-        __endptr: *mut *mut wchar_t,
-        __base: ::std::os::raw::c_int,
-    ) -> intmax_t;
-}
-extern "C" {
-    #[link_name = "\u{1}_wcstoumax"]
-    pub fn wcstoumax(
-        __nptr: *const wchar_t,
-        __endptr: *mut *mut wchar_t,
-        __base: ::std::os::raw::c_int,
-    ) -> uintmax_t;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPGetEncoderVersion"]
-    pub fn WebPGetEncoderVersion() -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeRGB"]
-    pub fn WebPEncodeRGB(
-        rgb: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        quality_factor: f32,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeBGR"]
-    pub fn WebPEncodeBGR(
-        bgr: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        quality_factor: f32,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeRGBA"]
-    pub fn WebPEncodeRGBA(
-        rgba: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        quality_factor: f32,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeBGRA"]
-    pub fn WebPEncodeBGRA(
-        bgra: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        quality_factor: f32,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeLosslessRGB"]
-    pub fn WebPEncodeLosslessRGB(
-        rgb: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeLosslessBGR"]
-    pub fn WebPEncodeLosslessBGR(
-        bgr: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeLosslessRGBA"]
-    pub fn WebPEncodeLosslessRGBA(
-        rgba: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncodeLosslessBGRA"]
-    pub fn WebPEncodeLosslessBGRA(
-        bgra: *const u8,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        stride: ::std::os::raw::c_int,
-        output: *mut *mut u8,
-    ) -> usize;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPFree"]
-    pub fn WebPFree(ptr: *mut ::std::os::raw::c_void);
-}
-pub const WebPImageHint_WEBP_HINT_DEFAULT: WebPImageHint = 0;
-pub const WebPImageHint_WEBP_HINT_PICTURE: WebPImageHint = 1;
-pub const WebPImageHint_WEBP_HINT_PHOTO: WebPImageHint = 2;
-pub const WebPImageHint_WEBP_HINT_GRAPH: WebPImageHint = 3;
-pub const WebPImageHint_WEBP_HINT_LAST: WebPImageHint = 4;
-pub type WebPImageHint = u32;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct WebPConfig {
-    pub lossless: ::std::os::raw::c_int,
-    pub quality: f32,
-    pub method: ::std::os::raw::c_int,
-    pub image_hint: WebPImageHint,
-    pub target_size: ::std::os::raw::c_int,
-    pub target_PSNR: f32,
-    pub segments: ::std::os::raw::c_int,
-    pub sns_strength: ::std::os::raw::c_int,
-    pub filter_strength: ::std::os::raw::c_int,
-    pub filter_sharpness: ::std::os::raw::c_int,
-    pub filter_type: ::std::os::raw::c_int,
-    pub autofilter: ::std::os::raw::c_int,
-    pub alpha_compression: ::std::os::raw::c_int,
-    pub alpha_filtering: ::std::os::raw::c_int,
-    pub alpha_quality: ::std::os::raw::c_int,
-    pub pass: ::std::os::raw::c_int,
-    pub show_compressed: ::std::os::raw::c_int,
-    pub preprocessing: ::std::os::raw::c_int,
-    pub partitions: ::std::os::raw::c_int,
-    pub partition_limit: ::std::os::raw::c_int,
-    pub emulate_jpeg_size: ::std::os::raw::c_int,
-    pub thread_level: ::std::os::raw::c_int,
-    pub low_memory: ::std::os::raw::c_int,
-    pub near_lossless: ::std::os::raw::c_int,
-    pub exact: ::std::os::raw::c_int,
-    pub use_delta_palette: ::std::os::raw::c_int,
-    pub use_sharp_yuv: ::std::os::raw::c_int,
-    pub pad: [u32; 2usize],
-}
-#[test]
-fn bindgen_test_layout_WebPConfig() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPConfig>(),
-        116usize,
-        concat!("Size of: ", stringify!(WebPConfig))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPConfig>(),
-        4usize,
-        concat!("Alignment of ", stringify!(WebPConfig))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).lossless as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(lossless)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).quality as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(quality)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).method as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(method)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).image_hint as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(image_hint)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).target_size as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(target_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).target_PSNR as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(target_PSNR)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).segments as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(segments)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).sns_strength as *const _ as usize },
-        28usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(sns_strength)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).filter_strength as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(filter_strength)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).filter_sharpness as *const _ as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(filter_sharpness)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).filter_type as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(filter_type)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).autofilter as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(autofilter)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).alpha_compression as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(alpha_compression)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).alpha_filtering as *const _ as usize },
-        52usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(alpha_filtering)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).alpha_quality as *const _ as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(alpha_quality)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).pass as *const _ as usize },
-        60usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(pass)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).show_compressed as *const _ as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(show_compressed)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).preprocessing as *const _ as usize },
-        68usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(preprocessing)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).partitions as *const _ as usize },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(partitions)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).partition_limit as *const _ as usize },
-        76usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(partition_limit)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).emulate_jpeg_size as *const _ as usize },
-        80usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(emulate_jpeg_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).thread_level as *const _ as usize },
-        84usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(thread_level)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).low_memory as *const _ as usize },
-        88usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(low_memory)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).near_lossless as *const _ as usize },
-        92usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(near_lossless)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).exact as *const _ as usize },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(exact)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).use_delta_palette as *const _ as usize },
-        100usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(use_delta_palette)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).use_sharp_yuv as *const _ as usize },
-        104usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(use_sharp_yuv)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPConfig>())).pad as *const _ as usize },
-        108usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPConfig),
-            "::",
-            stringify!(pad)
-        )
-    );
-}
-impl Default for WebPConfig {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub const WebPPreset_WEBP_PRESET_DEFAULT: WebPPreset = 0;
-pub const WebPPreset_WEBP_PRESET_PICTURE: WebPPreset = 1;
-pub const WebPPreset_WEBP_PRESET_PHOTO: WebPPreset = 2;
-pub const WebPPreset_WEBP_PRESET_DRAWING: WebPPreset = 3;
-pub const WebPPreset_WEBP_PRESET_ICON: WebPPreset = 4;
-pub const WebPPreset_WEBP_PRESET_TEXT: WebPPreset = 5;
-pub type WebPPreset = u32;
-extern "C" {
-    #[link_name = "\u{1}_WebPConfigInitInternal"]
-    pub fn WebPConfigInitInternal(
-        arg1: *mut WebPConfig,
-        arg2: WebPPreset,
-        arg3: f32,
-        arg4: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPConfigLosslessPreset"]
-    pub fn WebPConfigLosslessPreset(
-        config: *mut WebPConfig,
-        level: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPValidateConfig"]
-    pub fn WebPValidateConfig(config: *const WebPConfig) -> ::std::os::raw::c_int;
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone)]
-pub struct WebPAuxStats {
-    pub coded_size: ::std::os::raw::c_int,
-    pub PSNR: [f32; 5usize],
-    pub block_count: [::std::os::raw::c_int; 3usize],
-    pub header_bytes: [::std::os::raw::c_int; 2usize],
-    pub residual_bytes: [[::std::os::raw::c_int; 4usize]; 3usize],
-    pub segment_size: [::std::os::raw::c_int; 4usize],
-    pub segment_quant: [::std::os::raw::c_int; 4usize],
-    pub segment_level: [::std::os::raw::c_int; 4usize],
-    pub alpha_data_size: ::std::os::raw::c_int,
-    pub layer_data_size: ::std::os::raw::c_int,
-    pub lossless_features: u32,
-    pub histogram_bits: ::std::os::raw::c_int,
-    pub transform_bits: ::std::os::raw::c_int,
-    pub cache_bits: ::std::os::raw::c_int,
-    pub palette_size: ::std::os::raw::c_int,
-    pub lossless_size: ::std::os::raw::c_int,
-    pub lossless_hdr_size: ::std::os::raw::c_int,
-    pub lossless_data_size: ::std::os::raw::c_int,
-    pub pad: [u32; 2usize],
-}
-#[test]
-fn bindgen_test_layout_WebPAuxStats() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPAuxStats>(),
-        188usize,
-        concat!("Size of: ", stringify!(WebPAuxStats))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPAuxStats>(),
-        4usize,
-        concat!("Alignment of ", stringify!(WebPAuxStats))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).coded_size as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(coded_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).PSNR as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(PSNR)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).block_count as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(block_count)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).header_bytes as *const _ as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(header_bytes)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).residual_bytes as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(residual_bytes)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).segment_size as *const _ as usize },
-        92usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(segment_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).segment_quant as *const _ as usize },
-        108usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(segment_quant)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).segment_level as *const _ as usize },
-        124usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(segment_level)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).alpha_data_size as *const _ as usize },
-        140usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(alpha_data_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).layer_data_size as *const _ as usize },
-        144usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(layer_data_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_features as *const _ as usize },
-        148usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(lossless_features)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).histogram_bits as *const _ as usize },
-        152usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(histogram_bits)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).transform_bits as *const _ as usize },
-        156usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(transform_bits)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).cache_bits as *const _ as usize },
-        160usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(cache_bits)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).palette_size as *const _ as usize },
-        164usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(palette_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_size as *const _ as usize },
-        168usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(lossless_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_hdr_size as *const _ as usize },
-        172usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(lossless_hdr_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_data_size as *const _ as usize },
-        176usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(lossless_data_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).pad as *const _ as usize },
-        180usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPAuxStats),
-            "::",
-            stringify!(pad)
-        )
-    );
-}
-pub type WebPWriterFunction = ::std::option::Option<
-    unsafe extern "C" fn(
-        data: *const u8,
-        data_size: usize,
-        picture: *const WebPPicture,
-    ) -> ::std::os::raw::c_int,
->;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct WebPMemoryWriter {
-    pub mem: *mut u8,
-    pub size: usize,
-    pub max_size: usize,
-    pub pad: [u32; 1usize],
-}
-#[test]
-fn bindgen_test_layout_WebPMemoryWriter() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPMemoryWriter>(),
-        32usize,
-        concat!("Size of: ", stringify!(WebPMemoryWriter))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPMemoryWriter>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPMemoryWriter))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).mem as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPMemoryWriter),
-            "::",
-            stringify!(mem)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).size as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPMemoryWriter),
-            "::",
-            stringify!(size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).max_size as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPMemoryWriter),
-            "::",
-            stringify!(max_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).pad as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPMemoryWriter),
-            "::",
-            stringify!(pad)
-        )
-    );
-}
-impl Default for WebPMemoryWriter {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPMemoryWriterInit"]
-    pub fn WebPMemoryWriterInit(writer: *mut WebPMemoryWriter);
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPMemoryWriterClear"]
-    pub fn WebPMemoryWriterClear(writer: *mut WebPMemoryWriter);
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPMemoryWrite"]
-    pub fn WebPMemoryWrite(
-        data: *const u8,
-        data_size: usize,
-        picture: *const WebPPicture,
-    ) -> ::std::os::raw::c_int;
-}
-pub type WebPProgressHook = ::std::option::Option<
-    unsafe extern "C" fn(
-        percent: ::std::os::raw::c_int,
-        picture: *const WebPPicture,
-    ) -> ::std::os::raw::c_int,
->;
-pub const WebPEncCSP_WEBP_YUV420: WebPEncCSP = 0;
-pub const WebPEncCSP_WEBP_YUV420A: WebPEncCSP = 4;
-pub const WebPEncCSP_WEBP_CSP_UV_MASK: WebPEncCSP = 3;
-pub const WebPEncCSP_WEBP_CSP_ALPHA_BIT: WebPEncCSP = 4;
-pub type WebPEncCSP = u32;
-pub const WebPEncodingError_VP8_ENC_OK: WebPEncodingError = 0;
-pub const WebPEncodingError_VP8_ENC_ERROR_OUT_OF_MEMORY: WebPEncodingError = 1;
-pub const WebPEncodingError_VP8_ENC_ERROR_BITSTREAM_OUT_OF_MEMORY: WebPEncodingError = 2;
-pub const WebPEncodingError_VP8_ENC_ERROR_NULL_PARAMETER: WebPEncodingError = 3;
-pub const WebPEncodingError_VP8_ENC_ERROR_INVALID_CONFIGURATION: WebPEncodingError = 4;
-pub const WebPEncodingError_VP8_ENC_ERROR_BAD_DIMENSION: WebPEncodingError = 5;
-pub const WebPEncodingError_VP8_ENC_ERROR_PARTITION0_OVERFLOW: WebPEncodingError = 6;
-pub const WebPEncodingError_VP8_ENC_ERROR_PARTITION_OVERFLOW: WebPEncodingError = 7;
-pub const WebPEncodingError_VP8_ENC_ERROR_BAD_WRITE: WebPEncodingError = 8;
-pub const WebPEncodingError_VP8_ENC_ERROR_FILE_TOO_BIG: WebPEncodingError = 9;
-pub const WebPEncodingError_VP8_ENC_ERROR_USER_ABORT: WebPEncodingError = 10;
-pub const WebPEncodingError_VP8_ENC_ERROR_LAST: WebPEncodingError = 11;
-pub type WebPEncodingError = u32;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct WebPPicture {
-    #[doc = ""]
-    pub use_argb: ::std::os::raw::c_int,
-    pub colorspace: WebPEncCSP,
-    pub width: ::std::os::raw::c_int,
-    pub height: ::std::os::raw::c_int,
-    pub y: *mut u8,
-    pub u: *mut u8,
-    pub v: *mut u8,
-    pub y_stride: ::std::os::raw::c_int,
-    pub uv_stride: ::std::os::raw::c_int,
-    pub a: *mut u8,
-    pub a_stride: ::std::os::raw::c_int,
-    pub pad1: [u32; 2usize],
-    pub argb: *mut u32,
-    pub argb_stride: ::std::os::raw::c_int,
-    pub pad2: [u32; 3usize],
-    #[doc = ""]
-    pub writer: WebPWriterFunction,
-    pub custom_ptr: *mut ::std::os::raw::c_void,
-    pub extra_info_type: ::std::os::raw::c_int,
-    pub extra_info: *mut u8,
-    #[doc = ""]
-    pub stats: *mut WebPAuxStats,
-    pub error_code: WebPEncodingError,
-    pub progress_hook: WebPProgressHook,
-    pub user_data: *mut ::std::os::raw::c_void,
-    pub pad3: [u32; 3usize],
-    pub pad4: *mut u8,
-    pub pad5: *mut u8,
-    pub pad6: [u32; 8usize],
-    #[doc = ""]
-    pub memory_: *mut ::std::os::raw::c_void,
-    pub memory_argb_: *mut ::std::os::raw::c_void,
-    pub pad7: [*mut ::std::os::raw::c_void; 2usize],
-}
-#[test]
-fn bindgen_test_layout_WebPPicture() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPPicture>(),
-        256usize,
-        concat!("Size of: ", stringify!(WebPPicture))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPPicture>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPPicture))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).use_argb as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(use_argb)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).colorspace as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(colorspace)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).width as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).height as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(height)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).y as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(y)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).u as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(u)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).v as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(v)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).y_stride as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(y_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).uv_stride as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(uv_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).a as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(a)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).a_stride as *const _ as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(a_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad1 as *const _ as usize },
-        60usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad1)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).argb as *const _ as usize },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(argb)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).argb_stride as *const _ as usize },
-        80usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(argb_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad2 as *const _ as usize },
-        84usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad2)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).writer as *const _ as usize },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(writer)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).custom_ptr as *const _ as usize },
-        104usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(custom_ptr)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).extra_info_type as *const _ as usize },
-        112usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(extra_info_type)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).extra_info as *const _ as usize },
-        120usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(extra_info)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).stats as *const _ as usize },
-        128usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(stats)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).error_code as *const _ as usize },
-        136usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(error_code)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).progress_hook as *const _ as usize },
-        144usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(progress_hook)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).user_data as *const _ as usize },
-        152usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(user_data)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad3 as *const _ as usize },
-        160usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad3)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad4 as *const _ as usize },
-        176usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad4)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad5 as *const _ as usize },
-        184usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad5)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad6 as *const _ as usize },
-        192usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad6)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).memory_ as *const _ as usize },
-        224usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(memory_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).memory_argb_ as *const _ as usize },
-        232usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(memory_argb_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad7 as *const _ as usize },
-        240usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPPicture),
-            "::",
-            stringify!(pad7)
-        )
-    );
-}
-impl Default for WebPPicture {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureInitInternal"]
-    pub fn WebPPictureInitInternal(
-        arg1: *mut WebPPicture,
-        arg2: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureAlloc"]
-    pub fn WebPPictureAlloc(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureFree"]
-    pub fn WebPPictureFree(picture: *mut WebPPicture);
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureCopy"]
-    pub fn WebPPictureCopy(src: *const WebPPicture, dst: *mut WebPPicture)
-        -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPlaneDistortion"]
-    pub fn WebPPlaneDistortion(
-        src: *const u8,
-        src_stride: usize,
-        ref_: *const u8,
-        ref_stride: usize,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        x_step: usize,
-        type_: ::std::os::raw::c_int,
-        distortion: *mut f32,
-        result: *mut f32,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureDistortion"]
-    pub fn WebPPictureDistortion(
-        src: *const WebPPicture,
-        ref_: *const WebPPicture,
-        metric_type: ::std::os::raw::c_int,
-        result: *mut f32,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureCrop"]
-    pub fn WebPPictureCrop(
-        picture: *mut WebPPicture,
-        left: ::std::os::raw::c_int,
-        top: ::std::os::raw::c_int,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureView"]
-    pub fn WebPPictureView(
-        src: *const WebPPicture,
-        left: ::std::os::raw::c_int,
-        top: ::std::os::raw::c_int,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-        dst: *mut WebPPicture,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureIsView"]
-    pub fn WebPPictureIsView(picture: *const WebPPicture) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureRescale"]
-    pub fn WebPPictureRescale(
-        pic: *mut WebPPicture,
-        width: ::std::os::raw::c_int,
-        height: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureImportRGB"]
-    pub fn WebPPictureImportRGB(
-        picture: *mut WebPPicture,
-        rgb: *const u8,
-        rgb_stride: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureImportRGBA"]
-    pub fn WebPPictureImportRGBA(
-        picture: *mut WebPPicture,
-        rgba: *const u8,
-        rgba_stride: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureImportRGBX"]
-    pub fn WebPPictureImportRGBX(
-        picture: *mut WebPPicture,
-        rgbx: *const u8,
-        rgbx_stride: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureImportBGR"]
-    pub fn WebPPictureImportBGR(
-        picture: *mut WebPPicture,
-        bgr: *const u8,
-        bgr_stride: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureImportBGRA"]
-    pub fn WebPPictureImportBGRA(
-        picture: *mut WebPPicture,
-        bgra: *const u8,
-        bgra_stride: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureImportBGRX"]
-    pub fn WebPPictureImportBGRX(
-        picture: *mut WebPPicture,
-        bgrx: *const u8,
-        bgrx_stride: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureARGBToYUVA"]
-    pub fn WebPPictureARGBToYUVA(
-        picture: *mut WebPPicture,
-        arg1: WebPEncCSP,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureARGBToYUVADithered"]
-    pub fn WebPPictureARGBToYUVADithered(
-        picture: *mut WebPPicture,
-        colorspace: WebPEncCSP,
-        dithering: f32,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureSharpARGBToYUVA"]
-    pub fn WebPPictureSharpARGBToYUVA(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureSmartARGBToYUVA"]
-    pub fn WebPPictureSmartARGBToYUVA(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureYUVAToARGB"]
-    pub fn WebPPictureYUVAToARGB(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPCleanupTransparentArea"]
-    pub fn WebPCleanupTransparentArea(picture: *mut WebPPicture);
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPPictureHasTransparency"]
-    pub fn WebPPictureHasTransparency(picture: *const WebPPicture) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPBlendAlpha"]
-    pub fn WebPBlendAlpha(pic: *mut WebPPicture, background_rgb: u32);
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPEncode"]
-    pub fn WebPEncode(
-        config: *const WebPConfig,
-        picture: *mut WebPPicture,
-    ) -> ::std::os::raw::c_int;
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct WebPIDecoder {
-    _unused: [u8; 0],
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPGetDecoderVersion"]
-    pub fn WebPGetDecoderVersion() -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPGetInfo"]
-    pub fn WebPGetInfo(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeRGBA"]
-    pub fn WebPDecodeRGBA(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeARGB"]
-    pub fn WebPDecodeARGB(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeBGRA"]
-    pub fn WebPDecodeBGRA(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeRGB"]
-    pub fn WebPDecodeRGB(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeBGR"]
-    pub fn WebPDecodeBGR(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeYUV"]
-    pub fn WebPDecodeYUV(
-        data: *const u8,
-        data_size: usize,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-        u: *mut *mut u8,
-        v: *mut *mut u8,
-        stride: *mut ::std::os::raw::c_int,
-        uv_stride: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeRGBAInto"]
-    pub fn WebPDecodeRGBAInto(
-        data: *const u8,
-        data_size: usize,
-        output_buffer: *mut u8,
-        output_buffer_size: usize,
-        output_stride: ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeARGBInto"]
-    pub fn WebPDecodeARGBInto(
-        data: *const u8,
-        data_size: usize,
-        output_buffer: *mut u8,
-        output_buffer_size: usize,
-        output_stride: ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeBGRAInto"]
-    pub fn WebPDecodeBGRAInto(
-        data: *const u8,
-        data_size: usize,
-        output_buffer: *mut u8,
-        output_buffer_size: usize,
-        output_stride: ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeRGBInto"]
-    pub fn WebPDecodeRGBInto(
-        data: *const u8,
-        data_size: usize,
-        output_buffer: *mut u8,
-        output_buffer_size: usize,
-        output_stride: ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeBGRInto"]
-    pub fn WebPDecodeBGRInto(
-        data: *const u8,
-        data_size: usize,
-        output_buffer: *mut u8,
-        output_buffer_size: usize,
-        output_stride: ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecodeYUVInto"]
-    pub fn WebPDecodeYUVInto(
-        data: *const u8,
-        data_size: usize,
-        luma: *mut u8,
-        luma_size: usize,
-        luma_stride: ::std::os::raw::c_int,
-        u: *mut u8,
-        u_size: usize,
-        u_stride: ::std::os::raw::c_int,
-        v: *mut u8,
-        v_size: usize,
-        v_stride: ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-pub const WEBP_CSP_MODE_MODE_RGB: WEBP_CSP_MODE = 0;
-pub const WEBP_CSP_MODE_MODE_RGBA: WEBP_CSP_MODE = 1;
-pub const WEBP_CSP_MODE_MODE_BGR: WEBP_CSP_MODE = 2;
-pub const WEBP_CSP_MODE_MODE_BGRA: WEBP_CSP_MODE = 3;
-pub const WEBP_CSP_MODE_MODE_ARGB: WEBP_CSP_MODE = 4;
-pub const WEBP_CSP_MODE_MODE_RGBA_4444: WEBP_CSP_MODE = 5;
-pub const WEBP_CSP_MODE_MODE_RGB_565: WEBP_CSP_MODE = 6;
-pub const WEBP_CSP_MODE_MODE_rgbA: WEBP_CSP_MODE = 7;
-pub const WEBP_CSP_MODE_MODE_bgrA: WEBP_CSP_MODE = 8;
-pub const WEBP_CSP_MODE_MODE_Argb: WEBP_CSP_MODE = 9;
-pub const WEBP_CSP_MODE_MODE_rgbA_4444: WEBP_CSP_MODE = 10;
-pub const WEBP_CSP_MODE_MODE_YUV: WEBP_CSP_MODE = 11;
-pub const WEBP_CSP_MODE_MODE_YUVA: WEBP_CSP_MODE = 12;
-pub const WEBP_CSP_MODE_MODE_LAST: WEBP_CSP_MODE = 13;
-pub type WEBP_CSP_MODE = u32;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct WebPRGBABuffer {
-    pub rgba: *mut u8,
-    pub stride: ::std::os::raw::c_int,
-    pub size: usize,
-}
-#[test]
-fn bindgen_test_layout_WebPRGBABuffer() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPRGBABuffer>(),
-        24usize,
-        concat!("Size of: ", stringify!(WebPRGBABuffer))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPRGBABuffer>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPRGBABuffer))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPRGBABuffer>())).rgba as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPRGBABuffer),
-            "::",
-            stringify!(rgba)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPRGBABuffer>())).stride as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPRGBABuffer),
-            "::",
-            stringify!(stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPRGBABuffer>())).size as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPRGBABuffer),
-            "::",
-            stringify!(size)
-        )
-    );
-}
-impl Default for WebPRGBABuffer {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct WebPYUVABuffer {
-    pub y: *mut u8,
-    pub u: *mut u8,
-    pub v: *mut u8,
-    pub a: *mut u8,
-    pub y_stride: ::std::os::raw::c_int,
-    pub u_stride: ::std::os::raw::c_int,
-    pub v_stride: ::std::os::raw::c_int,
-    pub a_stride: ::std::os::raw::c_int,
-    pub y_size: usize,
-    pub u_size: usize,
-    pub v_size: usize,
-    pub a_size: usize,
-}
-#[test]
-fn bindgen_test_layout_WebPYUVABuffer() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPYUVABuffer>(),
-        80usize,
-        concat!("Size of: ", stringify!(WebPYUVABuffer))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPYUVABuffer>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPYUVABuffer))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).y as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(y)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).u as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(u)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).v as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(v)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).a as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(a)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).y_stride as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(y_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).u_stride as *const _ as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(u_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).v_stride as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(v_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).a_stride as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(a_stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).y_size as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(y_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).u_size as *const _ as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(u_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).v_size as *const _ as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(v_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).a_size as *const _ as usize },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPYUVABuffer),
-            "::",
-            stringify!(a_size)
-        )
-    );
-}
-impl Default for WebPYUVABuffer {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct WebPDecBuffer {
-    pub colorspace: WEBP_CSP_MODE,
-    pub width: ::std::os::raw::c_int,
-    pub height: ::std::os::raw::c_int,
-    pub is_external_memory: ::std::os::raw::c_int,
-    pub u: WebPDecBuffer__bindgen_ty_1,
-    pub pad: [u32; 4usize],
-    pub private_memory: *mut u8,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union WebPDecBuffer__bindgen_ty_1 {
-    pub RGBA: WebPRGBABuffer,
-    pub YUVA: WebPYUVABuffer,
-    _bindgen_union_align: [u64; 10usize],
-}
-#[test]
-fn bindgen_test_layout_WebPDecBuffer__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPDecBuffer__bindgen_ty_1>(),
-        80usize,
-        concat!("Size of: ", stringify!(WebPDecBuffer__bindgen_ty_1))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPDecBuffer__bindgen_ty_1>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPDecBuffer__bindgen_ty_1))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecBuffer__bindgen_ty_1>())).RGBA as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer__bindgen_ty_1),
-            "::",
-            stringify!(RGBA)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecBuffer__bindgen_ty_1>())).YUVA as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer__bindgen_ty_1),
-            "::",
-            stringify!(YUVA)
-        )
-    );
-}
-impl Default for WebPDecBuffer__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_WebPDecBuffer() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPDecBuffer>(),
-        120usize,
-        concat!("Size of: ", stringify!(WebPDecBuffer))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPDecBuffer>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPDecBuffer))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).colorspace as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(colorspace)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).width as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).height as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(height)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecBuffer>())).is_external_memory as *const _ as usize
-        },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(is_external_memory)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).u as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(u)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).pad as *const _ as usize },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(pad)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).private_memory as *const _ as usize },
-        112usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecBuffer),
-            "::",
-            stringify!(private_memory)
-        )
-    );
-}
-impl Default for WebPDecBuffer {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPInitDecBufferInternal"]
-    pub fn WebPInitDecBufferInternal(
-        arg1: *mut WebPDecBuffer,
-        arg2: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPFreeDecBuffer"]
-    pub fn WebPFreeDecBuffer(buffer: *mut WebPDecBuffer);
-}
-pub const VP8StatusCode_VP8_STATUS_OK: VP8StatusCode = 0;
-pub const VP8StatusCode_VP8_STATUS_OUT_OF_MEMORY: VP8StatusCode = 1;
-pub const VP8StatusCode_VP8_STATUS_INVALID_PARAM: VP8StatusCode = 2;
-pub const VP8StatusCode_VP8_STATUS_BITSTREAM_ERROR: VP8StatusCode = 3;
-pub const VP8StatusCode_VP8_STATUS_UNSUPPORTED_FEATURE: VP8StatusCode = 4;
-pub const VP8StatusCode_VP8_STATUS_SUSPENDED: VP8StatusCode = 5;
-pub const VP8StatusCode_VP8_STATUS_USER_ABORT: VP8StatusCode = 6;
-pub const VP8StatusCode_VP8_STATUS_NOT_ENOUGH_DATA: VP8StatusCode = 7;
-pub type VP8StatusCode = u32;
-extern "C" {
-    #[link_name = "\u{1}_WebPINewDecoder"]
-    pub fn WebPINewDecoder(output_buffer: *mut WebPDecBuffer) -> *mut WebPIDecoder;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPINewRGB"]
-    pub fn WebPINewRGB(
-        csp: WEBP_CSP_MODE,
-        output_buffer: *mut u8,
-        output_buffer_size: usize,
-        output_stride: ::std::os::raw::c_int,
-    ) -> *mut WebPIDecoder;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPINewYUVA"]
-    pub fn WebPINewYUVA(
-        luma: *mut u8,
-        luma_size: usize,
-        luma_stride: ::std::os::raw::c_int,
-        u: *mut u8,
-        u_size: usize,
-        u_stride: ::std::os::raw::c_int,
-        v: *mut u8,
-        v_size: usize,
-        v_stride: ::std::os::raw::c_int,
-        a: *mut u8,
-        a_size: usize,
-        a_stride: ::std::os::raw::c_int,
-    ) -> *mut WebPIDecoder;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPINewYUV"]
-    pub fn WebPINewYUV(
-        luma: *mut u8,
-        luma_size: usize,
-        luma_stride: ::std::os::raw::c_int,
-        u: *mut u8,
-        u_size: usize,
-        u_stride: ::std::os::raw::c_int,
-        v: *mut u8,
-        v_size: usize,
-        v_stride: ::std::os::raw::c_int,
-    ) -> *mut WebPIDecoder;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIDelete"]
-    pub fn WebPIDelete(idec: *mut WebPIDecoder);
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIAppend"]
-    pub fn WebPIAppend(idec: *mut WebPIDecoder, data: *const u8, data_size: usize)
-        -> VP8StatusCode;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIUpdate"]
-    pub fn WebPIUpdate(idec: *mut WebPIDecoder, data: *const u8, data_size: usize)
-        -> VP8StatusCode;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIDecGetRGB"]
-    pub fn WebPIDecGetRGB(
-        idec: *const WebPIDecoder,
-        last_y: *mut ::std::os::raw::c_int,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-        stride: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIDecGetYUVA"]
-    pub fn WebPIDecGetYUVA(
-        idec: *const WebPIDecoder,
-        last_y: *mut ::std::os::raw::c_int,
-        u: *mut *mut u8,
-        v: *mut *mut u8,
-        a: *mut *mut u8,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-        stride: *mut ::std::os::raw::c_int,
-        uv_stride: *mut ::std::os::raw::c_int,
-        a_stride: *mut ::std::os::raw::c_int,
-    ) -> *mut u8;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIDecodedArea"]
-    pub fn WebPIDecodedArea(
-        idec: *const WebPIDecoder,
-        left: *mut ::std::os::raw::c_int,
-        top: *mut ::std::os::raw::c_int,
-        width: *mut ::std::os::raw::c_int,
-        height: *mut ::std::os::raw::c_int,
-    ) -> *const WebPDecBuffer;
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone)]
-pub struct WebPBitstreamFeatures {
-    pub width: ::std::os::raw::c_int,
-    pub height: ::std::os::raw::c_int,
-    pub has_alpha: ::std::os::raw::c_int,
-    pub has_animation: ::std::os::raw::c_int,
-    pub format: ::std::os::raw::c_int,
-    pub pad: [u32; 5usize],
-}
-#[test]
-fn bindgen_test_layout_WebPBitstreamFeatures() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPBitstreamFeatures>(),
-        40usize,
-        concat!("Size of: ", stringify!(WebPBitstreamFeatures))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPBitstreamFeatures>(),
-        4usize,
-        concat!("Alignment of ", stringify!(WebPBitstreamFeatures))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).width as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPBitstreamFeatures),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).height as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPBitstreamFeatures),
-            "::",
-            stringify!(height)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).has_alpha as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPBitstreamFeatures),
-            "::",
-            stringify!(has_alpha)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPBitstreamFeatures>())).has_animation as *const _ as usize
-        },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPBitstreamFeatures),
-            "::",
-            stringify!(has_animation)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).format as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPBitstreamFeatures),
-            "::",
-            stringify!(format)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).pad as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPBitstreamFeatures),
-            "::",
-            stringify!(pad)
-        )
-    );
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPGetFeaturesInternal"]
-    pub fn WebPGetFeaturesInternal(
-        arg1: *const u8,
-        arg2: usize,
-        arg3: *mut WebPBitstreamFeatures,
-        arg4: ::std::os::raw::c_int,
-    ) -> VP8StatusCode;
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone)]
-pub struct WebPDecoderOptions {
-    pub bypass_filtering: ::std::os::raw::c_int,
-    pub no_fancy_upsampling: ::std::os::raw::c_int,
-    pub use_cropping: ::std::os::raw::c_int,
-    pub crop_left: ::std::os::raw::c_int,
-    pub crop_top: ::std::os::raw::c_int,
-    pub crop_width: ::std::os::raw::c_int,
-    pub crop_height: ::std::os::raw::c_int,
-    pub use_scaling: ::std::os::raw::c_int,
-    pub scaled_width: ::std::os::raw::c_int,
-    pub scaled_height: ::std::os::raw::c_int,
-    pub use_threads: ::std::os::raw::c_int,
-    pub dithering_strength: ::std::os::raw::c_int,
-    pub flip: ::std::os::raw::c_int,
-    pub alpha_dithering_strength: ::std::os::raw::c_int,
-    pub pad: [u32; 5usize],
-}
-#[test]
-fn bindgen_test_layout_WebPDecoderOptions() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPDecoderOptions>(),
-        76usize,
-        concat!("Size of: ", stringify!(WebPDecoderOptions))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPDecoderOptions>(),
-        4usize,
-        concat!("Alignment of ", stringify!(WebPDecoderOptions))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecoderOptions>())).bypass_filtering as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(bypass_filtering)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecoderOptions>())).no_fancy_upsampling as *const _ as usize
-        },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(no_fancy_upsampling)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).use_cropping as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(use_cropping)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_left as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(crop_left)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_top as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(crop_top)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_width as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(crop_width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_height as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(crop_height)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).use_scaling as *const _ as usize },
-        28usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(use_scaling)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).scaled_width as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(scaled_width)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecoderOptions>())).scaled_height as *const _ as usize
-        },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(scaled_height)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).use_threads as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(use_threads)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecoderOptions>())).dithering_strength as *const _ as usize
-        },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(dithering_strength)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).flip as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(flip)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<WebPDecoderOptions>())).alpha_dithering_strength as *const _
-                as usize
-        },
-        52usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(alpha_dithering_strength)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).pad as *const _ as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderOptions),
-            "::",
-            stringify!(pad)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct WebPDecoderConfig {
-    pub input: WebPBitstreamFeatures,
-    pub output: WebPDecBuffer,
-    pub options: WebPDecoderOptions,
-}
-#[test]
-fn bindgen_test_layout_WebPDecoderConfig() {
-    assert_eq!(
-        ::std::mem::size_of::<WebPDecoderConfig>(),
-        240usize,
-        concat!("Size of: ", stringify!(WebPDecoderConfig))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<WebPDecoderConfig>(),
-        8usize,
-        concat!("Alignment of ", stringify!(WebPDecoderConfig))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderConfig>())).input as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderConfig),
-            "::",
-            stringify!(input)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderConfig>())).output as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderConfig),
-            "::",
-            stringify!(output)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<WebPDecoderConfig>())).options as *const _ as usize },
-        160usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(WebPDecoderConfig),
-            "::",
-            stringify!(options)
-        )
-    );
-}
-impl Default for WebPDecoderConfig {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPInitDecoderConfigInternal"]
-    pub fn WebPInitDecoderConfigInternal(
-        arg1: *mut WebPDecoderConfig,
-        arg2: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPIDecode"]
-    pub fn WebPIDecode(
-        data: *const u8,
-        data_size: usize,
-        config: *mut WebPDecoderConfig,
-    ) -> *mut WebPIDecoder;
-}
-extern "C" {
-    #[link_name = "\u{1}_WebPDecode"]
-    pub fn WebPDecode(
-        data: *const u8,
-        data_size: usize,
-        config: *mut WebPDecoderConfig,
-    ) -> VP8StatusCode;
-}
-pub const idtype_t_P_ALL: idtype_t = 0;
-pub const idtype_t_P_PID: idtype_t = 1;
-pub const idtype_t_P_PGID: idtype_t = 2;
-pub type idtype_t = u32;
-pub type pid_t = __darwin_pid_t;
-pub type id_t = __darwin_id_t;
-pub type sig_atomic_t = ::std::os::raw::c_int;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
 pub struct __darwin_i386_thread_state {
@@ -6104,6 +3689,92 @@ fn bindgen_test_layout___darwin_x86_thread_state64() {
             stringify!(__darwin_x86_thread_state64),
             "::",
             stringify!(__gs)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct __darwin_x86_thread_full_state64 {
+    pub ss64: __darwin_x86_thread_state64,
+    pub __ds: __uint64_t,
+    pub __es: __uint64_t,
+    pub __ss: __uint64_t,
+    pub __gsbase: __uint64_t,
+}
+#[test]
+fn bindgen_test_layout___darwin_x86_thread_full_state64() {
+    assert_eq!(
+        ::std::mem::size_of::<__darwin_x86_thread_full_state64>(),
+        200usize,
+        concat!("Size of: ", stringify!(__darwin_x86_thread_full_state64))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__darwin_x86_thread_full_state64>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(__darwin_x86_thread_full_state64)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_x86_thread_full_state64>())).ss64 as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_x86_thread_full_state64),
+            "::",
+            stringify!(ss64)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_x86_thread_full_state64>())).__ds as *const _ as usize
+        },
+        168usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_x86_thread_full_state64),
+            "::",
+            stringify!(__ds)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_x86_thread_full_state64>())).__es as *const _ as usize
+        },
+        176usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_x86_thread_full_state64),
+            "::",
+            stringify!(__es)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_x86_thread_full_state64>())).__ss as *const _ as usize
+        },
+        184usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_x86_thread_full_state64),
+            "::",
+            stringify!(__ss)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_x86_thread_full_state64>())).__gsbase as *const _
+                as usize
+        },
+        192usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_x86_thread_full_state64),
+            "::",
+            stringify!(__gsbase)
         )
     );
 }
@@ -9166,6 +6837,61 @@ impl Default for __darwin_mcontext64 {
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
+pub struct __darwin_mcontext64_full {
+    pub __es: __darwin_x86_exception_state64,
+    pub __ss: __darwin_x86_thread_full_state64,
+    pub __fs: __darwin_x86_float_state64,
+}
+#[test]
+fn bindgen_test_layout___darwin_mcontext64_full() {
+    assert_eq!(
+        ::std::mem::size_of::<__darwin_mcontext64_full>(),
+        744usize,
+        concat!("Size of: ", stringify!(__darwin_mcontext64_full))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__darwin_mcontext64_full>(),
+        8usize,
+        concat!("Alignment of ", stringify!(__darwin_mcontext64_full))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__darwin_mcontext64_full>())).__es as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext64_full),
+            "::",
+            stringify!(__es)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__darwin_mcontext64_full>())).__ss as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext64_full),
+            "::",
+            stringify!(__ss)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__darwin_mcontext64_full>())).__fs as *const _ as usize },
+        216usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext64_full),
+            "::",
+            stringify!(__fs)
+        )
+    );
+}
+impl Default for __darwin_mcontext64_full {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
 pub struct __darwin_mcontext_avx64 {
     pub __es: __darwin_x86_exception_state64,
     pub __ss: __darwin_x86_thread_state64,
@@ -9215,6 +6941,67 @@ fn bindgen_test_layout___darwin_mcontext_avx64() {
     );
 }
 impl Default for __darwin_mcontext_avx64 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct __darwin_mcontext_avx64_full {
+    pub __es: __darwin_x86_exception_state64,
+    pub __ss: __darwin_x86_thread_full_state64,
+    pub __fs: __darwin_x86_avx_state64,
+}
+#[test]
+fn bindgen_test_layout___darwin_mcontext_avx64_full() {
+    assert_eq!(
+        ::std::mem::size_of::<__darwin_mcontext_avx64_full>(),
+        1064usize,
+        concat!("Size of: ", stringify!(__darwin_mcontext_avx64_full))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__darwin_mcontext_avx64_full>(),
+        8usize,
+        concat!("Alignment of ", stringify!(__darwin_mcontext_avx64_full))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_mcontext_avx64_full>())).__es as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext_avx64_full),
+            "::",
+            stringify!(__es)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_mcontext_avx64_full>())).__ss as *const _ as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext_avx64_full),
+            "::",
+            stringify!(__ss)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_mcontext_avx64_full>())).__fs as *const _ as usize
+        },
+        216usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext_avx64_full),
+            "::",
+            stringify!(__fs)
+        )
+    );
+}
+impl Default for __darwin_mcontext_avx64_full {
     fn default() -> Self {
         unsafe { ::std::mem::zeroed() }
     }
@@ -9276,6 +7063,70 @@ fn bindgen_test_layout___darwin_mcontext_avx512_64() {
     );
 }
 impl Default for __darwin_mcontext_avx512_64 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct __darwin_mcontext_avx512_64_full {
+    pub __es: __darwin_x86_exception_state64,
+    pub __ss: __darwin_x86_thread_full_state64,
+    pub __fs: __darwin_x86_avx512_state64,
+}
+#[test]
+fn bindgen_test_layout___darwin_mcontext_avx512_64_full() {
+    assert_eq!(
+        ::std::mem::size_of::<__darwin_mcontext_avx512_64_full>(),
+        2664usize,
+        concat!("Size of: ", stringify!(__darwin_mcontext_avx512_64_full))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__darwin_mcontext_avx512_64_full>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(__darwin_mcontext_avx512_64_full)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_mcontext_avx512_64_full>())).__es as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext_avx512_64_full),
+            "::",
+            stringify!(__es)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_mcontext_avx512_64_full>())).__ss as *const _ as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext_avx512_64_full),
+            "::",
+            stringify!(__ss)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<__darwin_mcontext_avx512_64_full>())).__fs as *const _ as usize
+        },
+        216usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__darwin_mcontext_avx512_64_full),
+            "::",
+            stringify!(__fs)
+        )
+    );
+}
+impl Default for __darwin_mcontext_avx512_64_full {
     fn default() -> Self {
         unsafe { ::std::mem::zeroed() }
     }
@@ -9962,7 +7813,6 @@ impl Default for sigstack {
     }
 }
 extern "C" {
-    #[link_name = "\u{1}_signal"]
     pub fn signal(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
@@ -9973,6 +7823,24 @@ extern "C" {
         ),
     >;
 }
+pub type int_least8_t = i8;
+pub type int_least16_t = i16;
+pub type int_least32_t = i32;
+pub type int_least64_t = i64;
+pub type uint_least8_t = u8;
+pub type uint_least16_t = u16;
+pub type uint_least32_t = u32;
+pub type uint_least64_t = u64;
+pub type int_fast8_t = i8;
+pub type int_fast16_t = i16;
+pub type int_fast32_t = i32;
+pub type int_fast64_t = i64;
+pub type uint_fast8_t = u8;
+pub type uint_fast16_t = u16;
+pub type uint_fast32_t = u32;
+pub type uint_fast64_t = u64;
+pub type intmax_t = ::std::os::raw::c_long;
+pub type uintmax_t = ::std::os::raw::c_ulong;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
 pub struct timeval {
@@ -11753,26 +9621,21 @@ fn bindgen_test_layout_proc_rlimit_control_wakeupmon() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_getpriority"]
     pub fn getpriority(arg1: ::std::os::raw::c_int, arg2: id_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getiopolicy_np"]
     pub fn getiopolicy_np(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getrlimit"]
     pub fn getrlimit(arg1: ::std::os::raw::c_int, arg2: *mut rlimit) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getrusage"]
     pub fn getrusage(arg1: ::std::os::raw::c_int, arg2: *mut rusage) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setpriority"]
     pub fn setpriority(
         arg1: ::std::os::raw::c_int,
         arg2: id_t,
@@ -11780,7 +9643,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setiopolicy_np"]
     pub fn setiopolicy_np(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
@@ -11788,7 +9650,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setrlimit"]
     pub fn setrlimit(arg1: ::std::os::raw::c_int, arg2: *const rlimit) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
@@ -12006,11 +9867,9 @@ impl Default for wait {
     }
 }
 extern "C" {
-    #[link_name = "\u{1}_wait"]
     pub fn wait(arg1: *mut ::std::os::raw::c_int) -> pid_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_waitpid"]
     pub fn waitpid(
         arg1: pid_t,
         arg2: *mut ::std::os::raw::c_int,
@@ -12018,7 +9877,6 @@ extern "C" {
     ) -> pid_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_waitid"]
     pub fn waitid(
         arg1: idtype_t,
         arg2: id_t,
@@ -12027,7 +9885,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_wait3"]
     pub fn wait3(
         arg1: *mut ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
@@ -12035,7 +9892,6 @@ extern "C" {
     ) -> pid_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_wait4"]
     pub fn wait4(
         arg1: pid_t,
         arg2: *mut ::std::os::raw::c_int,
@@ -12044,11 +9900,11 @@ extern "C" {
     ) -> pid_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_alloca"]
     pub fn alloca(arg1: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
 }
 pub type ct_rune_t = __darwin_ct_rune_t;
 pub type rune_t = __darwin_rune_t;
+pub type wchar_t = __darwin_wchar_t;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
 pub struct div_t {
@@ -12167,33 +10023,27 @@ fn bindgen_test_layout_lldiv_t() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_malloc"]
     pub fn malloc(__size: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_calloc"]
     pub fn calloc(
         __count: ::std::os::raw::c_ulong,
         __size: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_free"]
     pub fn free(arg1: *mut ::std::os::raw::c_void);
 }
 extern "C" {
-    #[link_name = "\u{1}_realloc"]
     pub fn realloc(
         __ptr: *mut ::std::os::raw::c_void,
         __size: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_valloc"]
     pub fn valloc(arg1: usize) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_posix_memalign"]
     pub fn posix_memalign(
         __memptr: *mut *mut ::std::os::raw::c_void,
         __alignment: usize,
@@ -12201,35 +10051,27 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_abort"]
     pub fn abort();
 }
 extern "C" {
-    #[link_name = "\u{1}_abs"]
     pub fn abs(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_atexit"]
     pub fn atexit(arg1: ::std::option::Option<unsafe extern "C" fn()>) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_atof"]
     pub fn atof(arg1: *const ::std::os::raw::c_char) -> f64;
 }
 extern "C" {
-    #[link_name = "\u{1}_atoi"]
     pub fn atoi(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_atol"]
     pub fn atol(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_atoll"]
     pub fn atoll(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
-    #[link_name = "\u{1}_bsearch"]
     pub fn bsearch(
         __key: *const ::std::os::raw::c_void,
         __base: *const ::std::os::raw::c_void,
@@ -12244,43 +10086,33 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_div"]
     pub fn div(arg1: ::std::os::raw::c_int, arg2: ::std::os::raw::c_int) -> div_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_exit"]
     pub fn exit(arg1: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_getenv"]
     pub fn getenv(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_labs"]
     pub fn labs(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_ldiv"]
     pub fn ldiv(arg1: ::std::os::raw::c_long, arg2: ::std::os::raw::c_long) -> ldiv_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_llabs"]
     pub fn llabs(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
-    #[link_name = "\u{1}_lldiv"]
     pub fn lldiv(arg1: ::std::os::raw::c_longlong, arg2: ::std::os::raw::c_longlong) -> lldiv_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_mblen"]
     pub fn mblen(__s: *const ::std::os::raw::c_char, __n: usize) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_mbstowcs"]
     pub fn mbstowcs(arg1: *mut wchar_t, arg2: *const ::std::os::raw::c_char, arg3: usize) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_mbtowc"]
     pub fn mbtowc(
         arg1: *mut wchar_t,
         arg2: *const ::std::os::raw::c_char,
@@ -12288,7 +10120,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_qsort"]
     pub fn qsort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12302,29 +10133,24 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_rand"]
     pub fn rand() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_srand"]
     pub fn srand(arg1: ::std::os::raw::c_uint);
 }
 extern "C" {
-    #[link_name = "\u{1}_strtod"]
     pub fn strtod(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> f64;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtof"]
     pub fn strtof(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> f32;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtol"]
     pub fn strtol(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12332,14 +10158,12 @@ extern "C" {
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtold"]
     pub fn strtold(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> u128;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtoll"]
     pub fn strtoll(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12347,7 +10171,6 @@ extern "C" {
     ) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtoul"]
     pub fn strtoul(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12355,7 +10178,6 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtoull"]
     pub fn strtoull(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12363,31 +10185,24 @@ extern "C" {
     ) -> ::std::os::raw::c_ulonglong;
 }
 extern "C" {
-    #[link_name = "\u{1}_system"]
     pub fn system(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_wcstombs"]
     pub fn wcstombs(arg1: *mut ::std::os::raw::c_char, arg2: *const wchar_t, arg3: usize) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_wctomb"]
     pub fn wctomb(arg1: *mut ::std::os::raw::c_char, arg2: wchar_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}__Exit"]
     pub fn _Exit(arg1: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_a64l"]
     pub fn a64l(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_drand48"]
     pub fn drand48() -> f64;
 }
 extern "C" {
-    #[link_name = "\u{1}_ecvt"]
     pub fn ecvt(
         arg1: f64,
         arg2: ::std::os::raw::c_int,
@@ -12396,11 +10211,9 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_erand48"]
     pub fn erand48(arg1: *mut ::std::os::raw::c_ushort) -> f64;
 }
 extern "C" {
-    #[link_name = "\u{1}_fcvt"]
     pub fn fcvt(
         arg1: f64,
         arg2: ::std::os::raw::c_int,
@@ -12409,7 +10222,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_gcvt"]
     pub fn gcvt(
         arg1: f64,
         arg2: ::std::os::raw::c_int,
@@ -12417,7 +10229,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_getsubopt"]
     pub fn getsubopt(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *const *mut ::std::os::raw::c_char,
@@ -12425,11 +10236,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_grantpt"]
     pub fn grantpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_initstate"]
     pub fn initstate(
         arg1: ::std::os::raw::c_uint,
         arg2: *mut ::std::os::raw::c_char,
@@ -12437,47 +10246,36 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_jrand48"]
     pub fn jrand48(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_l64a"]
     pub fn l64a(arg1: ::std::os::raw::c_long) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_lcong48"]
     pub fn lcong48(arg1: *mut ::std::os::raw::c_ushort);
 }
 extern "C" {
-    #[link_name = "\u{1}_lrand48"]
     pub fn lrand48() -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_mktemp"]
     pub fn mktemp(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_mkstemp"]
     pub fn mkstemp(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_mrand48"]
     pub fn mrand48() -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_nrand48"]
     pub fn nrand48(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_posix_openpt"]
     pub fn posix_openpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ptsname"]
     pub fn ptsname(arg1: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_ptsname_r"]
     pub fn ptsname_r(
         fildes: ::std::os::raw::c_int,
         buffer: *mut ::std::os::raw::c_char,
@@ -12485,15 +10283,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_putenv"]
     pub fn putenv(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_random"]
     pub fn random() -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_rand_r"]
     pub fn rand_r(arg1: *mut ::std::os::raw::c_uint) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -12504,11 +10299,9 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_seed48"]
     pub fn seed48(arg1: *mut ::std::os::raw::c_ushort) -> *mut ::std::os::raw::c_ushort;
 }
 extern "C" {
-    #[link_name = "\u{1}_setenv"]
     pub fn setenv(
         __name: *const ::std::os::raw::c_char,
         __value: *const ::std::os::raw::c_char,
@@ -12516,57 +10309,44 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setkey"]
     pub fn setkey(arg1: *const ::std::os::raw::c_char);
 }
 extern "C" {
-    #[link_name = "\u{1}_setstate"]
     pub fn setstate(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_srand48"]
     pub fn srand48(arg1: ::std::os::raw::c_long);
 }
 extern "C" {
-    #[link_name = "\u{1}_srandom"]
     pub fn srandom(arg1: ::std::os::raw::c_uint);
 }
 extern "C" {
-    #[link_name = "\u{1}_unlockpt"]
     pub fn unlockpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_unsetenv"]
     pub fn unsetenv(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 pub type dev_t = __darwin_dev_t;
 pub type mode_t = __darwin_mode_t;
 extern "C" {
-    #[link_name = "\u{1}_arc4random"]
     pub fn arc4random() -> u32;
 }
 extern "C" {
-    #[link_name = "\u{1}_arc4random_addrandom"]
     pub fn arc4random_addrandom(arg1: *mut ::std::os::raw::c_uchar, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_arc4random_buf"]
     pub fn arc4random_buf(__buf: *mut ::std::os::raw::c_void, __nbytes: usize);
 }
 extern "C" {
-    #[link_name = "\u{1}_arc4random_stir"]
     pub fn arc4random_stir();
 }
 extern "C" {
-    #[link_name = "\u{1}_arc4random_uniform"]
     pub fn arc4random_uniform(__upper_bound: u32) -> u32;
 }
 extern "C" {
-    #[link_name = "\u{1}_atexit_b"]
     pub fn atexit_b(arg1: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_bsearch_b"]
     pub fn bsearch_b(
         __key: *const ::std::os::raw::c_void,
         __base: *const ::std::os::raw::c_void,
@@ -12576,7 +10356,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetcap"]
     pub fn cgetcap(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12584,11 +10363,9 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetclose"]
     pub fn cgetclose() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetent"]
     pub fn cgetent(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
@@ -12596,28 +10373,24 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetfirst"]
     pub fn cgetfirst(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetmatch"]
     pub fn cgetmatch(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetnext"]
     pub fn cgetnext(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *mut *mut ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetnum"]
     pub fn cgetnum(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12625,11 +10398,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetset"]
     pub fn cgetset(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetstr"]
     pub fn cgetstr(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12637,7 +10408,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_cgetustr"]
     pub fn cgetustr(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -12652,11 +10422,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_devname"]
     pub fn devname(arg1: dev_t, arg2: mode_t) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_devname_r"]
     pub fn devname_r(
         arg1: dev_t,
         arg2: mode_t,
@@ -12665,22 +10433,18 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_getbsize"]
     pub fn getbsize(
         arg1: *mut ::std::os::raw::c_int,
         arg2: *mut ::std::os::raw::c_long,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_getloadavg"]
     pub fn getloadavg(arg1: *mut f64, arg2: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getprogname"]
     pub fn getprogname() -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_heapsort"]
     pub fn heapsort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12694,7 +10458,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_heapsort_b"]
     pub fn heapsort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12703,7 +10466,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_mergesort"]
     pub fn mergesort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12717,7 +10479,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_mergesort_b"]
     pub fn mergesort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12726,7 +10487,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_psort"]
     pub fn psort(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12740,7 +10500,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_psort_b"]
     pub fn psort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12749,7 +10508,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_psort_r"]
     pub fn psort_r(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12765,7 +10523,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_qsort_b"]
     pub fn qsort_b(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12774,7 +10531,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_qsort_r"]
     pub fn qsort_r(
         __base: *mut ::std::os::raw::c_void,
         __nel: usize,
@@ -12790,7 +10546,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_radixsort"]
     pub fn radixsort(
         __base: *mut *const ::std::os::raw::c_uchar,
         __nel: ::std::os::raw::c_int,
@@ -12799,11 +10554,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setprogname"]
     pub fn setprogname(arg1: *const ::std::os::raw::c_char);
 }
 extern "C" {
-    #[link_name = "\u{1}_sradixsort"]
     pub fn sradixsort(
         __base: *mut *const ::std::os::raw::c_uchar,
         __nel: ::std::os::raw::c_int,
@@ -12812,22 +10565,18 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_sranddev"]
     pub fn sranddev();
 }
 extern "C" {
-    #[link_name = "\u{1}_srandomdev"]
     pub fn srandomdev();
 }
 extern "C" {
-    #[link_name = "\u{1}_reallocf"]
     pub fn reallocf(
         __ptr: *mut ::std::os::raw::c_void,
         __size: usize,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtoq"]
     pub fn strtoq(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12835,7 +10584,6 @@ extern "C" {
     ) -> ::std::os::raw::c_longlong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtouq"]
     pub fn strtouq(
         __str: *const ::std::os::raw::c_char,
         __endptr: *mut *mut ::std::os::raw::c_char,
@@ -12843,7 +10591,6 @@ extern "C" {
     ) -> ::std::os::raw::c_ulonglong;
 }
 extern "C" {
-    #[link_name = "\u{1}_memchr"]
     pub fn memchr(
         __s: *const ::std::os::raw::c_void,
         __c: ::std::os::raw::c_int,
@@ -12851,7 +10598,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_memcmp"]
     pub fn memcmp(
         __s1: *const ::std::os::raw::c_void,
         __s2: *const ::std::os::raw::c_void,
@@ -12859,7 +10605,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_memcpy"]
     pub fn memcpy(
         __dst: *mut ::std::os::raw::c_void,
         __src: *const ::std::os::raw::c_void,
@@ -12867,7 +10612,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_memmove"]
     pub fn memmove(
         __dst: *mut ::std::os::raw::c_void,
         __src: *const ::std::os::raw::c_void,
@@ -12875,7 +10619,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_memset"]
     pub fn memset(
         __b: *mut ::std::os::raw::c_void,
         __c: ::std::os::raw::c_int,
@@ -12883,57 +10626,48 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_strcat"]
     pub fn strcat(
         __s1: *mut ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strchr"]
     pub fn strchr(
         __s: *const ::std::os::raw::c_char,
         __c: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strcmp"]
     pub fn strcmp(
         __s1: *const ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_strcoll"]
     pub fn strcoll(
         __s1: *const ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_strcpy"]
     pub fn strcpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strcspn"]
     pub fn strcspn(
         __s: *const ::std::os::raw::c_char,
         __charset: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strerror"]
     pub fn strerror(__errnum: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strlen"]
     pub fn strlen(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strncat"]
     pub fn strncat(
         __s1: *mut ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
@@ -12941,7 +10675,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strncmp"]
     pub fn strncmp(
         __s1: *const ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
@@ -12949,7 +10682,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_strncpy"]
     pub fn strncpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
@@ -12957,42 +10689,36 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strpbrk"]
     pub fn strpbrk(
         __s: *const ::std::os::raw::c_char,
         __charset: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strrchr"]
     pub fn strrchr(
         __s: *const ::std::os::raw::c_char,
         __c: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strspn"]
     pub fn strspn(
         __s: *const ::std::os::raw::c_char,
         __charset: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strstr"]
     pub fn strstr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtok"]
     pub fn strtok(
         __str: *mut ::std::os::raw::c_char,
         __sep: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strxfrm"]
     pub fn strxfrm(
         __s1: *mut ::std::os::raw::c_char,
         __s2: *const ::std::os::raw::c_char,
@@ -13000,7 +10726,6 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strtok_r"]
     pub fn strtok_r(
         __str: *mut ::std::os::raw::c_char,
         __sep: *const ::std::os::raw::c_char,
@@ -13008,7 +10733,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strerror_r"]
     pub fn strerror_r(
         __errnum: ::std::os::raw::c_int,
         __strerrbuf: *mut ::std::os::raw::c_char,
@@ -13016,11 +10740,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_strdup"]
     pub fn strdup(__s1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_memccpy"]
     pub fn memccpy(
         __dst: *mut ::std::os::raw::c_void,
         __src: *const ::std::os::raw::c_void,
@@ -13029,14 +10751,12 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_stpcpy"]
     pub fn stpcpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_stpncpy"]
     pub fn stpncpy(
         __dst: *mut ::std::os::raw::c_char,
         __src: *const ::std::os::raw::c_char,
@@ -13044,24 +10764,20 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strndup"]
     pub fn strndup(
         __s1: *const ::std::os::raw::c_char,
         __n: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strnlen"]
     pub fn strnlen(__s1: *const ::std::os::raw::c_char, __n: usize) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_strsignal"]
     pub fn strsignal(__sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 pub type rsize_t = __darwin_size_t;
 pub type errno_t = ::std::os::raw::c_int;
 extern "C" {
-    #[link_name = "\u{1}_memset_s"]
     pub fn memset_s(
         __s: *mut ::std::os::raw::c_void,
         __smax: rsize_t,
@@ -13070,7 +10786,6 @@ extern "C" {
     ) -> errno_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_memmem"]
     pub fn memmem(
         __big: *const ::std::os::raw::c_void,
         __big_len: usize,
@@ -13079,7 +10794,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[link_name = "\u{1}_memset_pattern4"]
     pub fn memset_pattern4(
         __b: *mut ::std::os::raw::c_void,
         __pattern4: *const ::std::os::raw::c_void,
@@ -13087,7 +10801,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_memset_pattern8"]
     pub fn memset_pattern8(
         __b: *mut ::std::os::raw::c_void,
         __pattern8: *const ::std::os::raw::c_void,
@@ -13095,7 +10808,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_memset_pattern16"]
     pub fn memset_pattern16(
         __b: *mut ::std::os::raw::c_void,
         __pattern16: *const ::std::os::raw::c_void,
@@ -13103,14 +10815,12 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_strcasestr"]
     pub fn strcasestr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strnstr"]
     pub fn strnstr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
@@ -13118,7 +10828,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_strlcat"]
     pub fn strlcat(
         __dst: *mut ::std::os::raw::c_char,
         __source: *const ::std::os::raw::c_char,
@@ -13126,7 +10835,6 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strlcpy"]
     pub fn strlcpy(
         __dst: *mut ::std::os::raw::c_char,
         __source: *const ::std::os::raw::c_char,
@@ -13134,18 +10842,15 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_strmode"]
     pub fn strmode(__mode: ::std::os::raw::c_int, __bp: *mut ::std::os::raw::c_char);
 }
 extern "C" {
-    #[link_name = "\u{1}_strsep"]
     pub fn strsep(
         __stringp: *mut *mut ::std::os::raw::c_char,
         __delim: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_swab"]
     pub fn swab(
         arg1: *const ::std::os::raw::c_void,
         arg2: *mut ::std::os::raw::c_void,
@@ -13153,7 +10858,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_timingsafe_bcmp"]
     pub fn timingsafe_bcmp(
         __b1: *const ::std::os::raw::c_void,
         __b2: *const ::std::os::raw::c_void,
@@ -13161,7 +10865,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_bcmp"]
     pub fn bcmp(
         arg1: *const ::std::os::raw::c_void,
         arg2: *const ::std::os::raw::c_void,
@@ -13169,7 +10872,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_bcopy"]
     pub fn bcopy(
         arg1: *const ::std::os::raw::c_void,
         arg2: *mut ::std::os::raw::c_void,
@@ -13177,36 +10879,30 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_bzero"]
     pub fn bzero(arg1: *mut ::std::os::raw::c_void, arg2: ::std::os::raw::c_ulong);
 }
 extern "C" {
-    #[link_name = "\u{1}_index"]
     pub fn index(
         arg1: *const ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_rindex"]
     pub fn rindex(
         arg1: *const ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_ffs"]
     pub fn ffs(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_strcasecmp"]
     pub fn strcasecmp(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_strncasecmp"]
     pub fn strncasecmp(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13214,24 +10910,93 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ffsl"]
     pub fn ffsl(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ffsll"]
     pub fn ffsll(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fls"]
     pub fn fls(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_flsl"]
     pub fn flsl(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_flsll"]
     pub fn flsll(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int;
+}
+pub type max_align_t = u128;
+extern "C" {
+    pub fn imaxabs(j: intmax_t) -> intmax_t;
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct imaxdiv_t {
+    pub quot: intmax_t,
+    pub rem: intmax_t,
+}
+#[test]
+fn bindgen_test_layout_imaxdiv_t() {
+    assert_eq!(
+        ::std::mem::size_of::<imaxdiv_t>(),
+        16usize,
+        concat!("Size of: ", stringify!(imaxdiv_t))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<imaxdiv_t>(),
+        8usize,
+        concat!("Alignment of ", stringify!(imaxdiv_t))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<imaxdiv_t>())).quot as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(imaxdiv_t),
+            "::",
+            stringify!(quot)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<imaxdiv_t>())).rem as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(imaxdiv_t),
+            "::",
+            stringify!(rem)
+        )
+    );
+}
+extern "C" {
+    pub fn imaxdiv(__numer: intmax_t, __denom: intmax_t) -> imaxdiv_t;
+}
+extern "C" {
+    pub fn strtoimax(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> intmax_t;
+}
+extern "C" {
+    pub fn strtoumax(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> uintmax_t;
+}
+extern "C" {
+    pub fn wcstoimax(
+        __nptr: *const wchar_t,
+        __endptr: *mut *mut wchar_t,
+        __base: ::std::os::raw::c_int,
+    ) -> intmax_t;
+}
+extern "C" {
+    pub fn wcstoumax(
+        __nptr: *const wchar_t,
+        __endptr: *mut *mut wchar_t,
+        __base: ::std::os::raw::c_int,
+    ) -> uintmax_t;
 }
 pub const WebPFeatureFlags_ANIMATION_FLAG: WebPFeatureFlags = 2;
 pub const WebPFeatureFlags_XMP_FLAG: WebPFeatureFlags = 4;
@@ -13315,19 +11080,15 @@ pub const WebPChunkId_WEBP_CHUNK_UNKNOWN: WebPChunkId = 9;
 pub const WebPChunkId_WEBP_CHUNK_NIL: WebPChunkId = 10;
 pub type WebPChunkId = u32;
 extern "C" {
-    #[link_name = "\u{1}_WebPGetMuxVersion"]
     pub fn WebPGetMuxVersion() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPNewInternal"]
     pub fn WebPNewInternal(arg1: ::std::os::raw::c_int) -> *mut WebPMux;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxDelete"]
     pub fn WebPMuxDelete(mux: *mut WebPMux);
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxCreateInternal"]
     pub fn WebPMuxCreateInternal(
         arg1: *const WebPData,
         arg2: ::std::os::raw::c_int,
@@ -13335,7 +11096,6 @@ extern "C" {
     ) -> *mut WebPMux;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxSetChunk"]
     pub fn WebPMuxSetChunk(
         mux: *mut WebPMux,
         fourcc: *const ::std::os::raw::c_char,
@@ -13344,7 +11104,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxGetChunk"]
     pub fn WebPMuxGetChunk(
         mux: *const WebPMux,
         fourcc: *const ::std::os::raw::c_char,
@@ -13352,7 +11111,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxDeleteChunk"]
     pub fn WebPMuxDeleteChunk(
         mux: *mut WebPMux,
         fourcc: *const ::std::os::raw::c_char,
@@ -13469,7 +11227,6 @@ impl Default for WebPMuxFrameInfo {
     }
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxSetImage"]
     pub fn WebPMuxSetImage(
         mux: *mut WebPMux,
         bitstream: *const WebPData,
@@ -13477,7 +11234,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxPushFrame"]
     pub fn WebPMuxPushFrame(
         mux: *mut WebPMux,
         frame: *const WebPMuxFrameInfo,
@@ -13485,7 +11241,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxGetFrame"]
     pub fn WebPMuxGetFrame(
         mux: *const WebPMux,
         nth: u32,
@@ -13493,7 +11248,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxDeleteFrame"]
     pub fn WebPMuxDeleteFrame(mux: *mut WebPMux, nth: u32) -> WebPMuxError;
 }
 #[repr(C)]
@@ -13536,21 +11290,18 @@ fn bindgen_test_layout_WebPMuxAnimParams() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxSetAnimationParams"]
     pub fn WebPMuxSetAnimationParams(
         mux: *mut WebPMux,
         params: *const WebPMuxAnimParams,
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxGetAnimationParams"]
     pub fn WebPMuxGetAnimationParams(
         mux: *const WebPMux,
         params: *mut WebPMuxAnimParams,
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxSetCanvasSize"]
     pub fn WebPMuxSetCanvasSize(
         mux: *mut WebPMux,
         width: ::std::os::raw::c_int,
@@ -13558,7 +11309,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxGetCanvasSize"]
     pub fn WebPMuxGetCanvasSize(
         mux: *const WebPMux,
         width: *mut ::std::os::raw::c_int,
@@ -13566,11 +11316,9 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxGetFeatures"]
     pub fn WebPMuxGetFeatures(mux: *const WebPMux, flags: *mut u32) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxNumChunks"]
     pub fn WebPMuxNumChunks(
         mux: *const WebPMux,
         id: WebPChunkId,
@@ -13578,7 +11326,6 @@ extern "C" {
     ) -> WebPMuxError;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPMuxAssemble"]
     pub fn WebPMuxAssemble(mux: *mut WebPMux, assembled_data: *mut WebPData) -> WebPMuxError;
 }
 #[repr(C)]
@@ -13687,14 +11434,12 @@ fn bindgen_test_layout_WebPAnimEncoderOptions() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPAnimEncoderOptionsInitInternal"]
     pub fn WebPAnimEncoderOptionsInitInternal(
         arg1: *mut WebPAnimEncoderOptions,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPAnimEncoderNewInternal"]
     pub fn WebPAnimEncoderNewInternal(
         arg1: ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
@@ -13703,7 +11448,6 @@ extern "C" {
     ) -> *mut WebPAnimEncoder;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPAnimEncoderAdd"]
     pub fn WebPAnimEncoderAdd(
         enc: *mut WebPAnimEncoder,
         frame: *mut WebPPicture,
@@ -13712,23 +11456,3198 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPAnimEncoderAssemble"]
     pub fn WebPAnimEncoderAssemble(
         enc: *mut WebPAnimEncoder,
         webp_data: *mut WebPData,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPAnimEncoderGetError"]
     pub fn WebPAnimEncoderGetError(enc: *mut WebPAnimEncoder) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_WebPAnimEncoderDelete"]
     pub fn WebPAnimEncoderDelete(enc: *mut WebPAnimEncoder);
+}
+extern "C" {
+    pub fn WebPGetEncoderVersion() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPEncodeRGB(
+        rgb: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        quality_factor: f32,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeBGR(
+        bgr: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        quality_factor: f32,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeRGBA(
+        rgba: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        quality_factor: f32,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeBGRA(
+        bgra: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        quality_factor: f32,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeLosslessRGB(
+        rgb: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeLosslessBGR(
+        bgr: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeLosslessRGBA(
+        rgba: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPEncodeLosslessBGRA(
+        bgra: *const u8,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        stride: ::std::os::raw::c_int,
+        output: *mut *mut u8,
+    ) -> usize;
+}
+extern "C" {
+    pub fn WebPFree(ptr: *mut ::std::os::raw::c_void);
+}
+pub const WebPImageHint_WEBP_HINT_DEFAULT: WebPImageHint = 0;
+pub const WebPImageHint_WEBP_HINT_PICTURE: WebPImageHint = 1;
+pub const WebPImageHint_WEBP_HINT_PHOTO: WebPImageHint = 2;
+pub const WebPImageHint_WEBP_HINT_GRAPH: WebPImageHint = 3;
+pub const WebPImageHint_WEBP_HINT_LAST: WebPImageHint = 4;
+pub type WebPImageHint = u32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct WebPConfig {
+    pub lossless: ::std::os::raw::c_int,
+    pub quality: f32,
+    pub method: ::std::os::raw::c_int,
+    pub image_hint: WebPImageHint,
+    pub target_size: ::std::os::raw::c_int,
+    pub target_PSNR: f32,
+    pub segments: ::std::os::raw::c_int,
+    pub sns_strength: ::std::os::raw::c_int,
+    pub filter_strength: ::std::os::raw::c_int,
+    pub filter_sharpness: ::std::os::raw::c_int,
+    pub filter_type: ::std::os::raw::c_int,
+    pub autofilter: ::std::os::raw::c_int,
+    pub alpha_compression: ::std::os::raw::c_int,
+    pub alpha_filtering: ::std::os::raw::c_int,
+    pub alpha_quality: ::std::os::raw::c_int,
+    pub pass: ::std::os::raw::c_int,
+    pub show_compressed: ::std::os::raw::c_int,
+    pub preprocessing: ::std::os::raw::c_int,
+    pub partitions: ::std::os::raw::c_int,
+    pub partition_limit: ::std::os::raw::c_int,
+    pub emulate_jpeg_size: ::std::os::raw::c_int,
+    pub thread_level: ::std::os::raw::c_int,
+    pub low_memory: ::std::os::raw::c_int,
+    pub near_lossless: ::std::os::raw::c_int,
+    pub exact: ::std::os::raw::c_int,
+    pub use_delta_palette: ::std::os::raw::c_int,
+    pub use_sharp_yuv: ::std::os::raw::c_int,
+    pub pad: [u32; 2usize],
+}
+#[test]
+fn bindgen_test_layout_WebPConfig() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPConfig>(),
+        116usize,
+        concat!("Size of: ", stringify!(WebPConfig))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPConfig>(),
+        4usize,
+        concat!("Alignment of ", stringify!(WebPConfig))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).lossless as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(lossless)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).quality as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(quality)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).method as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(method)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).image_hint as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(image_hint)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).target_size as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(target_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).target_PSNR as *const _ as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(target_PSNR)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).segments as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(segments)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).sns_strength as *const _ as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(sns_strength)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).filter_strength as *const _ as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(filter_strength)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).filter_sharpness as *const _ as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(filter_sharpness)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).filter_type as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(filter_type)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).autofilter as *const _ as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(autofilter)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).alpha_compression as *const _ as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(alpha_compression)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).alpha_filtering as *const _ as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(alpha_filtering)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).alpha_quality as *const _ as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(alpha_quality)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).pass as *const _ as usize },
+        60usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(pass)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).show_compressed as *const _ as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(show_compressed)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).preprocessing as *const _ as usize },
+        68usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(preprocessing)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).partitions as *const _ as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(partitions)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).partition_limit as *const _ as usize },
+        76usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(partition_limit)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).emulate_jpeg_size as *const _ as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(emulate_jpeg_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).thread_level as *const _ as usize },
+        84usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(thread_level)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).low_memory as *const _ as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(low_memory)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).near_lossless as *const _ as usize },
+        92usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(near_lossless)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).exact as *const _ as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(exact)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).use_delta_palette as *const _ as usize },
+        100usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(use_delta_palette)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).use_sharp_yuv as *const _ as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(use_sharp_yuv)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPConfig>())).pad as *const _ as usize },
+        108usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPConfig),
+            "::",
+            stringify!(pad)
+        )
+    );
+}
+impl Default for WebPConfig {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+pub const WebPPreset_WEBP_PRESET_DEFAULT: WebPPreset = 0;
+pub const WebPPreset_WEBP_PRESET_PICTURE: WebPPreset = 1;
+pub const WebPPreset_WEBP_PRESET_PHOTO: WebPPreset = 2;
+pub const WebPPreset_WEBP_PRESET_DRAWING: WebPPreset = 3;
+pub const WebPPreset_WEBP_PRESET_ICON: WebPPreset = 4;
+pub const WebPPreset_WEBP_PRESET_TEXT: WebPPreset = 5;
+pub type WebPPreset = u32;
+extern "C" {
+    pub fn WebPConfigInitInternal(
+        arg1: *mut WebPConfig,
+        arg2: WebPPreset,
+        arg3: f32,
+        arg4: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPConfigLosslessPreset(
+        config: *mut WebPConfig,
+        level: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPValidateConfig(config: *const WebPConfig) -> ::std::os::raw::c_int;
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct WebPAuxStats {
+    pub coded_size: ::std::os::raw::c_int,
+    pub PSNR: [f32; 5usize],
+    pub block_count: [::std::os::raw::c_int; 3usize],
+    pub header_bytes: [::std::os::raw::c_int; 2usize],
+    pub residual_bytes: [[::std::os::raw::c_int; 4usize]; 3usize],
+    pub segment_size: [::std::os::raw::c_int; 4usize],
+    pub segment_quant: [::std::os::raw::c_int; 4usize],
+    pub segment_level: [::std::os::raw::c_int; 4usize],
+    pub alpha_data_size: ::std::os::raw::c_int,
+    pub layer_data_size: ::std::os::raw::c_int,
+    pub lossless_features: u32,
+    pub histogram_bits: ::std::os::raw::c_int,
+    pub transform_bits: ::std::os::raw::c_int,
+    pub cache_bits: ::std::os::raw::c_int,
+    pub palette_size: ::std::os::raw::c_int,
+    pub lossless_size: ::std::os::raw::c_int,
+    pub lossless_hdr_size: ::std::os::raw::c_int,
+    pub lossless_data_size: ::std::os::raw::c_int,
+    pub pad: [u32; 2usize],
+}
+#[test]
+fn bindgen_test_layout_WebPAuxStats() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPAuxStats>(),
+        188usize,
+        concat!("Size of: ", stringify!(WebPAuxStats))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPAuxStats>(),
+        4usize,
+        concat!("Alignment of ", stringify!(WebPAuxStats))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).coded_size as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(coded_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).PSNR as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(PSNR)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).block_count as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(block_count)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).header_bytes as *const _ as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(header_bytes)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).residual_bytes as *const _ as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(residual_bytes)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).segment_size as *const _ as usize },
+        92usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(segment_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).segment_quant as *const _ as usize },
+        108usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(segment_quant)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).segment_level as *const _ as usize },
+        124usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(segment_level)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).alpha_data_size as *const _ as usize },
+        140usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(alpha_data_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).layer_data_size as *const _ as usize },
+        144usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(layer_data_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_features as *const _ as usize },
+        148usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(lossless_features)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).histogram_bits as *const _ as usize },
+        152usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(histogram_bits)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).transform_bits as *const _ as usize },
+        156usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(transform_bits)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).cache_bits as *const _ as usize },
+        160usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(cache_bits)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).palette_size as *const _ as usize },
+        164usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(palette_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_size as *const _ as usize },
+        168usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(lossless_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_hdr_size as *const _ as usize },
+        172usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(lossless_hdr_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).lossless_data_size as *const _ as usize },
+        176usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(lossless_data_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPAuxStats>())).pad as *const _ as usize },
+        180usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPAuxStats),
+            "::",
+            stringify!(pad)
+        )
+    );
+}
+pub type WebPWriterFunction = ::std::option::Option<
+    unsafe extern "C" fn(
+        data: *const u8,
+        data_size: usize,
+        picture: *const WebPPicture,
+    ) -> ::std::os::raw::c_int,
+>;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct WebPMemoryWriter {
+    pub mem: *mut u8,
+    pub size: usize,
+    pub max_size: usize,
+    pub pad: [u32; 1usize],
+}
+#[test]
+fn bindgen_test_layout_WebPMemoryWriter() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPMemoryWriter>(),
+        32usize,
+        concat!("Size of: ", stringify!(WebPMemoryWriter))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPMemoryWriter>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPMemoryWriter))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).mem as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPMemoryWriter),
+            "::",
+            stringify!(mem)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).size as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPMemoryWriter),
+            "::",
+            stringify!(size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).max_size as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPMemoryWriter),
+            "::",
+            stringify!(max_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPMemoryWriter>())).pad as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPMemoryWriter),
+            "::",
+            stringify!(pad)
+        )
+    );
+}
+impl Default for WebPMemoryWriter {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+extern "C" {
+    pub fn WebPMemoryWriterInit(writer: *mut WebPMemoryWriter);
+}
+extern "C" {
+    pub fn WebPMemoryWriterClear(writer: *mut WebPMemoryWriter);
+}
+extern "C" {
+    pub fn WebPMemoryWrite(
+        data: *const u8,
+        data_size: usize,
+        picture: *const WebPPicture,
+    ) -> ::std::os::raw::c_int;
+}
+pub type WebPProgressHook = ::std::option::Option<
+    unsafe extern "C" fn(
+        percent: ::std::os::raw::c_int,
+        picture: *const WebPPicture,
+    ) -> ::std::os::raw::c_int,
+>;
+pub const WebPEncCSP_WEBP_YUV420: WebPEncCSP = 0;
+pub const WebPEncCSP_WEBP_YUV420A: WebPEncCSP = 4;
+pub const WebPEncCSP_WEBP_CSP_UV_MASK: WebPEncCSP = 3;
+pub const WebPEncCSP_WEBP_CSP_ALPHA_BIT: WebPEncCSP = 4;
+pub type WebPEncCSP = u32;
+pub const WebPEncodingError_VP8_ENC_OK: WebPEncodingError = 0;
+pub const WebPEncodingError_VP8_ENC_ERROR_OUT_OF_MEMORY: WebPEncodingError = 1;
+pub const WebPEncodingError_VP8_ENC_ERROR_BITSTREAM_OUT_OF_MEMORY: WebPEncodingError = 2;
+pub const WebPEncodingError_VP8_ENC_ERROR_NULL_PARAMETER: WebPEncodingError = 3;
+pub const WebPEncodingError_VP8_ENC_ERROR_INVALID_CONFIGURATION: WebPEncodingError = 4;
+pub const WebPEncodingError_VP8_ENC_ERROR_BAD_DIMENSION: WebPEncodingError = 5;
+pub const WebPEncodingError_VP8_ENC_ERROR_PARTITION0_OVERFLOW: WebPEncodingError = 6;
+pub const WebPEncodingError_VP8_ENC_ERROR_PARTITION_OVERFLOW: WebPEncodingError = 7;
+pub const WebPEncodingError_VP8_ENC_ERROR_BAD_WRITE: WebPEncodingError = 8;
+pub const WebPEncodingError_VP8_ENC_ERROR_FILE_TOO_BIG: WebPEncodingError = 9;
+pub const WebPEncodingError_VP8_ENC_ERROR_USER_ABORT: WebPEncodingError = 10;
+pub const WebPEncodingError_VP8_ENC_ERROR_LAST: WebPEncodingError = 11;
+pub type WebPEncodingError = u32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct WebPPicture {
+    #[doc = ""]
+    pub use_argb: ::std::os::raw::c_int,
+    pub colorspace: WebPEncCSP,
+    pub width: ::std::os::raw::c_int,
+    pub height: ::std::os::raw::c_int,
+    pub y: *mut u8,
+    pub u: *mut u8,
+    pub v: *mut u8,
+    pub y_stride: ::std::os::raw::c_int,
+    pub uv_stride: ::std::os::raw::c_int,
+    pub a: *mut u8,
+    pub a_stride: ::std::os::raw::c_int,
+    pub pad1: [u32; 2usize],
+    pub argb: *mut u32,
+    pub argb_stride: ::std::os::raw::c_int,
+    pub pad2: [u32; 3usize],
+    #[doc = ""]
+    pub writer: WebPWriterFunction,
+    pub custom_ptr: *mut ::std::os::raw::c_void,
+    pub extra_info_type: ::std::os::raw::c_int,
+    pub extra_info: *mut u8,
+    #[doc = ""]
+    pub stats: *mut WebPAuxStats,
+    pub error_code: WebPEncodingError,
+    pub progress_hook: WebPProgressHook,
+    pub user_data: *mut ::std::os::raw::c_void,
+    pub pad3: [u32; 3usize],
+    pub pad4: *mut u8,
+    pub pad5: *mut u8,
+    pub pad6: [u32; 8usize],
+    #[doc = ""]
+    pub memory_: *mut ::std::os::raw::c_void,
+    pub memory_argb_: *mut ::std::os::raw::c_void,
+    pub pad7: [*mut ::std::os::raw::c_void; 2usize],
+}
+#[test]
+fn bindgen_test_layout_WebPPicture() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPPicture>(),
+        256usize,
+        concat!("Size of: ", stringify!(WebPPicture))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPPicture>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPPicture))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).use_argb as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(use_argb)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).colorspace as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(colorspace)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).width as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).height as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).y as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(y)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).u as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(u)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).v as *const _ as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(v)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).y_stride as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(y_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).uv_stride as *const _ as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(uv_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).a as *const _ as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(a)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).a_stride as *const _ as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(a_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad1 as *const _ as usize },
+        60usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad1)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).argb as *const _ as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(argb)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).argb_stride as *const _ as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(argb_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad2 as *const _ as usize },
+        84usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad2)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).writer as *const _ as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(writer)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).custom_ptr as *const _ as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(custom_ptr)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).extra_info_type as *const _ as usize },
+        112usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(extra_info_type)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).extra_info as *const _ as usize },
+        120usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(extra_info)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).stats as *const _ as usize },
+        128usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(stats)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).error_code as *const _ as usize },
+        136usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(error_code)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).progress_hook as *const _ as usize },
+        144usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(progress_hook)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).user_data as *const _ as usize },
+        152usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(user_data)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad3 as *const _ as usize },
+        160usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad3)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad4 as *const _ as usize },
+        176usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad4)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad5 as *const _ as usize },
+        184usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad5)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad6 as *const _ as usize },
+        192usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad6)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).memory_ as *const _ as usize },
+        224usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(memory_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).memory_argb_ as *const _ as usize },
+        232usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(memory_argb_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPPicture>())).pad7 as *const _ as usize },
+        240usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPPicture),
+            "::",
+            stringify!(pad7)
+        )
+    );
+}
+impl Default for WebPPicture {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+extern "C" {
+    pub fn WebPPictureInitInternal(
+        arg1: *mut WebPPicture,
+        arg2: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureAlloc(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureFree(picture: *mut WebPPicture);
+}
+extern "C" {
+    pub fn WebPPictureCopy(src: *const WebPPicture, dst: *mut WebPPicture)
+        -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPlaneDistortion(
+        src: *const u8,
+        src_stride: usize,
+        ref_: *const u8,
+        ref_stride: usize,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        x_step: usize,
+        type_: ::std::os::raw::c_int,
+        distortion: *mut f32,
+        result: *mut f32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureDistortion(
+        src: *const WebPPicture,
+        ref_: *const WebPPicture,
+        metric_type: ::std::os::raw::c_int,
+        result: *mut f32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureCrop(
+        picture: *mut WebPPicture,
+        left: ::std::os::raw::c_int,
+        top: ::std::os::raw::c_int,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureView(
+        src: *const WebPPicture,
+        left: ::std::os::raw::c_int,
+        top: ::std::os::raw::c_int,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+        dst: *mut WebPPicture,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureIsView(picture: *const WebPPicture) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureRescale(
+        pic: *mut WebPPicture,
+        width: ::std::os::raw::c_int,
+        height: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureImportRGB(
+        picture: *mut WebPPicture,
+        rgb: *const u8,
+        rgb_stride: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureImportRGBA(
+        picture: *mut WebPPicture,
+        rgba: *const u8,
+        rgba_stride: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureImportRGBX(
+        picture: *mut WebPPicture,
+        rgbx: *const u8,
+        rgbx_stride: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureImportBGR(
+        picture: *mut WebPPicture,
+        bgr: *const u8,
+        bgr_stride: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureImportBGRA(
+        picture: *mut WebPPicture,
+        bgra: *const u8,
+        bgra_stride: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureImportBGRX(
+        picture: *mut WebPPicture,
+        bgrx: *const u8,
+        bgrx_stride: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureARGBToYUVA(
+        picture: *mut WebPPicture,
+        arg1: WebPEncCSP,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureARGBToYUVADithered(
+        picture: *mut WebPPicture,
+        colorspace: WebPEncCSP,
+        dithering: f32,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureSharpARGBToYUVA(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureSmartARGBToYUVA(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPPictureYUVAToARGB(picture: *mut WebPPicture) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPCleanupTransparentArea(picture: *mut WebPPicture);
+}
+extern "C" {
+    pub fn WebPPictureHasTransparency(picture: *const WebPPicture) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPBlendAlpha(pic: *mut WebPPicture, background_rgb: u32);
+}
+extern "C" {
+    pub fn WebPEncode(
+        config: *const WebPConfig,
+        picture: *mut WebPPicture,
+    ) -> ::std::os::raw::c_int;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct WebPIDecoder {
+    _unused: [u8; 0],
+}
+extern "C" {
+    pub fn WebPGetDecoderVersion() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPGetInfo(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPDecodeRGBA(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeARGB(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeBGRA(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeRGB(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeBGR(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeYUV(
+        data: *const u8,
+        data_size: usize,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+        u: *mut *mut u8,
+        v: *mut *mut u8,
+        stride: *mut ::std::os::raw::c_int,
+        uv_stride: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeRGBAInto(
+        data: *const u8,
+        data_size: usize,
+        output_buffer: *mut u8,
+        output_buffer_size: usize,
+        output_stride: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeARGBInto(
+        data: *const u8,
+        data_size: usize,
+        output_buffer: *mut u8,
+        output_buffer_size: usize,
+        output_stride: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeBGRAInto(
+        data: *const u8,
+        data_size: usize,
+        output_buffer: *mut u8,
+        output_buffer_size: usize,
+        output_stride: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeRGBInto(
+        data: *const u8,
+        data_size: usize,
+        output_buffer: *mut u8,
+        output_buffer_size: usize,
+        output_stride: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeBGRInto(
+        data: *const u8,
+        data_size: usize,
+        output_buffer: *mut u8,
+        output_buffer_size: usize,
+        output_stride: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPDecodeYUVInto(
+        data: *const u8,
+        data_size: usize,
+        luma: *mut u8,
+        luma_size: usize,
+        luma_stride: ::std::os::raw::c_int,
+        u: *mut u8,
+        u_size: usize,
+        u_stride: ::std::os::raw::c_int,
+        v: *mut u8,
+        v_size: usize,
+        v_stride: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+pub const WEBP_CSP_MODE_MODE_RGB: WEBP_CSP_MODE = 0;
+pub const WEBP_CSP_MODE_MODE_RGBA: WEBP_CSP_MODE = 1;
+pub const WEBP_CSP_MODE_MODE_BGR: WEBP_CSP_MODE = 2;
+pub const WEBP_CSP_MODE_MODE_BGRA: WEBP_CSP_MODE = 3;
+pub const WEBP_CSP_MODE_MODE_ARGB: WEBP_CSP_MODE = 4;
+pub const WEBP_CSP_MODE_MODE_RGBA_4444: WEBP_CSP_MODE = 5;
+pub const WEBP_CSP_MODE_MODE_RGB_565: WEBP_CSP_MODE = 6;
+pub const WEBP_CSP_MODE_MODE_rgbA: WEBP_CSP_MODE = 7;
+pub const WEBP_CSP_MODE_MODE_bgrA: WEBP_CSP_MODE = 8;
+pub const WEBP_CSP_MODE_MODE_Argb: WEBP_CSP_MODE = 9;
+pub const WEBP_CSP_MODE_MODE_rgbA_4444: WEBP_CSP_MODE = 10;
+pub const WEBP_CSP_MODE_MODE_YUV: WEBP_CSP_MODE = 11;
+pub const WEBP_CSP_MODE_MODE_YUVA: WEBP_CSP_MODE = 12;
+pub const WEBP_CSP_MODE_MODE_LAST: WEBP_CSP_MODE = 13;
+pub type WEBP_CSP_MODE = u32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct WebPRGBABuffer {
+    pub rgba: *mut u8,
+    pub stride: ::std::os::raw::c_int,
+    pub size: usize,
+}
+#[test]
+fn bindgen_test_layout_WebPRGBABuffer() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPRGBABuffer>(),
+        24usize,
+        concat!("Size of: ", stringify!(WebPRGBABuffer))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPRGBABuffer>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPRGBABuffer))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPRGBABuffer>())).rgba as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPRGBABuffer),
+            "::",
+            stringify!(rgba)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPRGBABuffer>())).stride as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPRGBABuffer),
+            "::",
+            stringify!(stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPRGBABuffer>())).size as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPRGBABuffer),
+            "::",
+            stringify!(size)
+        )
+    );
+}
+impl Default for WebPRGBABuffer {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct WebPYUVABuffer {
+    pub y: *mut u8,
+    pub u: *mut u8,
+    pub v: *mut u8,
+    pub a: *mut u8,
+    pub y_stride: ::std::os::raw::c_int,
+    pub u_stride: ::std::os::raw::c_int,
+    pub v_stride: ::std::os::raw::c_int,
+    pub a_stride: ::std::os::raw::c_int,
+    pub y_size: usize,
+    pub u_size: usize,
+    pub v_size: usize,
+    pub a_size: usize,
+}
+#[test]
+fn bindgen_test_layout_WebPYUVABuffer() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPYUVABuffer>(),
+        80usize,
+        concat!("Size of: ", stringify!(WebPYUVABuffer))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPYUVABuffer>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPYUVABuffer))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).y as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(y)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).u as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(u)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).v as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(v)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).a as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(a)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).y_stride as *const _ as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(y_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).u_stride as *const _ as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(u_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).v_stride as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(v_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).a_stride as *const _ as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(a_stride)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).y_size as *const _ as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(y_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).u_size as *const _ as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(u_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).v_size as *const _ as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(v_size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPYUVABuffer>())).a_size as *const _ as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPYUVABuffer),
+            "::",
+            stringify!(a_size)
+        )
+    );
+}
+impl Default for WebPYUVABuffer {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct WebPDecBuffer {
+    pub colorspace: WEBP_CSP_MODE,
+    pub width: ::std::os::raw::c_int,
+    pub height: ::std::os::raw::c_int,
+    pub is_external_memory: ::std::os::raw::c_int,
+    pub u: WebPDecBuffer__bindgen_ty_1,
+    pub pad: [u32; 4usize],
+    pub private_memory: *mut u8,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union WebPDecBuffer__bindgen_ty_1 {
+    pub RGBA: WebPRGBABuffer,
+    pub YUVA: WebPYUVABuffer,
+    _bindgen_union_align: [u64; 10usize],
+}
+#[test]
+fn bindgen_test_layout_WebPDecBuffer__bindgen_ty_1() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPDecBuffer__bindgen_ty_1>(),
+        80usize,
+        concat!("Size of: ", stringify!(WebPDecBuffer__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPDecBuffer__bindgen_ty_1>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPDecBuffer__bindgen_ty_1))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecBuffer__bindgen_ty_1>())).RGBA as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer__bindgen_ty_1),
+            "::",
+            stringify!(RGBA)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecBuffer__bindgen_ty_1>())).YUVA as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer__bindgen_ty_1),
+            "::",
+            stringify!(YUVA)
+        )
+    );
+}
+impl Default for WebPDecBuffer__bindgen_ty_1 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[test]
+fn bindgen_test_layout_WebPDecBuffer() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPDecBuffer>(),
+        120usize,
+        concat!("Size of: ", stringify!(WebPDecBuffer))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPDecBuffer>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPDecBuffer))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).colorspace as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(colorspace)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).width as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).height as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecBuffer>())).is_external_memory as *const _ as usize
+        },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(is_external_memory)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).u as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(u)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).pad as *const _ as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(pad)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecBuffer>())).private_memory as *const _ as usize },
+        112usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecBuffer),
+            "::",
+            stringify!(private_memory)
+        )
+    );
+}
+impl Default for WebPDecBuffer {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+extern "C" {
+    pub fn WebPInitDecBufferInternal(
+        arg1: *mut WebPDecBuffer,
+        arg2: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPFreeDecBuffer(buffer: *mut WebPDecBuffer);
+}
+pub const VP8StatusCode_VP8_STATUS_OK: VP8StatusCode = 0;
+pub const VP8StatusCode_VP8_STATUS_OUT_OF_MEMORY: VP8StatusCode = 1;
+pub const VP8StatusCode_VP8_STATUS_INVALID_PARAM: VP8StatusCode = 2;
+pub const VP8StatusCode_VP8_STATUS_BITSTREAM_ERROR: VP8StatusCode = 3;
+pub const VP8StatusCode_VP8_STATUS_UNSUPPORTED_FEATURE: VP8StatusCode = 4;
+pub const VP8StatusCode_VP8_STATUS_SUSPENDED: VP8StatusCode = 5;
+pub const VP8StatusCode_VP8_STATUS_USER_ABORT: VP8StatusCode = 6;
+pub const VP8StatusCode_VP8_STATUS_NOT_ENOUGH_DATA: VP8StatusCode = 7;
+pub type VP8StatusCode = u32;
+extern "C" {
+    pub fn WebPINewDecoder(output_buffer: *mut WebPDecBuffer) -> *mut WebPIDecoder;
+}
+extern "C" {
+    pub fn WebPINewRGB(
+        csp: WEBP_CSP_MODE,
+        output_buffer: *mut u8,
+        output_buffer_size: usize,
+        output_stride: ::std::os::raw::c_int,
+    ) -> *mut WebPIDecoder;
+}
+extern "C" {
+    pub fn WebPINewYUVA(
+        luma: *mut u8,
+        luma_size: usize,
+        luma_stride: ::std::os::raw::c_int,
+        u: *mut u8,
+        u_size: usize,
+        u_stride: ::std::os::raw::c_int,
+        v: *mut u8,
+        v_size: usize,
+        v_stride: ::std::os::raw::c_int,
+        a: *mut u8,
+        a_size: usize,
+        a_stride: ::std::os::raw::c_int,
+    ) -> *mut WebPIDecoder;
+}
+extern "C" {
+    pub fn WebPINewYUV(
+        luma: *mut u8,
+        luma_size: usize,
+        luma_stride: ::std::os::raw::c_int,
+        u: *mut u8,
+        u_size: usize,
+        u_stride: ::std::os::raw::c_int,
+        v: *mut u8,
+        v_size: usize,
+        v_stride: ::std::os::raw::c_int,
+    ) -> *mut WebPIDecoder;
+}
+extern "C" {
+    pub fn WebPIDelete(idec: *mut WebPIDecoder);
+}
+extern "C" {
+    pub fn WebPIAppend(idec: *mut WebPIDecoder, data: *const u8, data_size: usize)
+        -> VP8StatusCode;
+}
+extern "C" {
+    pub fn WebPIUpdate(idec: *mut WebPIDecoder, data: *const u8, data_size: usize)
+        -> VP8StatusCode;
+}
+extern "C" {
+    pub fn WebPIDecGetRGB(
+        idec: *const WebPIDecoder,
+        last_y: *mut ::std::os::raw::c_int,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+        stride: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPIDecGetYUVA(
+        idec: *const WebPIDecoder,
+        last_y: *mut ::std::os::raw::c_int,
+        u: *mut *mut u8,
+        v: *mut *mut u8,
+        a: *mut *mut u8,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+        stride: *mut ::std::os::raw::c_int,
+        uv_stride: *mut ::std::os::raw::c_int,
+        a_stride: *mut ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    pub fn WebPIDecodedArea(
+        idec: *const WebPIDecoder,
+        left: *mut ::std::os::raw::c_int,
+        top: *mut ::std::os::raw::c_int,
+        width: *mut ::std::os::raw::c_int,
+        height: *mut ::std::os::raw::c_int,
+    ) -> *const WebPDecBuffer;
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct WebPBitstreamFeatures {
+    pub width: ::std::os::raw::c_int,
+    pub height: ::std::os::raw::c_int,
+    pub has_alpha: ::std::os::raw::c_int,
+    pub has_animation: ::std::os::raw::c_int,
+    pub format: ::std::os::raw::c_int,
+    pub pad: [u32; 5usize],
+}
+#[test]
+fn bindgen_test_layout_WebPBitstreamFeatures() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPBitstreamFeatures>(),
+        40usize,
+        concat!("Size of: ", stringify!(WebPBitstreamFeatures))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPBitstreamFeatures>(),
+        4usize,
+        concat!("Alignment of ", stringify!(WebPBitstreamFeatures))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).width as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPBitstreamFeatures),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).height as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPBitstreamFeatures),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).has_alpha as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPBitstreamFeatures),
+            "::",
+            stringify!(has_alpha)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPBitstreamFeatures>())).has_animation as *const _ as usize
+        },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPBitstreamFeatures),
+            "::",
+            stringify!(has_animation)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).format as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPBitstreamFeatures),
+            "::",
+            stringify!(format)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPBitstreamFeatures>())).pad as *const _ as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPBitstreamFeatures),
+            "::",
+            stringify!(pad)
+        )
+    );
+}
+extern "C" {
+    pub fn WebPGetFeaturesInternal(
+        arg1: *const u8,
+        arg2: usize,
+        arg3: *mut WebPBitstreamFeatures,
+        arg4: ::std::os::raw::c_int,
+    ) -> VP8StatusCode;
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct WebPDecoderOptions {
+    pub bypass_filtering: ::std::os::raw::c_int,
+    pub no_fancy_upsampling: ::std::os::raw::c_int,
+    pub use_cropping: ::std::os::raw::c_int,
+    pub crop_left: ::std::os::raw::c_int,
+    pub crop_top: ::std::os::raw::c_int,
+    pub crop_width: ::std::os::raw::c_int,
+    pub crop_height: ::std::os::raw::c_int,
+    pub use_scaling: ::std::os::raw::c_int,
+    pub scaled_width: ::std::os::raw::c_int,
+    pub scaled_height: ::std::os::raw::c_int,
+    pub use_threads: ::std::os::raw::c_int,
+    pub dithering_strength: ::std::os::raw::c_int,
+    pub flip: ::std::os::raw::c_int,
+    pub alpha_dithering_strength: ::std::os::raw::c_int,
+    pub pad: [u32; 5usize],
+}
+#[test]
+fn bindgen_test_layout_WebPDecoderOptions() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPDecoderOptions>(),
+        76usize,
+        concat!("Size of: ", stringify!(WebPDecoderOptions))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPDecoderOptions>(),
+        4usize,
+        concat!("Alignment of ", stringify!(WebPDecoderOptions))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecoderOptions>())).bypass_filtering as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(bypass_filtering)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecoderOptions>())).no_fancy_upsampling as *const _ as usize
+        },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(no_fancy_upsampling)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).use_cropping as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(use_cropping)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_left as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(crop_left)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_top as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(crop_top)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_width as *const _ as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(crop_width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).crop_height as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(crop_height)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).use_scaling as *const _ as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(use_scaling)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).scaled_width as *const _ as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(scaled_width)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecoderOptions>())).scaled_height as *const _ as usize
+        },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(scaled_height)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).use_threads as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(use_threads)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecoderOptions>())).dithering_strength as *const _ as usize
+        },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(dithering_strength)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).flip as *const _ as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(flip)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<WebPDecoderOptions>())).alpha_dithering_strength as *const _
+                as usize
+        },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(alpha_dithering_strength)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderOptions>())).pad as *const _ as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderOptions),
+            "::",
+            stringify!(pad)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct WebPDecoderConfig {
+    pub input: WebPBitstreamFeatures,
+    pub output: WebPDecBuffer,
+    pub options: WebPDecoderOptions,
+}
+#[test]
+fn bindgen_test_layout_WebPDecoderConfig() {
+    assert_eq!(
+        ::std::mem::size_of::<WebPDecoderConfig>(),
+        240usize,
+        concat!("Size of: ", stringify!(WebPDecoderConfig))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<WebPDecoderConfig>(),
+        8usize,
+        concat!("Alignment of ", stringify!(WebPDecoderConfig))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderConfig>())).input as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderConfig),
+            "::",
+            stringify!(input)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderConfig>())).output as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderConfig),
+            "::",
+            stringify!(output)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<WebPDecoderConfig>())).options as *const _ as usize },
+        160usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(WebPDecoderConfig),
+            "::",
+            stringify!(options)
+        )
+    );
+}
+impl Default for WebPDecoderConfig {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+extern "C" {
+    pub fn WebPInitDecoderConfigInternal(
+        arg1: *mut WebPDecoderConfig,
+        arg2: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WebPIDecode(
+        data: *const u8,
+        data_size: usize,
+        config: *mut WebPDecoderConfig,
+    ) -> *mut WebPIDecoder;
+}
+extern "C" {
+    pub fn WebPDecode(
+        data: *const u8,
+        data_size: usize,
+        config: *mut WebPDecoderConfig,
+    ) -> VP8StatusCode;
+}
+pub type GifPixelType = ::std::os::raw::c_uchar;
+pub type GifRowType = *mut ::std::os::raw::c_uchar;
+pub type GifByteType = ::std::os::raw::c_uchar;
+pub type GifPrefixType = ::std::os::raw::c_uint;
+pub type GifWord = ::std::os::raw::c_int;
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct GifColorType {
+    pub Red: GifByteType,
+    pub Green: GifByteType,
+    pub Blue: GifByteType,
+}
+#[test]
+fn bindgen_test_layout_GifColorType() {
+    assert_eq!(
+        ::std::mem::size_of::<GifColorType>(),
+        3usize,
+        concat!("Size of: ", stringify!(GifColorType))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<GifColorType>(),
+        1usize,
+        concat!("Alignment of ", stringify!(GifColorType))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifColorType>())).Red as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifColorType),
+            "::",
+            stringify!(Red)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifColorType>())).Green as *const _ as usize },
+        1usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifColorType),
+            "::",
+            stringify!(Green)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifColorType>())).Blue as *const _ as usize },
+        2usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifColorType),
+            "::",
+            stringify!(Blue)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct ColorMapObject {
+    pub ColorCount: ::std::os::raw::c_int,
+    pub BitsPerPixel: ::std::os::raw::c_int,
+    pub SortFlag: bool,
+    pub Colors: *mut GifColorType,
+}
+#[test]
+fn bindgen_test_layout_ColorMapObject() {
+    assert_eq!(
+        ::std::mem::size_of::<ColorMapObject>(),
+        24usize,
+        concat!("Size of: ", stringify!(ColorMapObject))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<ColorMapObject>(),
+        8usize,
+        concat!("Alignment of ", stringify!(ColorMapObject))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ColorMapObject>())).ColorCount as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ColorMapObject),
+            "::",
+            stringify!(ColorCount)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ColorMapObject>())).BitsPerPixel as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ColorMapObject),
+            "::",
+            stringify!(BitsPerPixel)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ColorMapObject>())).SortFlag as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ColorMapObject),
+            "::",
+            stringify!(SortFlag)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ColorMapObject>())).Colors as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ColorMapObject),
+            "::",
+            stringify!(Colors)
+        )
+    );
+}
+impl Default for ColorMapObject {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct GifImageDesc {
+    pub Left: GifWord,
+    pub Top: GifWord,
+    pub Width: GifWord,
+    pub Height: GifWord,
+    pub Interlace: bool,
+    pub ColorMap: *mut ColorMapObject,
+}
+#[test]
+fn bindgen_test_layout_GifImageDesc() {
+    assert_eq!(
+        ::std::mem::size_of::<GifImageDesc>(),
+        32usize,
+        concat!("Size of: ", stringify!(GifImageDesc))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<GifImageDesc>(),
+        8usize,
+        concat!("Alignment of ", stringify!(GifImageDesc))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifImageDesc>())).Left as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifImageDesc),
+            "::",
+            stringify!(Left)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifImageDesc>())).Top as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifImageDesc),
+            "::",
+            stringify!(Top)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifImageDesc>())).Width as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifImageDesc),
+            "::",
+            stringify!(Width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifImageDesc>())).Height as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifImageDesc),
+            "::",
+            stringify!(Height)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifImageDesc>())).Interlace as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifImageDesc),
+            "::",
+            stringify!(Interlace)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifImageDesc>())).ColorMap as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifImageDesc),
+            "::",
+            stringify!(ColorMap)
+        )
+    );
+}
+impl Default for GifImageDesc {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct ExtensionBlock {
+    pub ByteCount: ::std::os::raw::c_int,
+    pub Bytes: *mut GifByteType,
+    pub Function: ::std::os::raw::c_int,
+}
+#[test]
+fn bindgen_test_layout_ExtensionBlock() {
+    assert_eq!(
+        ::std::mem::size_of::<ExtensionBlock>(),
+        24usize,
+        concat!("Size of: ", stringify!(ExtensionBlock))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<ExtensionBlock>(),
+        8usize,
+        concat!("Alignment of ", stringify!(ExtensionBlock))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ExtensionBlock>())).ByteCount as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ExtensionBlock),
+            "::",
+            stringify!(ByteCount)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ExtensionBlock>())).Bytes as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ExtensionBlock),
+            "::",
+            stringify!(Bytes)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<ExtensionBlock>())).Function as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(ExtensionBlock),
+            "::",
+            stringify!(Function)
+        )
+    );
+}
+impl Default for ExtensionBlock {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct SavedImage {
+    pub ImageDesc: GifImageDesc,
+    pub RasterBits: *mut GifByteType,
+    pub ExtensionBlockCount: ::std::os::raw::c_int,
+    pub ExtensionBlocks: *mut ExtensionBlock,
+}
+#[test]
+fn bindgen_test_layout_SavedImage() {
+    assert_eq!(
+        ::std::mem::size_of::<SavedImage>(),
+        56usize,
+        concat!("Size of: ", stringify!(SavedImage))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<SavedImage>(),
+        8usize,
+        concat!("Alignment of ", stringify!(SavedImage))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<SavedImage>())).ImageDesc as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(SavedImage),
+            "::",
+            stringify!(ImageDesc)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<SavedImage>())).RasterBits as *const _ as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(SavedImage),
+            "::",
+            stringify!(RasterBits)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<SavedImage>())).ExtensionBlockCount as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(SavedImage),
+            "::",
+            stringify!(ExtensionBlockCount)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<SavedImage>())).ExtensionBlocks as *const _ as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(SavedImage),
+            "::",
+            stringify!(ExtensionBlocks)
+        )
+    );
+}
+impl Default for SavedImage {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct GifFileType {
+    pub SWidth: GifWord,
+    pub SHeight: GifWord,
+    pub SColorResolution: GifWord,
+    pub SBackGroundColor: GifWord,
+    pub AspectByte: GifByteType,
+    pub SColorMap: *mut ColorMapObject,
+    pub ImageCount: ::std::os::raw::c_int,
+    pub Image: GifImageDesc,
+    pub SavedImages: *mut SavedImage,
+    pub ExtensionBlockCount: ::std::os::raw::c_int,
+    pub ExtensionBlocks: *mut ExtensionBlock,
+    pub Error: ::std::os::raw::c_int,
+    pub UserData: *mut ::std::os::raw::c_void,
+    pub Private: *mut ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_GifFileType() {
+    assert_eq!(
+        ::std::mem::size_of::<GifFileType>(),
+        120usize,
+        concat!("Size of: ", stringify!(GifFileType))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<GifFileType>(),
+        8usize,
+        concat!("Alignment of ", stringify!(GifFileType))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).SWidth as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(SWidth)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).SHeight as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(SHeight)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).SColorResolution as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(SColorResolution)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).SBackGroundColor as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(SBackGroundColor)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).AspectByte as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(AspectByte)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).SColorMap as *const _ as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(SColorMap)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).ImageCount as *const _ as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(ImageCount)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).Image as *const _ as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(Image)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).SavedImages as *const _ as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(SavedImages)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).ExtensionBlockCount as *const _ as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(ExtensionBlockCount)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).ExtensionBlocks as *const _ as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(ExtensionBlocks)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).Error as *const _ as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(Error)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).UserData as *const _ as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(UserData)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GifFileType>())).Private as *const _ as usize },
+        112usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GifFileType),
+            "::",
+            stringify!(Private)
+        )
+    );
+}
+impl Default for GifFileType {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+pub const GifRecordType_UNDEFINED_RECORD_TYPE: GifRecordType = 0;
+pub const GifRecordType_SCREEN_DESC_RECORD_TYPE: GifRecordType = 1;
+pub const GifRecordType_IMAGE_DESC_RECORD_TYPE: GifRecordType = 2;
+pub const GifRecordType_EXTENSION_RECORD_TYPE: GifRecordType = 3;
+pub const GifRecordType_TERMINATE_RECORD_TYPE: GifRecordType = 4;
+pub type GifRecordType = u32;
+pub type InputFunc = ::std::option::Option<
+    unsafe extern "C" fn(
+        arg1: *mut GifFileType,
+        arg2: *mut GifByteType,
+        arg3: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+>;
+pub type OutputFunc = ::std::option::Option<
+    unsafe extern "C" fn(
+        arg1: *mut GifFileType,
+        arg2: *const GifByteType,
+        arg3: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+>;
+#[doc = "GIF89 structures"]
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct GraphicsControlBlock {
+    pub DisposalMode: ::std::os::raw::c_int,
+    pub UserInputFlag: bool,
+    pub DelayTime: ::std::os::raw::c_int,
+    pub TransparentColor: ::std::os::raw::c_int,
+}
+#[test]
+fn bindgen_test_layout_GraphicsControlBlock() {
+    assert_eq!(
+        ::std::mem::size_of::<GraphicsControlBlock>(),
+        16usize,
+        concat!("Size of: ", stringify!(GraphicsControlBlock))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<GraphicsControlBlock>(),
+        4usize,
+        concat!("Alignment of ", stringify!(GraphicsControlBlock))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<GraphicsControlBlock>())).DisposalMode as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GraphicsControlBlock),
+            "::",
+            stringify!(DisposalMode)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<GraphicsControlBlock>())).UserInputFlag as *const _ as usize
+        },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GraphicsControlBlock),
+            "::",
+            stringify!(UserInputFlag)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GraphicsControlBlock>())).DelayTime as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GraphicsControlBlock),
+            "::",
+            stringify!(DelayTime)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<GraphicsControlBlock>())).TransparentColor as *const _ as usize
+        },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GraphicsControlBlock),
+            "::",
+            stringify!(TransparentColor)
+        )
+    );
+}
+extern "C" {
+    #[doc = "GIF encoding routines"]
+    pub fn EGifOpenFileName(
+        GifFileName: *const ::std::os::raw::c_char,
+        GifTestExistence: bool,
+        Error: *mut ::std::os::raw::c_int,
+    ) -> *mut GifFileType;
+}
+extern "C" {
+    pub fn EGifOpenFileHandle(
+        GifFileHandle: ::std::os::raw::c_int,
+        Error: *mut ::std::os::raw::c_int,
+    ) -> *mut GifFileType;
+}
+extern "C" {
+    pub fn EGifOpen(
+        userPtr: *mut ::std::os::raw::c_void,
+        writeFunc: OutputFunc,
+        Error: *mut ::std::os::raw::c_int,
+    ) -> *mut GifFileType;
+}
+extern "C" {
+    pub fn EGifSpew(GifFile: *mut GifFileType) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifGetGifVersion(GifFile: *mut GifFileType) -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn EGifCloseFile(
+        GifFile: *mut GifFileType,
+        ErrorCode: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutScreenDesc(
+        GifFile: *mut GifFileType,
+        GifWidth: ::std::os::raw::c_int,
+        GifHeight: ::std::os::raw::c_int,
+        GifColorRes: ::std::os::raw::c_int,
+        GifBackGround: ::std::os::raw::c_int,
+        GifColorMap: *const ColorMapObject,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutImageDesc(
+        GifFile: *mut GifFileType,
+        GifLeft: ::std::os::raw::c_int,
+        GifTop: ::std::os::raw::c_int,
+        GifWidth: ::std::os::raw::c_int,
+        GifHeight: ::std::os::raw::c_int,
+        GifInterlace: bool,
+        GifColorMap: *const ColorMapObject,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifSetGifVersion(GifFile: *mut GifFileType, gif89: bool);
+}
+extern "C" {
+    pub fn EGifPutLine(
+        GifFile: *mut GifFileType,
+        GifLine: *mut GifPixelType,
+        GifLineLen: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutPixel(GifFile: *mut GifFileType, GifPixel: GifPixelType)
+        -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutComment(
+        GifFile: *mut GifFileType,
+        GifComment: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutExtensionLeader(
+        GifFile: *mut GifFileType,
+        GifExtCode: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutExtensionBlock(
+        GifFile: *mut GifFileType,
+        GifExtLen: ::std::os::raw::c_int,
+        GifExtension: *const ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutExtensionTrailer(GifFile: *mut GifFileType) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutExtension(
+        GifFile: *mut GifFileType,
+        GifExtCode: ::std::os::raw::c_int,
+        GifExtLen: ::std::os::raw::c_int,
+        GifExtension: *const ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutCode(
+        GifFile: *mut GifFileType,
+        GifCodeSize: ::std::os::raw::c_int,
+        GifCodeBlock: *const GifByteType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifPutCodeNext(
+        GifFile: *mut GifFileType,
+        GifCodeBlock: *const GifByteType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = "GIF decoding routines"]
+    pub fn DGifOpenFileName(
+        GifFileName: *const ::std::os::raw::c_char,
+        Error: *mut ::std::os::raw::c_int,
+    ) -> *mut GifFileType;
+}
+extern "C" {
+    pub fn DGifOpenFileHandle(
+        GifFileHandle: ::std::os::raw::c_int,
+        Error: *mut ::std::os::raw::c_int,
+    ) -> *mut GifFileType;
+}
+extern "C" {
+    pub fn DGifSlurp(GifFile: *mut GifFileType) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifOpen(
+        userPtr: *mut ::std::os::raw::c_void,
+        readFunc: InputFunc,
+        Error: *mut ::std::os::raw::c_int,
+    ) -> *mut GifFileType;
+}
+extern "C" {
+    pub fn DGifCloseFile(
+        GifFile: *mut GifFileType,
+        ErrorCode: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetScreenDesc(GifFile: *mut GifFileType) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetRecordType(
+        GifFile: *mut GifFileType,
+        GifType: *mut GifRecordType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetImageDesc(GifFile: *mut GifFileType) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetLine(
+        GifFile: *mut GifFileType,
+        GifLine: *mut GifPixelType,
+        GifLineLen: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetPixel(GifFile: *mut GifFileType, GifPixel: GifPixelType)
+        -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetComment(
+        GifFile: *mut GifFileType,
+        GifComment: *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetExtension(
+        GifFile: *mut GifFileType,
+        GifExtCode: *mut ::std::os::raw::c_int,
+        GifExtension: *mut *mut GifByteType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetExtensionNext(
+        GifFile: *mut GifFileType,
+        GifExtension: *mut *mut GifByteType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetCode(
+        GifFile: *mut GifFileType,
+        GifCodeSize: *mut ::std::os::raw::c_int,
+        GifCodeBlock: *mut *mut GifByteType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetCodeNext(
+        GifFile: *mut GifFileType,
+        GifCodeBlock: *mut *mut GifByteType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn DGifGetLZCodes(
+        GifFile: *mut GifFileType,
+        GifCode: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = "Color table quantization (deprecated)"]
+    pub fn GifQuantizeBuffer(
+        Width: ::std::os::raw::c_uint,
+        Height: ::std::os::raw::c_uint,
+        ColorMapSize: *mut ::std::os::raw::c_int,
+        RedInput: *mut GifByteType,
+        GreenInput: *mut GifByteType,
+        BlueInput: *mut GifByteType,
+        OutputBuffer: *mut GifByteType,
+        OutputColorMap: *mut GifColorType,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    #[doc = "Error handling and reporting."]
+    pub fn GifErrorString(ErrorCode: ::std::os::raw::c_int) -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    #[doc = "Color map handling from gif_alloc.c"]
+    pub fn GifMakeMapObject(
+        ColorCount: ::std::os::raw::c_int,
+        ColorMap: *const GifColorType,
+    ) -> *mut ColorMapObject;
+}
+extern "C" {
+    pub fn GifFreeMapObject(Object: *mut ColorMapObject);
+}
+extern "C" {
+    pub fn GifUnionColorMap(
+        ColorIn1: *const ColorMapObject,
+        ColorIn2: *const ColorMapObject,
+        ColorTransIn2: *mut GifPixelType,
+    ) -> *mut ColorMapObject;
+}
+extern "C" {
+    pub fn GifBitSize(n: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn reallocarray(
+        optr: *mut ::std::os::raw::c_void,
+        nmemb: usize,
+        size: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    #[doc = "Support for the in-core structures allocation (slurp mode)."]
+    pub fn GifApplyTranslation(Image: *mut SavedImage, Translation: *mut GifPixelType);
+}
+extern "C" {
+    pub fn GifAddExtensionBlock(
+        ExtensionBlock_Count: *mut ::std::os::raw::c_int,
+        ExtensionBlocks: *mut *mut ExtensionBlock,
+        Function: ::std::os::raw::c_int,
+        Len: ::std::os::raw::c_uint,
+        ExtData: *mut ::std::os::raw::c_uchar,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn GifFreeExtensions(
+        ExtensionBlock_Count: *mut ::std::os::raw::c_int,
+        ExtensionBlocks: *mut *mut ExtensionBlock,
+    );
+}
+extern "C" {
+    pub fn GifMakeSavedImage(
+        GifFile: *mut GifFileType,
+        CopyFrom: *const SavedImage,
+    ) -> *mut SavedImage;
+}
+extern "C" {
+    pub fn GifFreeSavedImages(GifFile: *mut GifFileType);
+}
+extern "C" {
+    #[doc = "5.x functions for GIF89 graphics control blocks"]
+    pub fn DGifExtensionToGCB(
+        GifExtensionLength: usize,
+        GifExtension: *const GifByteType,
+        GCB: *mut GraphicsControlBlock,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifGCBToExtension(
+        GCB: *const GraphicsControlBlock,
+        GifExtension: *mut GifByteType,
+    ) -> usize;
+}
+extern "C" {
+    pub fn DGifSavedExtensionToGCB(
+        GifFile: *mut GifFileType,
+        ImageIndex: ::std::os::raw::c_int,
+        GCB: *mut GraphicsControlBlock,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn EGifGCBToSavedExtension(
+        GCB: *const GraphicsControlBlock,
+        GifFile: *mut GifFileType,
+        ImageIndex: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn GifDrawText8x8(
+        Image: *mut SavedImage,
+        x: ::std::os::raw::c_int,
+        y: ::std::os::raw::c_int,
+        legend: *const ::std::os::raw::c_char,
+        color: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn GifDrawBox(
+        Image: *mut SavedImage,
+        x: ::std::os::raw::c_int,
+        y: ::std::os::raw::c_int,
+        w: ::std::os::raw::c_int,
+        d: ::std::os::raw::c_int,
+        color: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn GifDrawRectangle(
+        Image: *mut SavedImage,
+        x: ::std::os::raw::c_int,
+        y: ::std::os::raw::c_int,
+        w: ::std::os::raw::c_int,
+        d: ::std::os::raw::c_int,
+        color: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn GifDrawBoxedText8x8(
+        Image: *mut SavedImage,
+        x: ::std::os::raw::c_int,
+        y: ::std::os::raw::c_int,
+        legend: *const ::std::os::raw::c_char,
+        border: ::std::os::raw::c_int,
+        bg: ::std::os::raw::c_int,
+        fg: ::std::os::raw::c_int,
+    );
 }
 pub type va_list = __darwin_va_list;
 extern "C" {
-    #[link_name = "\u{1}_renameat"]
     pub fn renameat(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -13737,7 +14656,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_renamex_np"]
     pub fn renamex_np(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -13745,7 +14663,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_renameatx_np"]
     pub fn renameatx_np(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -14068,35 +14985,27 @@ impl Default for __sFILE {
 }
 pub type FILE = __sFILE;
 extern "C" {
-    #[link_name = "\u{1}_clearerr"]
     pub fn clearerr(arg1: *mut FILE);
 }
 extern "C" {
-    #[link_name = "\u{1}_fclose"]
     pub fn fclose(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_feof"]
     pub fn feof(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ferror"]
     pub fn ferror(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fflush"]
     pub fn fflush(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fgetc"]
     pub fn fgetc(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fgetpos"]
     pub fn fgetpos(arg1: *mut FILE, arg2: *mut fpos_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fgets"]
     pub fn fgets(
         arg1: *mut ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
@@ -14104,14 +15013,12 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_fopen"]
     pub fn fopen(
         __filename: *const ::std::os::raw::c_char,
         __mode: *const ::std::os::raw::c_char,
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_fprintf"]
     pub fn fprintf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -14119,15 +15026,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fputc"]
     pub fn fputc(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fputs"]
     pub fn fputs(arg1: *const ::std::os::raw::c_char, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fread"]
     pub fn fread(
         __ptr: *mut ::std::os::raw::c_void,
         __size: ::std::os::raw::c_ulong,
@@ -14136,7 +15040,6 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_freopen"]
     pub fn freopen(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14144,7 +15047,6 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_fscanf"]
     pub fn fscanf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -14152,7 +15054,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fseek"]
     pub fn fseek(
         arg1: *mut FILE,
         arg2: ::std::os::raw::c_long,
@@ -14160,15 +15061,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_fsetpos"]
     pub fn fsetpos(arg1: *mut FILE, arg2: *const fpos_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ftell"]
     pub fn ftell(arg1: *mut FILE) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    #[link_name = "\u{1}_fwrite"]
     pub fn fwrite(
         __ptr: *const ::std::os::raw::c_void,
         __size: ::std::os::raw::c_ulong,
@@ -14177,62 +15075,48 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    #[link_name = "\u{1}_getc"]
     pub fn getc(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getchar"]
     pub fn getchar() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_gets"]
     pub fn gets(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_perror"]
     pub fn perror(arg1: *const ::std::os::raw::c_char);
 }
 extern "C" {
-    #[link_name = "\u{1}_printf"]
     pub fn printf(arg1: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_putc"]
     pub fn putc(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_putchar"]
     pub fn putchar(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_puts"]
     pub fn puts(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_remove"]
     pub fn remove(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_rename"]
     pub fn rename(
         __old: *const ::std::os::raw::c_char,
         __new: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_rewind"]
     pub fn rewind(arg1: *mut FILE);
 }
 extern "C" {
-    #[link_name = "\u{1}_scanf"]
     pub fn scanf(arg1: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setbuf"]
     pub fn setbuf(arg1: *mut FILE, arg2: *mut ::std::os::raw::c_char);
 }
 extern "C" {
-    #[link_name = "\u{1}_setvbuf"]
     pub fn setvbuf(
         arg1: *mut FILE,
         arg2: *mut ::std::os::raw::c_char,
@@ -14241,7 +15125,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_sprintf"]
     pub fn sprintf(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14249,7 +15132,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_sscanf"]
     pub fn sscanf(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14257,19 +15139,15 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_tmpfile"]
     pub fn tmpfile() -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_tmpnam"]
     pub fn tmpnam(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_ungetc"]
     pub fn ungetc(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vfprintf"]
     pub fn vfprintf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -14277,14 +15155,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vprintf"]
     pub fn vprintf(
         arg1: *const ::std::os::raw::c_char,
         arg2: *mut __va_list_tag,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vsprintf"]
     pub fn vsprintf(
         arg1: *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14292,34 +15168,27 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ctermid"]
     pub fn ctermid(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_fdopen"]
     pub fn fdopen(arg1: ::std::os::raw::c_int, arg2: *const ::std::os::raw::c_char) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_fileno"]
     pub fn fileno(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_pclose"]
     pub fn pclose(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_popen"]
     pub fn popen(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}___srget"]
     pub fn __srget(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}___svfscanf"]
     pub fn __svfscanf(
         arg1: *mut FILE,
         arg2: *const ::std::os::raw::c_char,
@@ -14327,51 +15196,39 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}___swbuf"]
     pub fn __swbuf(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}___sputc"]
     pub fn __sputc(_c: ::std::os::raw::c_int, _p: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_flockfile"]
     pub fn flockfile(arg1: *mut FILE);
 }
 extern "C" {
-    #[link_name = "\u{1}_ftrylockfile"]
     pub fn ftrylockfile(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_funlockfile"]
     pub fn funlockfile(arg1: *mut FILE);
 }
 extern "C" {
-    #[link_name = "\u{1}_getc_unlocked"]
     pub fn getc_unlocked(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getchar_unlocked"]
     pub fn getchar_unlocked() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_putc_unlocked"]
     pub fn putc_unlocked(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_putchar_unlocked"]
     pub fn putchar_unlocked(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getw"]
     pub fn getw(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_putw"]
     pub fn putw(arg1: ::std::os::raw::c_int, arg2: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_tempnam"]
     pub fn tempnam(
         __dir: *const ::std::os::raw::c_char,
         __prefix: *const ::std::os::raw::c_char,
@@ -14379,7 +15236,6 @@ extern "C" {
 }
 pub type off_t = __darwin_off_t;
 extern "C" {
-    #[link_name = "\u{1}_fseeko"]
     pub fn fseeko(
         __stream: *mut FILE,
         __offset: off_t,
@@ -14387,11 +15243,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ftello"]
     pub fn ftello(__stream: *mut FILE) -> off_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_snprintf"]
     pub fn snprintf(
         __str: *mut ::std::os::raw::c_char,
         __size: ::std::os::raw::c_ulong,
@@ -14400,7 +15254,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vfscanf"]
     pub fn vfscanf(
         __stream: *mut FILE,
         __format: *const ::std::os::raw::c_char,
@@ -14408,14 +15261,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vscanf"]
     pub fn vscanf(
         __format: *const ::std::os::raw::c_char,
         arg1: *mut __va_list_tag,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vsnprintf"]
     pub fn vsnprintf(
         __str: *mut ::std::os::raw::c_char,
         __size: ::std::os::raw::c_ulong,
@@ -14424,7 +15275,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vsscanf"]
     pub fn vsscanf(
         __str: *const ::std::os::raw::c_char,
         __format: *const ::std::os::raw::c_char,
@@ -14432,7 +15282,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_dprintf"]
     pub fn dprintf(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -14440,7 +15289,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vdprintf"]
     pub fn vdprintf(
         arg1: ::std::os::raw::c_int,
         arg2: *const ::std::os::raw::c_char,
@@ -14448,7 +15296,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_getdelim"]
     pub fn getdelim(
         __linep: *mut *mut ::std::os::raw::c_char,
         __linecapp: *mut usize,
@@ -14457,7 +15304,6 @@ extern "C" {
     ) -> isize;
 }
 extern "C" {
-    #[link_name = "\u{1}_getline"]
     pub fn getline(
         __linep: *mut *mut ::std::os::raw::c_char,
         __linecapp: *mut usize,
@@ -14465,7 +15311,6 @@ extern "C" {
     ) -> isize;
 }
 extern "C" {
-    #[link_name = "\u{1}_fmemopen"]
     pub fn fmemopen(
         __buf: *mut ::std::os::raw::c_void,
         __size: usize,
@@ -14473,14 +15318,12 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_open_memstream"]
     pub fn open_memstream(
         __bufp: *mut *mut ::std::os::raw::c_char,
         __sizep: *mut usize,
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_asprintf"]
     pub fn asprintf(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14488,26 +15331,21 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ctermid_r"]
     pub fn ctermid_r(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_fgetln"]
     pub fn fgetln(arg1: *mut FILE, arg2: *mut usize) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_fmtcheck"]
     pub fn fmtcheck(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_fpurge"]
     pub fn fpurge(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_setbuffer"]
     pub fn setbuffer(
         arg1: *mut FILE,
         arg2: *mut ::std::os::raw::c_char,
@@ -14515,11 +15353,9 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_setlinebuf"]
     pub fn setlinebuf(arg1: *mut FILE) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_vasprintf"]
     pub fn vasprintf(
         arg1: *mut *mut ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14527,7 +15363,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_zopen"]
     pub fn zopen(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14535,7 +15370,6 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_funopen"]
     pub fn funopen(
         arg1: *const ::std::os::raw::c_void,
         arg2: ::std::option::Option<
@@ -14565,7 +15399,6 @@ extern "C" {
     ) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}___sprintf_chk"]
     pub fn __sprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
@@ -14575,7 +15408,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}___snprintf_chk"]
     pub fn __snprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: usize,
@@ -14586,7 +15418,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}___vsprintf_chk"]
     pub fn __vsprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: ::std::os::raw::c_int,
@@ -14596,7 +15427,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}___vsnprintf_chk"]
     pub fn __vsnprintf_chk(
         arg1: *mut ::std::os::raw::c_char,
         arg2: usize,
@@ -14609,34 +15439,27 @@ extern "C" {
 pub type jmp_buf = [::std::os::raw::c_int; 37usize];
 pub type sigjmp_buf = [::std::os::raw::c_int; 38usize];
 extern "C" {
-    #[link_name = "\u{1}_setjmp"]
     pub fn setjmp(arg1: *mut ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_longjmp"]
     pub fn longjmp(arg1: *mut ::std::os::raw::c_int, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}__setjmp"]
     pub fn _setjmp(arg1: *mut ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}__longjmp"]
     pub fn _longjmp(arg1: *mut ::std::os::raw::c_int, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_sigsetjmp"]
     pub fn sigsetjmp(
         arg1: *mut ::std::os::raw::c_int,
         arg2: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_siglongjmp"]
     pub fn siglongjmp(arg1: *mut ::std::os::raw::c_int, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_longjmperror"]
     pub fn longjmperror();
 }
 pub type clock_t = __darwin_clock_t;
@@ -14824,39 +15647,30 @@ impl Default for tm {
     }
 }
 extern "C" {
-    #[link_name = "\u{1}_asctime"]
     pub fn asctime(arg1: *const tm) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_clock"]
     pub fn clock() -> clock_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_ctime"]
     pub fn ctime(arg1: *const time_t) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_difftime"]
     pub fn difftime(arg1: time_t, arg2: time_t) -> f64;
 }
 extern "C" {
-    #[link_name = "\u{1}_getdate"]
     pub fn getdate(arg1: *const ::std::os::raw::c_char) -> *mut tm;
 }
 extern "C" {
-    #[link_name = "\u{1}_gmtime"]
     pub fn gmtime(arg1: *const time_t) -> *mut tm;
 }
 extern "C" {
-    #[link_name = "\u{1}_localtime"]
     pub fn localtime(arg1: *const time_t) -> *mut tm;
 }
 extern "C" {
-    #[link_name = "\u{1}_mktime"]
     pub fn mktime(arg1: *mut tm) -> time_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_strftime"]
     pub fn strftime(
         arg1: *mut ::std::os::raw::c_char,
         arg2: usize,
@@ -14865,7 +15679,6 @@ extern "C" {
     ) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_strptime"]
     pub fn strptime(
         arg1: *const ::std::os::raw::c_char,
         arg2: *const ::std::os::raw::c_char,
@@ -14873,57 +15686,45 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_time"]
     pub fn time(arg1: *mut time_t) -> time_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_tzset"]
     pub fn tzset();
 }
 extern "C" {
-    #[link_name = "\u{1}_asctime_r"]
     pub fn asctime_r(
         arg1: *const tm,
         arg2: *mut ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_ctime_r"]
     pub fn ctime_r(
         arg1: *const time_t,
         arg2: *mut ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[link_name = "\u{1}_gmtime_r"]
     pub fn gmtime_r(arg1: *const time_t, arg2: *mut tm) -> *mut tm;
 }
 extern "C" {
-    #[link_name = "\u{1}_localtime_r"]
     pub fn localtime_r(arg1: *const time_t, arg2: *mut tm) -> *mut tm;
 }
 extern "C" {
-    #[link_name = "\u{1}_posix2time"]
     pub fn posix2time(arg1: time_t) -> time_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_tzsetwall"]
     pub fn tzsetwall();
 }
 extern "C" {
-    #[link_name = "\u{1}_time2posix"]
     pub fn time2posix(arg1: time_t) -> time_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_timelocal"]
     pub fn timelocal(arg1: *mut tm) -> time_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_timegm"]
     pub fn timegm(arg1: *mut tm) -> time_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_nanosleep"]
     pub fn nanosleep(__rqtp: *const timespec, __rmtp: *mut timespec) -> ::std::os::raw::c_int;
 }
 pub const clockid_t__CLOCK_REALTIME: clockid_t = 0;
@@ -14936,19 +15737,15 @@ pub const clockid_t__CLOCK_PROCESS_CPUTIME_ID: clockid_t = 12;
 pub const clockid_t__CLOCK_THREAD_CPUTIME_ID: clockid_t = 16;
 pub type clockid_t = u32;
 extern "C" {
-    #[link_name = "\u{1}_clock_getres"]
     pub fn clock_getres(__clock_id: clockid_t, __res: *mut timespec) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_clock_gettime"]
     pub fn clock_gettime(__clock_id: clockid_t, __tp: *mut timespec) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_clock_gettime_nsec_np"]
     pub fn clock_gettime_nsec_np(__clock_id: clockid_t) -> __uint64_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_clock_settime"]
     pub fn clock_settime(__clock_id: clockid_t, __tp: *const timespec) -> ::std::os::raw::c_int;
 }
 pub type png_byte = ::std::os::raw::c_uchar;
@@ -14991,7 +15788,7 @@ pub type png_charpp = *mut *mut ::std::os::raw::c_char;
 pub type png_fixed_point_pp = *mut *mut png_fixed_point;
 pub type png_doublepp = *mut *mut f64;
 pub type png_charppp = *mut *mut *mut ::std::os::raw::c_char;
-pub type png_libpng_version_1_6_36 = *mut ::std::os::raw::c_char;
+pub type png_libpng_version_1_6_37 = *mut ::std::os::raw::c_char;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct png_struct_def {
@@ -15750,15 +16547,12 @@ pub type png_malloc_ptr = ::std::option::Option<
 pub type png_free_ptr =
     ::std::option::Option<unsafe extern "C" fn(arg1: png_structp, arg2: png_voidp)>;
 extern "C" {
-    #[link_name = "\u{1}_png_access_version_number"]
     pub fn png_access_version_number() -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sig_bytes"]
     pub fn png_set_sig_bytes(png_ptr: png_structrp, num_bytes: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_sig_cmp"]
     pub fn png_sig_cmp(
         sig: png_const_bytep,
         start: usize,
@@ -15766,7 +16560,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_create_read_struct"]
     pub fn png_create_read_struct(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15775,7 +16568,6 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_create_write_struct"]
     pub fn png_create_write_struct(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15784,15 +16576,12 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_compression_buffer_size"]
     pub fn png_get_compression_buffer_size(png_ptr: png_const_structrp) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_compression_buffer_size"]
     pub fn png_set_compression_buffer_size(png_ptr: png_structrp, size: usize);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_longjmp_fn"]
     pub fn png_set_longjmp_fn(
         png_ptr: png_structrp,
         longjmp_fn: png_longjmp_ptr,
@@ -15800,15 +16589,12 @@ extern "C" {
     ) -> *mut jmp_buf;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_longjmp"]
     pub fn png_longjmp(png_ptr: png_const_structrp, val: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_reset_zstream"]
     pub fn png_reset_zstream(png_ptr: png_structrp) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_create_read_struct_2"]
     pub fn png_create_read_struct_2(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15820,7 +16606,6 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_create_write_struct_2"]
     pub fn png_create_write_struct_2(
         user_png_ver: png_const_charp,
         error_ptr: png_voidp,
@@ -15832,11 +16617,9 @@ extern "C" {
     ) -> png_structp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_sig"]
     pub fn png_write_sig(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_chunk"]
     pub fn png_write_chunk(
         png_ptr: png_structrp,
         chunk_name: png_const_bytep,
@@ -15845,7 +16628,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_chunk_start"]
     pub fn png_write_chunk_start(
         png_ptr: png_structrp,
         chunk_name: png_const_bytep,
@@ -15853,83 +16635,64 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_chunk_data"]
     pub fn png_write_chunk_data(png_ptr: png_structrp, data: png_const_bytep, length: usize);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_chunk_end"]
     pub fn png_write_chunk_end(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_create_info_struct"]
     pub fn png_create_info_struct(png_ptr: png_const_structrp) -> png_infop;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_info_init_3"]
     pub fn png_info_init_3(info_ptr: png_infopp, png_info_struct_size: usize);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_info_before_PLTE"]
     pub fn png_write_info_before_PLTE(png_ptr: png_structrp, info_ptr: png_const_inforp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_info"]
     pub fn png_write_info(png_ptr: png_structrp, info_ptr: png_const_inforp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_info"]
     pub fn png_read_info(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_convert_to_rfc1123"]
     pub fn png_convert_to_rfc1123(png_ptr: png_structrp, ptime: png_const_timep)
         -> png_const_charp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_convert_to_rfc1123_buffer"]
     pub fn png_convert_to_rfc1123_buffer(
         out: *mut ::std::os::raw::c_char,
         ptime: png_const_timep,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_convert_from_struct_tm"]
     pub fn png_convert_from_struct_tm(ptime: png_timep, ttime: *const tm);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_convert_from_time_t"]
     pub fn png_convert_from_time_t(ptime: png_timep, ttime: time_t);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_expand"]
     pub fn png_set_expand(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_expand_gray_1_2_4_to_8"]
     pub fn png_set_expand_gray_1_2_4_to_8(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_palette_to_rgb"]
     pub fn png_set_palette_to_rgb(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_tRNS_to_alpha"]
     pub fn png_set_tRNS_to_alpha(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_expand_16"]
     pub fn png_set_expand_16(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_bgr"]
     pub fn png_set_bgr(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_gray_to_rgb"]
     pub fn png_set_gray_to_rgb(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_rgb_to_gray"]
     pub fn png_set_rgb_to_gray(
         png_ptr: png_structrp,
         error_action: ::std::os::raw::c_int,
@@ -15938,7 +16701,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_rgb_to_gray_fixed"]
     pub fn png_set_rgb_to_gray_fixed(
         png_ptr: png_structrp,
         error_action: ::std::os::raw::c_int,
@@ -15947,15 +16709,12 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_rgb_to_gray_status"]
     pub fn png_get_rgb_to_gray_status(png_ptr: png_const_structrp) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_build_grayscale_palette"]
     pub fn png_build_grayscale_palette(bit_depth: ::std::os::raw::c_int, palette: png_colorp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_alpha_mode"]
     pub fn png_set_alpha_mode(
         png_ptr: png_structrp,
         mode: ::std::os::raw::c_int,
@@ -15963,7 +16722,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_alpha_mode_fixed"]
     pub fn png_set_alpha_mode_fixed(
         png_ptr: png_structrp,
         mode: ::std::os::raw::c_int,
@@ -15971,23 +16729,18 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_strip_alpha"]
     pub fn png_set_strip_alpha(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_swap_alpha"]
     pub fn png_set_swap_alpha(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_invert_alpha"]
     pub fn png_set_invert_alpha(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_filler"]
     pub fn png_set_filler(png_ptr: png_structrp, filler: png_uint_32, flags: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_add_alpha"]
     pub fn png_set_add_alpha(
         png_ptr: png_structrp,
         filler: png_uint_32,
@@ -15995,31 +16748,24 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_swap"]
     pub fn png_set_swap(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_packing"]
     pub fn png_set_packing(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_packswap"]
     pub fn png_set_packswap(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_shift"]
     pub fn png_set_shift(png_ptr: png_structrp, true_bits: png_const_color_8p);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_interlace_handling"]
     pub fn png_set_interlace_handling(png_ptr: png_structrp) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_invert_mono"]
     pub fn png_set_invert_mono(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_background"]
     pub fn png_set_background(
         png_ptr: png_structrp,
         background_color: png_const_color_16p,
@@ -16029,7 +16775,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_background_fixed"]
     pub fn png_set_background_fixed(
         png_ptr: png_structrp,
         background_color: png_const_color_16p,
@@ -16039,15 +16784,12 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_scale_16"]
     pub fn png_set_scale_16(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_strip_16"]
     pub fn png_set_strip_16(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_quantize"]
     pub fn png_set_quantize(
         png_ptr: png_structrp,
         palette: png_colorp,
@@ -16058,11 +16800,9 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_gamma"]
     pub fn png_set_gamma(png_ptr: png_structrp, screen_gamma: f64, override_file_gamma: f64);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_gamma_fixed"]
     pub fn png_set_gamma_fixed(
         png_ptr: png_structrp,
         screen_gamma: png_fixed_point,
@@ -16070,23 +16810,18 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_flush"]
     pub fn png_set_flush(png_ptr: png_structrp, nrows: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_flush"]
     pub fn png_write_flush(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_start_read_image"]
     pub fn png_start_read_image(png_ptr: png_structrp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_update_info"]
     pub fn png_read_update_info(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_rows"]
     pub fn png_read_rows(
         png_ptr: png_structrp,
         row: png_bytepp,
@@ -16095,39 +16830,30 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_row"]
     pub fn png_read_row(png_ptr: png_structrp, row: png_bytep, display_row: png_bytep);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_image"]
     pub fn png_read_image(png_ptr: png_structrp, image: png_bytepp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_row"]
     pub fn png_write_row(png_ptr: png_structrp, row: png_const_bytep);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_rows"]
     pub fn png_write_rows(png_ptr: png_structrp, row: png_bytepp, num_rows: png_uint_32);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_image"]
     pub fn png_write_image(png_ptr: png_structrp, image: png_bytepp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_end"]
     pub fn png_write_end(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_end"]
     pub fn png_read_end(png_ptr: png_structrp, info_ptr: png_inforp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_destroy_info_struct"]
     pub fn png_destroy_info_struct(png_ptr: png_const_structrp, info_ptr_ptr: png_infopp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_destroy_read_struct"]
     pub fn png_destroy_read_struct(
         png_ptr_ptr: png_structpp,
         info_ptr_ptr: png_infopp,
@@ -16135,11 +16861,9 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_destroy_write_struct"]
     pub fn png_destroy_write_struct(png_ptr_ptr: png_structpp, info_ptr_ptr: png_infopp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_crc_action"]
     pub fn png_set_crc_action(
         png_ptr: png_structrp,
         crit_action: ::std::os::raw::c_int,
@@ -16147,7 +16871,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_filter"]
     pub fn png_set_filter(
         png_ptr: png_structrp,
         method: ::std::os::raw::c_int,
@@ -16155,7 +16878,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_filter_heuristics"]
     pub fn png_set_filter_heuristics(
         png_ptr: png_structrp,
         heuristic_method: ::std::os::raw::c_int,
@@ -16165,7 +16887,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_filter_heuristics_fixed"]
     pub fn png_set_filter_heuristics_fixed(
         png_ptr: png_structrp,
         heuristic_method: ::std::os::raw::c_int,
@@ -16175,63 +16896,51 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_compression_level"]
     pub fn png_set_compression_level(png_ptr: png_structrp, level: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_compression_mem_level"]
     pub fn png_set_compression_mem_level(png_ptr: png_structrp, mem_level: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_compression_strategy"]
     pub fn png_set_compression_strategy(png_ptr: png_structrp, strategy: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_compression_window_bits"]
     pub fn png_set_compression_window_bits(
         png_ptr: png_structrp,
         window_bits: ::std::os::raw::c_int,
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_compression_method"]
     pub fn png_set_compression_method(png_ptr: png_structrp, method: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_text_compression_level"]
     pub fn png_set_text_compression_level(png_ptr: png_structrp, level: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_text_compression_mem_level"]
     pub fn png_set_text_compression_mem_level(
         png_ptr: png_structrp,
         mem_level: ::std::os::raw::c_int,
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_text_compression_strategy"]
     pub fn png_set_text_compression_strategy(
         png_ptr: png_structrp,
         strategy: ::std::os::raw::c_int,
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_text_compression_window_bits"]
     pub fn png_set_text_compression_window_bits(
         png_ptr: png_structrp,
         window_bits: ::std::os::raw::c_int,
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_text_compression_method"]
     pub fn png_set_text_compression_method(png_ptr: png_structrp, method: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_init_io"]
     pub fn png_init_io(png_ptr: png_structrp, fp: png_FILE_p);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_error_fn"]
     pub fn png_set_error_fn(
         png_ptr: png_structrp,
         error_ptr: png_voidp,
@@ -16240,11 +16949,9 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_error_ptr"]
     pub fn png_get_error_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_write_fn"]
     pub fn png_set_write_fn(
         png_ptr: png_structrp,
         io_ptr: png_voidp,
@@ -16253,23 +16960,18 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_read_fn"]
     pub fn png_set_read_fn(png_ptr: png_structrp, io_ptr: png_voidp, read_data_fn: png_rw_ptr);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_io_ptr"]
     pub fn png_get_io_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_read_status_fn"]
     pub fn png_set_read_status_fn(png_ptr: png_structrp, read_row_fn: png_read_status_ptr);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_write_status_fn"]
     pub fn png_set_write_status_fn(png_ptr: png_structrp, write_row_fn: png_write_status_ptr);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_mem_fn"]
     pub fn png_set_mem_fn(
         png_ptr: png_structrp,
         mem_ptr: png_voidp,
@@ -16278,25 +16980,21 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_mem_ptr"]
     pub fn png_get_mem_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_read_user_transform_fn"]
     pub fn png_set_read_user_transform_fn(
         png_ptr: png_structrp,
         read_user_transform_fn: png_user_transform_ptr,
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_write_user_transform_fn"]
     pub fn png_set_write_user_transform_fn(
         png_ptr: png_structrp,
         write_user_transform_fn: png_user_transform_ptr,
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_user_transform_info"]
     pub fn png_set_user_transform_info(
         png_ptr: png_structrp,
         user_transform_ptr: png_voidp,
@@ -16305,19 +17003,15 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_user_transform_ptr"]
     pub fn png_get_user_transform_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_current_row_number"]
     pub fn png_get_current_row_number(arg1: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_current_pass_number"]
     pub fn png_get_current_pass_number(arg1: png_const_structrp) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_read_user_chunk_fn"]
     pub fn png_set_read_user_chunk_fn(
         png_ptr: png_structrp,
         user_chunk_ptr: png_voidp,
@@ -16325,11 +17019,9 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_user_chunk_ptr"]
     pub fn png_get_user_chunk_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_progressive_read_fn"]
     pub fn png_set_progressive_read_fn(
         png_ptr: png_structrp,
         progressive_ptr: png_voidp,
@@ -16339,11 +17031,9 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_progressive_ptr"]
     pub fn png_get_progressive_ptr(png_ptr: png_const_structrp) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_process_data"]
     pub fn png_process_data(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -16352,15 +17042,12 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_process_data_pause"]
     pub fn png_process_data_pause(arg1: png_structrp, save: ::std::os::raw::c_int) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_process_data_skip"]
     pub fn png_process_data_skip(arg1: png_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_progressive_combine_row"]
     pub fn png_progressive_combine_row(
         png_ptr: png_const_structrp,
         old_row: png_bytep,
@@ -16368,23 +17055,18 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_malloc"]
     pub fn png_malloc(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_calloc"]
     pub fn png_calloc(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_malloc_warn"]
     pub fn png_malloc_warn(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_free"]
     pub fn png_free(png_ptr: png_const_structrp, ptr: png_voidp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_free_data"]
     pub fn png_free_data(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16393,7 +17075,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_data_freer"]
     pub fn png_data_freer(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16402,43 +17083,33 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_malloc_default"]
     pub fn png_malloc_default(png_ptr: png_const_structrp, size: png_alloc_size_t) -> png_voidp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_free_default"]
     pub fn png_free_default(png_ptr: png_const_structrp, ptr: png_voidp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_error"]
     pub fn png_error(png_ptr: png_const_structrp, error_message: png_const_charp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_chunk_error"]
     pub fn png_chunk_error(png_ptr: png_const_structrp, error_message: png_const_charp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_warning"]
     pub fn png_warning(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_chunk_warning"]
     pub fn png_chunk_warning(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_benign_error"]
     pub fn png_benign_error(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_chunk_benign_error"]
     pub fn png_chunk_benign_error(png_ptr: png_const_structrp, warning_message: png_const_charp);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_benign_errors"]
     pub fn png_set_benign_errors(png_ptr: png_structrp, allowed: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_valid"]
     pub fn png_get_valid(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16446,15 +17117,12 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_rowbytes"]
     pub fn png_get_rowbytes(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_rows"]
     pub fn png_get_rows(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_bytepp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_rows"]
     pub fn png_set_rows(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16462,122 +17130,103 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_channels"]
     pub fn png_get_channels(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_image_width"]
     pub fn png_get_image_width(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_image_height"]
     pub fn png_get_image_height(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_bit_depth"]
     pub fn png_get_bit_depth(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_color_type"]
     pub fn png_get_color_type(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_filter_type"]
     pub fn png_get_filter_type(png_ptr: png_const_structrp, info_ptr: png_const_inforp)
         -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_interlace_type"]
     pub fn png_get_interlace_type(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_compression_type"]
     pub fn png_get_compression_type(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_byte;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pixels_per_meter"]
     pub fn png_get_pixels_per_meter(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_x_pixels_per_meter"]
     pub fn png_get_x_pixels_per_meter(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_y_pixels_per_meter"]
     pub fn png_get_y_pixels_per_meter(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pixel_aspect_ratio"]
     pub fn png_get_pixel_aspect_ratio(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> f32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pixel_aspect_ratio_fixed"]
     pub fn png_get_pixel_aspect_ratio_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_fixed_point;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_x_offset_pixels"]
     pub fn png_get_x_offset_pixels(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_y_offset_pixels"]
     pub fn png_get_y_offset_pixels(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_x_offset_microns"]
     pub fn png_get_x_offset_microns(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_y_offset_microns"]
     pub fn png_get_y_offset_microns(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_int_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_signature"]
     pub fn png_get_signature(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_const_bytep;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_bKGD"]
     pub fn png_get_bKGD(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16585,7 +17234,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_bKGD"]
     pub fn png_set_bKGD(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16593,7 +17241,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_cHRM"]
     pub fn png_get_cHRM(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16608,7 +17255,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_cHRM_XYZ"]
     pub fn png_get_cHRM_XYZ(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16624,7 +17270,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_cHRM_fixed"]
     pub fn png_get_cHRM_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16639,7 +17284,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_cHRM_XYZ_fixed"]
     pub fn png_get_cHRM_XYZ_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16655,7 +17299,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_cHRM"]
     pub fn png_set_cHRM(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16670,7 +17313,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_cHRM_XYZ"]
     pub fn png_set_cHRM_XYZ(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16686,7 +17328,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_cHRM_fixed"]
     pub fn png_set_cHRM_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16701,7 +17342,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_cHRM_XYZ_fixed"]
     pub fn png_set_cHRM_XYZ_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16717,7 +17357,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_eXIf"]
     pub fn png_get_eXIf(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16725,11 +17364,9 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_eXIf"]
     pub fn png_set_eXIf(png_ptr: png_const_structrp, info_ptr: png_inforp, exif: png_bytep);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_eXIf_1"]
     pub fn png_get_eXIf_1(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16738,7 +17375,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_eXIf_1"]
     pub fn png_set_eXIf_1(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16747,7 +17383,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_gAMA"]
     pub fn png_get_gAMA(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16755,7 +17390,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_gAMA_fixed"]
     pub fn png_get_gAMA_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16763,11 +17397,9 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_gAMA"]
     pub fn png_set_gAMA(png_ptr: png_const_structrp, info_ptr: png_inforp, file_gamma: f64);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_gAMA_fixed"]
     pub fn png_set_gAMA_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16775,7 +17407,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_hIST"]
     pub fn png_get_hIST(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16783,7 +17414,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_hIST"]
     pub fn png_set_hIST(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16791,7 +17421,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_IHDR"]
     pub fn png_get_IHDR(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16805,7 +17434,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_IHDR"]
     pub fn png_set_IHDR(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16819,7 +17447,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_oFFs"]
     pub fn png_get_oFFs(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16829,7 +17456,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_oFFs"]
     pub fn png_set_oFFs(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16839,7 +17465,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pCAL"]
     pub fn png_get_pCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16853,7 +17478,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_pCAL"]
     pub fn png_set_pCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16867,7 +17491,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pHYs"]
     pub fn png_get_pHYs(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16877,7 +17500,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_pHYs"]
     pub fn png_set_pHYs(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16887,7 +17509,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_PLTE"]
     pub fn png_get_PLTE(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16896,7 +17517,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_PLTE"]
     pub fn png_set_PLTE(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -16905,7 +17525,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_sBIT"]
     pub fn png_get_sBIT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16913,7 +17532,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sBIT"]
     pub fn png_set_sBIT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16921,7 +17539,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_sRGB"]
     pub fn png_get_sRGB(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -16929,7 +17546,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sRGB"]
     pub fn png_set_sRGB(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16937,7 +17553,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sRGB_gAMA_and_cHRM"]
     pub fn png_set_sRGB_gAMA_and_cHRM(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16945,7 +17560,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_iCCP"]
     pub fn png_get_iCCP(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16956,7 +17570,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_iCCP"]
     pub fn png_set_iCCP(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16967,7 +17580,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_sPLT"]
     pub fn png_get_sPLT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16975,7 +17587,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sPLT"]
     pub fn png_set_sPLT(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16984,7 +17595,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_text"]
     pub fn png_get_text(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -16993,7 +17603,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_text"]
     pub fn png_set_text(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17002,7 +17611,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_tIME"]
     pub fn png_get_tIME(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17010,7 +17618,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_tIME"]
     pub fn png_set_tIME(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17018,7 +17625,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_tRNS"]
     pub fn png_get_tRNS(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17028,7 +17634,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_tRNS"]
     pub fn png_set_tRNS(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -17038,7 +17643,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_sCAL"]
     pub fn png_get_sCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -17048,7 +17652,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_sCAL_fixed"]
     pub fn png_get_sCAL_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -17058,7 +17661,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_sCAL_s"]
     pub fn png_get_sCAL_s(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -17068,7 +17670,6 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sCAL"]
     pub fn png_set_sCAL(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17078,7 +17679,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sCAL_fixed"]
     pub fn png_set_sCAL_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17088,7 +17688,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_sCAL_s"]
     pub fn png_set_sCAL_s(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17098,7 +17697,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_keep_unknown_chunks"]
     pub fn png_set_keep_unknown_chunks(
         png_ptr: png_structrp,
         keep: ::std::os::raw::c_int,
@@ -17107,14 +17705,12 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_handle_as_unknown"]
     pub fn png_handle_as_unknown(
         png_ptr: png_const_structrp,
         chunk_name: png_const_bytep,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_unknown_chunks"]
     pub fn png_set_unknown_chunks(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17123,7 +17719,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_unknown_chunk_location"]
     pub fn png_set_unknown_chunk_location(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17132,7 +17727,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_unknown_chunks"]
     pub fn png_get_unknown_chunks(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17140,7 +17734,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_invalid"]
     pub fn png_set_invalid(
         png_ptr: png_const_structrp,
         info_ptr: png_inforp,
@@ -17148,7 +17741,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_read_png"]
     pub fn png_read_png(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -17157,7 +17749,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_write_png"]
     pub fn png_write_png(
         png_ptr: png_structrp,
         info_ptr: png_inforp,
@@ -17166,30 +17757,24 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_copyright"]
     pub fn png_get_copyright(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_header_ver"]
     pub fn png_get_header_ver(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_header_version"]
     pub fn png_get_header_version(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_libpng_ver"]
     pub fn png_get_libpng_ver(png_ptr: png_const_structrp) -> png_const_charp;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_permit_mng_features"]
     pub fn png_permit_mng_features(
         png_ptr: png_structrp,
         mng_features_permitted: png_uint_32,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_user_limits"]
     pub fn png_set_user_limits(
         png_ptr: png_structrp,
         user_width_max: png_uint_32,
@@ -17197,74 +17782,60 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_user_width_max"]
     pub fn png_get_user_width_max(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_user_height_max"]
     pub fn png_get_user_height_max(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_chunk_cache_max"]
     pub fn png_set_chunk_cache_max(png_ptr: png_structrp, user_chunk_cache_max: png_uint_32);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_chunk_cache_max"]
     pub fn png_get_chunk_cache_max(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_chunk_malloc_max"]
     pub fn png_set_chunk_malloc_max(png_ptr: png_structrp, user_chunk_cache_max: png_alloc_size_t);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_chunk_malloc_max"]
     pub fn png_get_chunk_malloc_max(png_ptr: png_const_structrp) -> png_alloc_size_t;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pixels_per_inch"]
     pub fn png_get_pixels_per_inch(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_x_pixels_per_inch"]
     pub fn png_get_x_pixels_per_inch(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_y_pixels_per_inch"]
     pub fn png_get_y_pixels_per_inch(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_x_offset_inches"]
     pub fn png_get_x_offset_inches(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> f32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_x_offset_inches_fixed"]
     pub fn png_get_x_offset_inches_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_fixed_point;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_y_offset_inches"]
     pub fn png_get_y_offset_inches(png_ptr: png_const_structrp, info_ptr: png_const_inforp) -> f32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_y_offset_inches_fixed"]
     pub fn png_get_y_offset_inches_fixed(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
     ) -> png_fixed_point;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_pHYs_dpi"]
     pub fn png_get_pHYs_dpi(
         png_ptr: png_const_structrp,
         info_ptr: png_const_inforp,
@@ -17274,47 +17845,36 @@ extern "C" {
     ) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_io_state"]
     pub fn png_get_io_state(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_io_chunk_type"]
     pub fn png_get_io_chunk_type(png_ptr: png_const_structrp) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_uint_32"]
     pub fn png_get_uint_32(buf: png_const_bytep) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_uint_16"]
     pub fn png_get_uint_16(buf: png_const_bytep) -> png_uint_16;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_int_32"]
     pub fn png_get_int_32(buf: png_const_bytep) -> png_int_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_uint_31"]
     pub fn png_get_uint_31(png_ptr: png_const_structrp, buf: png_const_bytep) -> png_uint_32;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_save_uint_32"]
     pub fn png_save_uint_32(buf: png_bytep, i: png_uint_32);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_save_int_32"]
     pub fn png_save_int_32(buf: png_bytep, i: png_int_32);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_save_uint_16"]
     pub fn png_save_uint_16(buf: png_bytep, i: ::std::os::raw::c_uint);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_check_for_invalid_index"]
     pub fn png_set_check_for_invalid_index(png_ptr: png_structrp, allowed: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_get_palette_max"]
     pub fn png_get_palette_max(
         png_ptr: png_const_structp,
         info_ptr: png_const_infop,
@@ -17449,21 +18009,18 @@ impl Default for png_image {
 }
 pub type png_imagep = *mut png_image;
 extern "C" {
-    #[link_name = "\u{1}_png_image_begin_read_from_file"]
     pub fn png_image_begin_read_from_file(
         image: png_imagep,
         file_name: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_begin_read_from_stdio"]
     pub fn png_image_begin_read_from_stdio(
         image: png_imagep,
         file: *mut FILE,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_begin_read_from_memory"]
     pub fn png_image_begin_read_from_memory(
         image: png_imagep,
         memory: png_const_voidp,
@@ -17471,7 +18028,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_finish_read"]
     pub fn png_image_finish_read(
         image: png_imagep,
         background: png_const_colorp,
@@ -17481,11 +18037,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_free"]
     pub fn png_image_free(image: png_imagep);
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_write_to_file"]
     pub fn png_image_write_to_file(
         image: png_imagep,
         file: *const ::std::os::raw::c_char,
@@ -17496,7 +18050,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_write_to_stdio"]
     pub fn png_image_write_to_stdio(
         image: png_imagep,
         file: *mut FILE,
@@ -17507,7 +18060,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_image_write_to_memory"]
     pub fn png_image_write_to_memory(
         image: png_imagep,
         memory: *mut ::std::os::raw::c_void,
@@ -17519,7 +18071,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_png_set_option"]
     pub fn png_set_option(
         png_ptr: png_structrp,
         option: ::std::os::raw::c_int,
@@ -17527,7 +18078,20 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ReadJPEG"]
+    pub fn __assert_rtn(
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: ::std::os::raw::c_int,
+        arg4: *const ::std::os::raw::c_char,
+    );
+}
+extern "C" {
+    pub fn MyWebPSafeMalloc(nmemb: u64, size: usize) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn MyWebPSafeFree(ptr: *mut ::std::os::raw::c_void);
+}
+extern "C" {
     pub fn ReadJPEG(
         data: *const u8,
         data_size: usize,
@@ -17537,7 +18101,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ReadPNG"]
     pub fn ReadPNG(
         data: *const u8,
         data_size: usize,
@@ -17547,11 +18110,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ImgIoUtilSetBinaryMode"]
     pub fn ImgIoUtilSetBinaryMode(file: *mut FILE) -> *mut FILE;
 }
 extern "C" {
-    #[link_name = "\u{1}_ImgIoUtilReadFile"]
     pub fn ImgIoUtilReadFile(
         file_name: *const ::std::os::raw::c_char,
         data: *mut *const u8,
@@ -17559,14 +18120,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ImgIoUtilReadFromStdin"]
     pub fn ImgIoUtilReadFromStdin(
         data: *mut *const u8,
         data_size: *mut usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ImgIoUtilWriteFile"]
     pub fn ImgIoUtilWriteFile(
         file_name: *const ::std::os::raw::c_char,
         data: *const u8,
@@ -17574,7 +18133,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_ImgIoUtilCopyPlane"]
     pub fn ImgIoUtilCopyPlane(
         src: *const u8,
         src_stride: ::std::os::raw::c_int,
@@ -17585,7 +18143,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_ImgIoUtilCheckSizeArgumentsOverflow"]
     pub fn ImgIoUtilCheckSizeArgumentsOverflow(nmemb: u64, size: usize) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
@@ -17688,24 +18245,225 @@ impl Default for Metadata {
     }
 }
 extern "C" {
-    #[link_name = "\u{1}_MetadataInit"]
     pub fn MetadataInit(metadata: *mut Metadata);
 }
 extern "C" {
-    #[link_name = "\u{1}_MetadataPayloadDelete"]
     pub fn MetadataPayloadDelete(payload: *mut MetadataPayload);
 }
 extern "C" {
-    #[link_name = "\u{1}_MetadataFree"]
     pub fn MetadataFree(metadata: *mut Metadata);
 }
 extern "C" {
-    #[link_name = "\u{1}_MetadataCopy"]
     pub fn MetadataCopy(
         metadata: *const ::std::os::raw::c_char,
         metadata_len: usize,
         payload: *mut MetadataPayload,
     ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn WriteWebPWithMetadata(
+        out: *mut WebPMemoryWriter,
+        picture: *const WebPPicture,
+        memory_writer: *const WebPMemoryWriter,
+        metadata: *const Metadata,
+        keep_metadata: ::std::os::raw::c_int,
+        metadata_written: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct BufferSource {
+    pub buf: *mut ::std::os::raw::c_uchar,
+    pub p: *mut ::std::os::raw::c_uchar,
+    pub remain: ::std::os::raw::c_long,
+}
+#[test]
+fn bindgen_test_layout_BufferSource() {
+    assert_eq!(
+        ::std::mem::size_of::<BufferSource>(),
+        24usize,
+        concat!("Size of: ", stringify!(BufferSource))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<BufferSource>(),
+        8usize,
+        concat!("Alignment of ", stringify!(BufferSource))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<BufferSource>())).buf as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(BufferSource),
+            "::",
+            stringify!(buf)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<BufferSource>())).p as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(BufferSource),
+            "::",
+            stringify!(p)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<BufferSource>())).remain as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(BufferSource),
+            "::",
+            stringify!(remain)
+        )
+    );
+}
+impl Default for BufferSource {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+pub const GIFDisposeMethod_GIF_DISPOSE_NONE: GIFDisposeMethod = 0;
+pub const GIFDisposeMethod_GIF_DISPOSE_BACKGROUND: GIFDisposeMethod = 1;
+pub const GIFDisposeMethod_GIF_DISPOSE_RESTORE_PREVIOUS: GIFDisposeMethod = 2;
+pub type GIFDisposeMethod = u32;
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct GIFFrameRect {
+    pub x_offset: ::std::os::raw::c_int,
+    pub y_offset: ::std::os::raw::c_int,
+    pub width: ::std::os::raw::c_int,
+    pub height: ::std::os::raw::c_int,
+}
+#[test]
+fn bindgen_test_layout_GIFFrameRect() {
+    assert_eq!(
+        ::std::mem::size_of::<GIFFrameRect>(),
+        16usize,
+        concat!("Size of: ", stringify!(GIFFrameRect))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<GIFFrameRect>(),
+        4usize,
+        concat!("Alignment of ", stringify!(GIFFrameRect))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GIFFrameRect>())).x_offset as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GIFFrameRect),
+            "::",
+            stringify!(x_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GIFFrameRect>())).y_offset as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GIFFrameRect),
+            "::",
+            stringify!(y_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GIFFrameRect>())).width as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GIFFrameRect),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<GIFFrameRect>())).height as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(GIFFrameRect),
+            "::",
+            stringify!(height)
+        )
+    );
+}
+extern "C" {
+    pub fn GIFGetBackgroundColor(
+        color_map: *const ColorMapObject,
+        bgcolor_index: ::std::os::raw::c_int,
+        transparent_index: ::std::os::raw::c_int,
+        bgcolor: *mut u32,
+    );
+}
+extern "C" {
+    pub fn GIFReadGraphicsExtension(
+        buf: *const GifByteType,
+        duration: *mut ::std::os::raw::c_int,
+        dispose: *mut GIFDisposeMethod,
+        transparent_index: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn GIFReadFrame(
+        gif: *mut GifFileType,
+        transparent_index: ::std::os::raw::c_int,
+        gif_rect: *mut GIFFrameRect,
+        picture: *mut WebPPicture,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn GIFReadLoopCount(
+        gif: *mut GifFileType,
+        buf: *mut *mut GifByteType,
+        loop_count: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn GIFReadMetadata(
+        gif: *mut GifFileType,
+        buf: *mut *mut GifByteType,
+        metadata: *mut WebPData,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn GIFDisposeFrame(
+        dispose: GIFDisposeMethod,
+        rect: *const GIFFrameRect,
+        prev_canvas: *const WebPPicture,
+        curr_canvas: *mut WebPPicture,
+    );
+}
+extern "C" {
+    pub fn GIFBlendFrames(
+        src: *const WebPPicture,
+        rect: *const GIFFrameRect,
+        dst: *mut WebPPicture,
+    );
+}
+extern "C" {
+    pub fn GIFDisplayError(gif: *const GifFileType, gif_error: ::std::os::raw::c_int);
+}
+extern "C" {
+    pub fn GIFClearPic(pic: *mut WebPPicture, rect: *const GIFFrameRect);
+}
+extern "C" {
+    pub fn GIFCopyPixels(src: *const WebPPicture, dst: *mut WebPPicture);
+}
+extern "C" {
+    pub fn readGifBuffer(
+        gf: *mut GifFileType,
+        buf: *mut GifByteType,
+        length: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn PWebPDataInit(webp_data: *mut WebPData);
+}
+extern "C" {
+    pub fn PWebPDataClear(webp_data: *mut WebPData);
 }
 pub type __builtin_va_list = [__va_list_tag; 1usize];
 #[repr(C)]

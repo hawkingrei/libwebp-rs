@@ -1,5 +1,6 @@
 #[macro_use]
 mod macros;
+pub mod gif;
 pub mod jpg;
 pub mod param;
 pub mod png;
@@ -15,6 +16,7 @@ pub use png::png_encode_webp;
 pub use webp::webp_encode_webp;
 pub use webp::WebPConfig;
 pub use webp::WebPPicture;
+pub use gif::gif_encode_webp;
 
 use actix_web::{client::SendRequestError, HttpResponse, ResponseError};
 
@@ -101,7 +103,7 @@ static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
 pub enum ImageError {
     /// The Image is not formatted properly
     FormatError(String),
-    
+
     /// The Decoder does not support this image format
     UnsupportedError(String),
 
