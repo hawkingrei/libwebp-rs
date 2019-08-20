@@ -72,14 +72,14 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
         );
         if gif.is_null() {
             //goto end
-            return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+            return Err(ImageError::FormatError("jpg encode jpg error 1".to_string()));
         }
         let mut done = 0;
         loop {
             let mut gtype: libwebp_sys::GifRecordType = 0;
             if libwebp_sys::DGifGetRecordType(gif, &mut gtype) == 0 {
                 //goto End;
-                return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                return Err(ImageError::FormatError("jpg encode jpg error 2".to_string()));
             }
 
             match gtype {
@@ -89,7 +89,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
 
                     if libwebp_sys::DGifGetImageDesc(gif) != 0 {
                         //goto end
-                        return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                        return Err(ImageError::FormatError("jpg encode jpg error 3".to_string()));
                     }
                     if frame_number == 0 {
                         if (*gif).SWidth == 0 || (*gif).SHeight == 0 {
@@ -100,7 +100,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                             if (*gif).SWidth <= 0 || (*gif).SHeight <= 0 {
                                 //goto End;
                                 return Err(ImageError::FormatError(
-                                    "jpg encode jpg error".to_string(),
+                                    "jpg encode jpg error 4".to_string(),
                                 ));
                             }
                         }
@@ -111,7 +111,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                         if libwebp_sys::WebPPictureAlloc(&mut frame) != 0 {
                             //goto End;
                             return Err(ImageError::FormatError(
-                                "jpg encode jpg error".to_string(),
+                                "jpg encode jpg error 5".to_string(),
                             ));
                         }
                         libwebp_sys::GIFClearPic(&mut frame, ptr::null());
@@ -135,7 +135,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                         if (enc.is_null()) {
                             //goto end
                             return Err(ImageError::FormatError(
-                                "jpg encode jpg error".to_string(),
+                                "jpg encode jpg error 6".to_string(),
                             ));
                         }
                     }
@@ -149,7 +149,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                         != 0
                     {
                         //goto end
-                        return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                        return Err(ImageError::FormatError("jpg encode jpg error 7".to_string()));
                     }
 
                     // Blend frame rectangle with previous canvas to compose full canvas.
@@ -164,7 +164,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                     ) != 0
                     {
                         //goto End;
-                        return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                        return Err(ImageError::FormatError("jpg encode jpg error 8".to_string()));
                     } else {
                         frame_number = frame_number + 1;
                     }
@@ -200,7 +200,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                     let mut data: *mut libwebp_sys::GifByteType = ptr::null_mut();
                     if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 1 {
                         // goto end
-                        return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                        return Err(ImageError::FormatError("jpg encode jpg error 9".to_string()));
                     }
                     if (data.is_null()) {
                         continue;
@@ -218,7 +218,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                             {
                                 // goto end
                                 return Err(ImageError::FormatError(
-                                    "jpg encode jpg error".to_string(),
+                                    "jpg encode jpg error 10".to_string(),
                                 ));
                             }
                             break;
@@ -244,7 +244,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                                 {
                                     // goto end
                                     return Err(ImageError::FormatError(
-                                        "jpg encode jpg error".to_string(),
+                                        "jpg encode jpg error 11".to_string(),
                                     ));
                                 }
                             }
@@ -264,7 +264,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                         if libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 1 {
                             // goto end
                             return Err(ImageError::FormatError(
-                                "jpg encode jpg error".to_string(),
+                                "jpg encode jpg error 12".to_string(),
                             ));
                         }
                     }
@@ -273,7 +273,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                     done = 1;
                 }
                 _ => {
-                    return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                    return Err(ImageError::FormatError("jpg encode jpg error 13".to_string()));
                 }
             }
             if done == 1 {
@@ -285,7 +285,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
 
         if libwebp_sys::WebPAnimEncoderAssemble(enc, webp_data) != 0 {
             //goto End;
-            return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+            return Err(ImageError::FormatError("jpg encode jpg error 14".to_string()));
         }
 
         if loop_compatibility != 0 {
@@ -315,7 +315,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
             );
             if mux.is_null() {
                 //goto End;
-                return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                return Err(ImageError::FormatError("jpg encode jpg error 15".to_string()));
             }
             libwebp_sys::PWebPDataClear(webp_data);
 
@@ -324,19 +324,19 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
                 let mut err = libwebp_sys::WebPMuxGetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
                     //goto End;
-                    return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                    return Err(ImageError::FormatError("jpg encode jpg error 16".to_string()));
                 }
                 new_params.loop_count = loop_count;
                 err = libwebp_sys::WebPMuxSetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
                     //goto End;
-                    return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                    return Err(ImageError::FormatError("jpg encode jpg error 17".to_string()));
                 }
 
                 err = libwebp_sys::WebPMuxAssemble(mux, webp_data);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
                     //goto End;
-                    return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+                    return Err(ImageError::FormatError("jpg encode jpg error 18".to_string()));
                 }
             }
         }
