@@ -103,10 +103,12 @@ fn main() {
         println!("cargo:rustc-link-search=/opt/libjpeg-turbo/include");
     }
     println!("cargo:rustc-link-search=/usr/local/lib");
+    println!("cargo:rustc-link-search=/usr/local/lib64");
     println!("cargo:rustc-link-search=/usr/local/include");
     println!("cargo:rustc-link-search=native=/usr/local/include/webp");
     println!("cargo:rustc-link-search=native=/usr/include/");
     println!("cargo:rustc-link-search=native=/usr/local/lib");
+    println!("cargo:rustc-link-search=native=/usr/local/lib64");
     println!("cargo:rustc-link-search=native=/usr/local/opt/zlib/lib");
     println!("cargo:rustc-link-search=native=/usr/local/opt/zlib/include");
     generate_bindings();
