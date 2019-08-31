@@ -300,7 +300,7 @@ int readGifBuffer ( GifFileType *gf, GifByteType* buf, int length ) {
      memcpy( buf, psource->p, length);
      psource->p += length;
      psource->remain -= length;
-  
+     
      return length;
    }
    else {

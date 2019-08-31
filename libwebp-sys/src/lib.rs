@@ -11,3 +11,4 @@ use std::default::Default;
 include!("./webp_bindings.rs");
 
 pub const WEBP_ENCODER_ABI_VERSION: i32 = 526;
+pub const WEBP_MUX_ABI_VERSION: i32 = 264;
