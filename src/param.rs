@@ -156,6 +156,7 @@ impl ImageHandler {
 
     pub fn adapt(&mut self) -> ParamResult<ImageHandler> {
         let mut result: ImageHandler = Default::default();
+        result.first_frame = self.first_frame;
         result.resize = match &self.resize {
             Some(r) => Some(r.clone()),
             None => Some(Resize {

@@ -6,8 +6,8 @@ pub mod param;
 pub mod png;
 pub mod webp;
 
-pub use gif::get_gif_frame;
 pub use gif::gif_encode_webp;
+pub use gif::gif_info;
 pub use jpg::jpg_encode_webp;
 pub use param::Crop;
 pub use param::ImageHandler;

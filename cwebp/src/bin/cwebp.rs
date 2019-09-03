@@ -4,8 +4,8 @@ use std::fs;
 
 use imagers::ImageFormat;
 
-use imagers::get_gif_frame;
 use imagers::gif_encode_webp;
+use imagers::gif_info;
 use imagers::jpg_encode_webp;
 use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
@@ -97,7 +97,6 @@ fn main() {
             if resize[0] == 0 && resize[1] == 0 {
                 None
             } else {
-                dbg!("have resize");
                 Some(Resize {
                     width: resize[0],
                     height: resize[1],
@@ -116,8 +115,7 @@ fn main() {
             None
         })
         .finish();
-    dbg!(param.resize);
-    let mut data = fs::read(input).unwrap();
+    let data = fs::read(input).unwrap();
     let ptype = imagers::guess_format(&data).unwrap();
     loop {
         match ptype {
@@ -148,15 +146,13 @@ fn main() {
             ImageFormat::GIF => {
                 if get_frame_count {
                     dbg!("yes");
-                    match get_gif_frame(&mut data.clone()) {
+                    match gif_info(&mut data.clone()) {
                         Ok(result) => {
-                            println!("frame count: {}", result);
+                            println!("frame count: {:?}", result);
                         }
                         Err(e) => println!("{}", e),
                     }
                     return;
-                } else {
-                    dbg!("no");
                 }
                 let result = gif_encode_webp(&mut data.clone(), param).unwrap();
                 if !profile {
