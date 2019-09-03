@@ -91,12 +91,8 @@ wali_test!(
     Case::<ImageHandler>::new()
         .set_input("giphy.gif")
         .set_expected("giphy.webp")
-        .set_param(
-            ImageHandlerBuilder::new()
-                .finish()
-        )
+        .set_param(ImageHandlerBuilder::new().finish())
 );
-
 wali_test!(
     test_giphy_100h_100w,
     tranform_gif_to_webp,
@@ -112,4 +108,48 @@ wali_test!(
                 .set_first_frame(true)
                 .finish()
         )
+);
+// https://i0.hdslb.com/bfs/album/bc49f10ae946117a4ba9e96916f14839d0d7f1a2.gif@1080w_1080h_1c_1e_1s.webp
+wali_test!(
+    test_bc49f10ae946117a4ba9e96916f14839d0d7f1a2_702w_212h_1e_1c,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("bc49f10ae946117a4ba9e96916f14839d0d7f1a2.gif")
+        .set_expected("bc49f10ae946117a4ba9e96916f14839d0d7f1a2_1080w_1080h_1c_1e.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 1080,
+                    height: 1080,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .finish()
+        )
+);
+wali_test!(
+    test_bc49f10ae946117a4ba9e96916f14839d0d7f1a2,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("bc49f10ae946117a4ba9e96916f14839d0d7f1a2.gif")
+        .set_expected("bc49f10ae946117a4ba9e96916f14839d0d7f1a2.webp")
+        .set_param(ImageHandlerBuilder::new().finish())
+);
+// /bfs/album/608782fe6fe8eaf6105f41f3131157877af9de2b.gif@400w_400h_1c_1e_1s.webp
+wali_test!(
+    test_608782fe6fe8eaf6105f41f3131157877af9de2b,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("608782fe6fe8eaf6105f41f3131157877af9de2b.gif")
+        .set_expected("608782fe6fe8eaf6105f41f3131157877af9de2b.webp")
+        .set_param(ImageHandlerBuilder::new().finish())
+);
+// /bfs/face/b8a58f3bbf8f926ec10c042ea997f01f9fe926ab.gif@90w_90h_1e_1c_85q
+wali_test!(
+    test_b8a58f3bbf8f926ec10c042ea997f01f9fe926ab,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("b8a58f3bbf8f926ec10c042ea997f01f9fe926ab.gif")
+        .set_expected("b8a58f3bbf8f926ec10c042ea997f01f9fe926ab.webp")
+        .set_param(ImageHandlerBuilder::new().finish())
 );

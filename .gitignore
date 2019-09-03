@@ -8,3 +8,5 @@
 *.jpeg
 *.png
 *.gif
+_output
+dataset

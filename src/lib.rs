@@ -113,21 +113,21 @@ pub enum ImageError {
     ServiceError(String),
 
     NotFoundOrigin(String),
+
+    LimitError(String),
 }
 
 impl fmt::Display for ImageError {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         match *self {
             ImageError::FormatError(ref e) => write!(fmt, "Format error: {}", e),
-            ImageError::UnsupportedError(ref f) => write!(
-                fmt,
-                "The Decoder does not support the \
-                 image format `{}`",
-                f
-            ),
+            ImageError::UnsupportedError(ref f) => {
+                write!(fmt, "The Decoder does not support the image format `{}`", f)
+            }
             ImageError::TranformError(ref f) => write!(fmt, "Tranform error: {}", f),
             ImageError::ServiceError(ref f) => write!(fmt, "service error: {}", f),
             ImageError::NotFoundOrigin(ref f) => write!(fmt, "not found image: {}", f),
+            ImageError::LimitError(ref f) => write!(fmt, "over the limitation: {}", f),
         }
     }
 }
@@ -142,6 +142,7 @@ impl std::error::Error for ImageError {
             ImageError::TranformError(ref _f) => &"Tranform error",
             ImageError::ServiceError(ref _f) => &"Service error",
             ImageError::NotFoundOrigin(ref _f) => &"not found image",
+            ImageError::LimitError(ref _f) => &"over the limitation",
         }
     }
 }

@@ -20,9 +20,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
             if info.frame_count > GIF_MAX_FRAME
                 || info.width * info.height > GIF_LIMIT_SIZE && !p.first_frame
             {
-                return Err(ImageError::UnsupportedError(
-                    "over the limitation".to_string(),
-                ));
+                return Err(ImageError::LimitError("over the limitation".to_string()));
             }
             p.set_height(info.height as i32);
             p.set_width(info.width as i32);
@@ -171,12 +169,12 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                                     data.offset(1) as *const libc::c_void,
                                     "NETSCAPE2.0".as_ptr() as *const libc::c_void,
                                     11,
-                                ) != 0
+                                ) == 0
                                     || libc::memcmp(
                                         data.offset(1) as *const libc::c_void,
                                         "ANIMEXTS1.0".as_ptr() as *const libc::c_void,
                                         11,
-                                    ) != 0
+                                    ) == 0
                                 {
                                     if libwebp_sys::GIFReadLoopCount(
                                         gif,
@@ -187,6 +185,25 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                                         return Err(ImageError::FormatError(
                                             "fail to read gif loop count".to_string(),
                                         ));
+                                    }
+                                } else {
+                                    let is_xmp: bool = libc::memcmp(
+                                        data.offset(1) as *const libc::c_void,
+                                        "XMP DataXMP".as_ptr() as *const libc::c_void,
+                                        11,
+                                    ) == 0;
+                                    let is_icc: bool = libc::memcmp(
+                                        data.offset(1) as *const libc::c_void,
+                                        "ICCRGBG1012".as_ptr() as *const libc::c_void,
+                                        11,
+                                    ) == 0;
+                                    if is_icc || is_xmp {
+                                        if libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 0 {
+                                            // goto end
+                                            return Err(ImageError::FormatError(
+                                                "fail to get gif extension next".to_string(),
+                                            ));
+                                        }
                                     }
                                 }
                             }
@@ -272,6 +289,8 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                 libwebp_sys::WEBP_ENCODER_ABI_VERSION,
             );
         }
+        enc_options.allow_mixed = 1;
+        (*config).lossless = 0;
         let mut frame_timestamp: i32 = 0;
         let mut frame_number = 0;
         let mut gif_err: i32 = 0;
@@ -515,12 +534,12 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                         data.offset(1) as *const libc::c_void,
                                         "NETSCAPE2.0".as_ptr() as *const libc::c_void,
                                         11,
-                                    ) != 0
+                                    ) == 0
                                         || libc::memcmp(
                                             data.offset(1) as *const libc::c_void,
                                             "ANIMEXTS1.0".as_ptr() as *const libc::c_void,
                                             11,
-                                        ) != 0
+                                        ) == 0
                                     {
                                         if libwebp_sys::GIFReadLoopCount(
                                             gif,
@@ -543,7 +562,26 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             1
                                         };
                                     } else {
-                                        //libwebp_sys::GIFReadMetadata(gif, &mut data,icc_data);
+                                        let is_xmp: bool = libc::memcmp(
+                                            data.offset(1) as *const libc::c_void,
+                                            "XMP DataXMP".as_ptr() as *const libc::c_void,
+                                            11,
+                                        ) == 0;
+                                        let is_icc: bool = libc::memcmp(
+                                            data.offset(1) as *const libc::c_void,
+                                            "ICCRGBG1012".as_ptr() as *const libc::c_void,
+                                            11,
+                                        ) == 0;
+                                        if is_icc || is_xmp {
+                                            if libwebp_sys::DGifGetExtensionNext(gif, &mut data)
+                                                == 0
+                                            {
+                                                // goto end
+                                                return Err(ImageError::FormatError(
+                                                    "fail to get gif extension next".to_string(),
+                                                ));
+                                            }
+                                        }
                                     }
                                 }
                             }
