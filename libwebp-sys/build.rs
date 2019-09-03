@@ -6,14 +6,13 @@ static WEBP_INCLUDE_DIR: &'static str = "/usr/local/include";
 
 fn generate_bindings() {
     let webp_include_path = env::var("WEBP_INCLUDE").unwrap_or(WEBP_INCLUDE_DIR.to_string());
-    //let output_path = env::var("OUT_DIR").unwrap();
     let output_path = "./src/";
     let generator = Generator {
         webp_include_path: Path::new(&webp_include_path),
         output_path: Path::new(&output_path),
     };
 
-    let headers = ["encode", "decode", "types", "mux"];
+    let headers = ["mux", "encode", "decode", "types"];
     generator.generate(&headers)
 }
 
@@ -40,6 +39,11 @@ impl<'a> Generator<'a> {
             );
             builder = builder.header(format!("{}", header_path.display()));
         }
+        builder = builder.header(format!(
+            "{}",
+            self.webp_include_path.join("gif_lib.h").display()
+        ));
+
         let png_library_path = Path::new("/usr/local/include");
         let zlib_library_path = Path::new("/usr/local/opt/zlib/include");
         let jpeg_library_path = if cfg!(target_os = "linux") {
@@ -50,12 +54,14 @@ impl<'a> Generator<'a> {
         cc::Build::new()
             .define("WEBP_HAVE_PNG", None)
             .define("WEBP_HAVE_JPEG", None)
+            .define("WEBP_HAVE_GIF", None)
             .file("pngwebp/util.c")
             .file("pngwebp/jpegdec.c")
             .file("pngwebp/pngdec.c")
             .file("pngwebp/imageio_util.c")
             .file("pngwebp/metadata.c")
             .file("pngwebp/metadata_write.c")
+            .file("pngwebp/gifdec.c")
             .include(jpeg_library_path)
             .include(png_library_path)
             .include(zlib_library_path)
@@ -71,6 +77,7 @@ impl<'a> Generator<'a> {
             .header("pngwebp/imageio_util.h")
             .header("pngwebp/metadata.h")
             .header("pngwebp/metadata_write.h")
+            .header("pngwebp/gifdec.h")
             .generate_inline_functions(true)
             // If there are linking errors and the generated bindings have weird looking
             // #link_names (that start with \u{1}), the make sure to flip that to false.
@@ -91,6 +98,8 @@ fn main() {
     println!("cargo:rustc-link-lib=static=png");
     println!("cargo:rustc-link-lib=static=jpeg");
     println!("cargo:rustc-link-lib=static=webp");
+    println!("cargo:rustc-link-lib=static=webpmux");
+    println!("cargo:rustc-link-lib=static=gif");
     println!("cargo:rustc-link-lib=static=z");
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=pngwebp");

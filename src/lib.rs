@@ -1,10 +1,13 @@
 #[macro_use]
 mod macros;
+pub mod gif;
 pub mod jpg;
 pub mod param;
 pub mod png;
 pub mod webp;
 
+pub use gif::gif_encode_webp;
+pub use gif::gif_info;
 pub use jpg::jpg_encode_webp;
 pub use param::Crop;
 pub use param::ImageHandler;
@@ -101,7 +104,7 @@ static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
 pub enum ImageError {
     /// The Image is not formatted properly
     FormatError(String),
-    
+
     /// The Decoder does not support this image format
     UnsupportedError(String),
 

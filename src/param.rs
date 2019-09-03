@@ -47,7 +47,7 @@ pub struct ImageHandler {
     pub region_crop: Option<RegionCrop>,
     pub target_format: Option<ImageFormat>,
     pub quality: i32,
-
+    pub first_frame: bool,
     /**
       e: 图片缩放, 缩放尺寸比例与原图比例不同时的优先缩放边, 格式[edge]e, 默认为0表示长边优先, 1表示短边优先, 2表示强制缩放(改变比例), 4表示短边缩略并且用指定颜色填充剩余区域
       缩放限制: w * h <= 4096 * 4096 && w <= 4096 * 4 && h <= 4096 * 4
@@ -141,6 +141,10 @@ impl ImageHandler {
         self.p = p;
     }
 
+    pub fn set_first_frame(&mut self, f: bool) {
+        self.first_frame = f;
+    }
+
     pub fn set_auto_crop(&mut self, ac: bool) {
         if ac {
             self.c = 1;
@@ -152,6 +156,7 @@ impl ImageHandler {
 
     pub fn adapt(&mut self) -> ParamResult<ImageHandler> {
         let mut result: ImageHandler = Default::default();
+        result.first_frame = self.first_frame;
         result.resize = match &self.resize {
             Some(r) => Some(r.clone()),
             None => Some(Resize {
@@ -452,6 +457,11 @@ pub struct ImageHandlerBuilder(ImageHandler);
 impl ImageHandlerBuilder {
     pub fn new() -> Self {
         return Default::default();
+    }
+
+    pub fn set_first_frame(mut self, f: bool) -> Self {
+        self.0.first_frame = f;
+        self
     }
 
     pub fn set_height(mut self, height: i32) -> Self {

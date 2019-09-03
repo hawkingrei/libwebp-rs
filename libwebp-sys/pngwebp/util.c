@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "./util.h"
-
+#include "webp/encode.h"
 
 #include <stdio.h>
 
