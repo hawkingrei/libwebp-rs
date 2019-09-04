@@ -20,7 +20,14 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
             if info.frame_count > GIF_MAX_FRAME
                 || info.width * info.height > GIF_LIMIT_SIZE && !p.first_frame
             {
-                return Err(ImageError::LimitError("over the limitation".to_string()));
+                let mut image_result: Image = Default::default();
+                image_result.pic = (*data).clone();
+                image_result.width = info.width;
+                image_result.height = info.height;
+                return Err(ImageError::LimitError(
+                    image_result,
+                    "over the limitation".to_string(),
+                ));
             }
             p.set_height(info.height as i32);
             p.set_width(info.width as i32);
@@ -339,6 +346,8 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                 ));
                             }
                         }
+                        image_result.width = (*gif).SWidth;
+                        image_result.height = (*gif).SHeight;
                         (*frame).width = (*gif).SWidth;
                         (*frame).height = (*gif).SHeight;
                         (*frame).use_argb = 1;

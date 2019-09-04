@@ -100,7 +100,6 @@ static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
     (b"P7", ImageFormat::PNM),
 ];
 
-#[derive(Debug)]
 pub enum ImageError {
     /// The Image is not formatted properly
     FormatError(String),
@@ -114,7 +113,22 @@ pub enum ImageError {
 
     NotFoundOrigin(String),
 
-    LimitError(String),
+    LimitError(Image, String),
+}
+
+impl fmt::Debug for ImageError {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match *self {
+            ImageError::FormatError(ref e) => write!(fmt, "Format error: {}", e),
+            ImageError::UnsupportedError(ref f) => {
+                write!(fmt, "The Decoder does not support the image format `{}`", f)
+            }
+            ImageError::TranformError(ref f) => write!(fmt, "Tranform error: {}", f),
+            ImageError::ServiceError(ref f) => write!(fmt, "service error: {}", f),
+            ImageError::NotFoundOrigin(ref f) => write!(fmt, "not found image: {}", f),
+            ImageError::LimitError(_, ref f) => write!(fmt, "over the limitation: {}", f),
+        }
+    }
 }
 
 impl fmt::Display for ImageError {
@@ -127,7 +141,7 @@ impl fmt::Display for ImageError {
             ImageError::TranformError(ref f) => write!(fmt, "Tranform error: {}", f),
             ImageError::ServiceError(ref f) => write!(fmt, "service error: {}", f),
             ImageError::NotFoundOrigin(ref f) => write!(fmt, "not found image: {}", f),
-            ImageError::LimitError(ref f) => write!(fmt, "over the limitation: {}", f),
+            ImageError::LimitError(_, ref f) => write!(fmt, "over the limitation: {}", f),
         }
     }
 }
@@ -142,7 +156,7 @@ impl std::error::Error for ImageError {
             ImageError::TranformError(ref _f) => &"Tranform error",
             ImageError::ServiceError(ref _f) => &"Service error",
             ImageError::NotFoundOrigin(ref _f) => &"not found image",
-            ImageError::LimitError(ref _f) => &"over the limitation",
+            ImageError::LimitError(_, ref _f) => &"over the limitation",
         }
     }
 }
