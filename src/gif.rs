@@ -11,7 +11,7 @@ use std::ptr;
 
 use libc;
 
-const GIF_LIMIT_SIZE: i32 = 450 * 450;
+const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
 
 pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {

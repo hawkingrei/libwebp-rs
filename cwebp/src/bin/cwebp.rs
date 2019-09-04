@@ -145,7 +145,6 @@ fn main() {
             }
             ImageFormat::GIF => {
                 if get_frame_count {
-                    dbg!("yes");
                     match gif_info(&mut data.clone()) {
                         Ok(result) => {
                             println!("frame count: {:?}", result);
@@ -156,6 +155,8 @@ fn main() {
                 }
                 let result = gif_encode_webp(&mut data.clone(), param).unwrap();
                 if !profile {
+                    dbg!(result.width);
+                    dbg!(result.height);
                     fs::write(output, result.pic).unwrap();
                 }
             }
