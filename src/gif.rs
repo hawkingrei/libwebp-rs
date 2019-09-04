@@ -373,6 +373,8 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         enc = match p.resize {
                             Some(r) => {
                                 if r.width != 0 && r.height != 0 {
+                                    image_result.width = r.width;
+                                    image_result.height = r.height;
                                     libwebp_sys::WebPAnimEncoderNewInternal(
                                         r.width,
                                         r.height,
