@@ -281,6 +281,15 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             &mut enc_options,
             libwebp_sys::WEBP_MUX_ABI_VERSION,
         );
+
+        let exit_func = move || {
+            libwebp_sys::WebPMuxDelete(mux);
+            //libwebp_sys::PWebPDataClear(webp_data);
+            libwebp_sys::WebPPictureFree(frame);
+            libwebp_sys::WebPPictureFree(curr_canvas);
+            libwebp_sys::WebPPictureFree(prev_canvas);
+            libwebp_sys::WebPAnimEncoderDelete(enc);
+        };
         if p.quality() > 0 {
             libwebp_sys::WebPConfigInitInternal(
                 config,
@@ -315,12 +324,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             &mut gif_err,
         );
         if gif.is_null() {
+            exit_func();
             return Err(ImageError::FormatError("fail to open gif".to_string()));
         }
         let mut done = 0;
         loop {
             let mut gtype: libwebp_sys::GifRecordType = 0;
             if libwebp_sys::DGifGetRecordType(gif, &mut gtype) == 0 {
+                exit_func();
                 return Err(ImageError::FormatError(
                     "fail to get gif recode type".to_string(),
                 ));
@@ -330,6 +341,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     let mut gif_rect: libwebp_sys::GIFFrameRect = Default::default();
                     let mut image_desc: libwebp_sys::GifImageDesc = (*gif).Image;
                     if libwebp_sys::DGifGetImageDesc(gif) == 0 {
+                        exit_func();
                         return Err(ImageError::FormatError(
                             "fail to get gif image desc".to_string(),
                         ));
@@ -341,6 +353,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                             (*gif).SWidth = image_desc.Width;
                             (*gif).SHeight = image_desc.Height;
                             if (*gif).SWidth <= 0 || (*gif).SHeight <= 0 {
+                                exit_func();
                                 return Err(ImageError::FormatError(
                                     "illagel gif size".to_string(),
                                 ));
@@ -352,6 +365,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         (*frame).height = (*gif).SHeight;
                         (*frame).use_argb = 1;
                         if libwebp_sys::WebPPictureAlloc(frame) == 0 {
+                            exit_func();
                             return Err(ImageError::TranformError(
                                 "fail to alloc webp picture".to_string(),
                             ));
@@ -399,6 +413,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         };
 
                         if enc.is_null() {
+                            exit_func();
                             return Err(ImageError::TranformError(
                                 "fail to init WebPAnimEncoder".to_string(),
                             ));
@@ -408,6 +423,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         if libwebp_sys::GIFReadFrame(gif, transparent_index, &mut gif_rect, frame)
                             == 0
                         {
+                            exit_func();
                             return Err(ImageError::FormatError(
                                 "fail to read gif frame".to_string(),
                             ));
@@ -422,6 +438,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         if libwebp_sys::GIFReadFrame(gif, transparent_index, &mut gif_rect, frame)
                             == 0
                         {
+                            exit_func();
                             return Err(ImageError::FormatError(
                                 "fail to read gif frame".to_string(),
                             ));
@@ -439,6 +456,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             r.height,
                                         ) != 1
                                         {
+                                            exit_func();
                                             return Err(ImageError::FormatError(
                                                 "gif WebPPictureRescale error".to_string(),
                                             ));
@@ -455,6 +473,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                             config,
                         ) == 0
                         {
+                            exit_func();
                             return Err(ImageError::TranformError(
                                 "fail to WebPAnimEncoderAdd".to_string(),
                             ));
@@ -471,6 +490,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             r.height,
                                         ) != 1
                                         {
+                                            exit_func();
                                             return Err(ImageError::TranformError(
                                                 "gif WebPPictureRescale error".to_string(),
                                             ));
@@ -513,7 +533,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     let mut extension: i32 = 0;
                     let mut data: *mut libwebp_sys::GifByteType = ptr::null_mut();
                     if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 0 {
-                        // goto end
+                        exit_func();
                         return Err(ImageError::FormatError(
                             "fail to get gif extension".to_string(),
                         ));
@@ -532,7 +552,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                     &mut transparent_index,
                                 ) == 0
                                 {
-                                    // goto end
+                                    exit_func();
                                     return Err(ImageError::FormatError(
                                         "fail to read gif Graphics extension".to_string(),
                                     ));
@@ -558,7 +578,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             &mut loop_count,
                                         ) == 0
                                         {
-                                            // goto end
+                                            exit_func();
                                             return Err(ImageError::FormatError(
                                                 "fail to read gif loop".to_string(),
                                             ));
@@ -587,7 +607,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             if libwebp_sys::DGifGetExtensionNext(gif, &mut data)
                                                 == 0
                                             {
-                                                // goto end
+                                                exit_func();
                                                 return Err(ImageError::FormatError(
                                                     "fail to get gif extension next".to_string(),
                                                 ));
@@ -602,7 +622,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
 
                     while !data.is_null() {
                         if libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 0 {
-                            // goto end
+                            exit_func();
                             return Err(ImageError::FormatError(
                                 "fail to get Gif Extension Next".to_string(),
                             ));
@@ -613,6 +633,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     done = 1;
                 }
                 _ => {
+                    exit_func();
                     return Err(ImageError::FormatError(
                         "unknown gif record type".to_string(),
                     ));
@@ -625,6 +646,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
 
         libwebp_sys::WebPAnimEncoderAdd(enc, ptr::null_mut(), frame_timestamp, ptr::null_mut());
         if libwebp_sys::WebPAnimEncoderAssemble(enc, webp_data) == 0 {
+            exit_func();
             return Err(ImageError::TranformError(
                 "fail to WebPAnimEncoderAssemble".to_string(),
             ));
@@ -652,16 +674,18 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             mux =
                 libwebp_sys::WebPMuxCreateInternal(webp_data, 1, libwebp_sys::WEBP_MUX_ABI_VERSION);
             if mux.is_null() {
+                exit_func();
                 return Err(ImageError::TranformError(
                     "fail to WebPMuxCreate".to_string(),
                 ));
             }
-            libwebp_sys::PWebPDataClear(webp_data);
+            //libwebp_sys::PWebPDataClear(webp_data);
 
             if stored_loop_count == 0 {
                 let mut new_params: libwebp_sys::WebPMuxAnimParams = Default::default();
                 let mut err = libwebp_sys::WebPMuxGetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
+                    exit_func();
                     return Err(ImageError::TranformError(
                         "fail to WebPMuxGetAnimationParams".to_string(),
                     ));
@@ -669,6 +693,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                 new_params.loop_count = loop_count;
                 err = libwebp_sys::WebPMuxSetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
+                    exit_func();
                     return Err(ImageError::TranformError(
                         "fail to WebPMuxSetAnimationParams".to_string(),
                     ));
@@ -676,6 +701,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
 
                 err = libwebp_sys::WebPMuxAssemble(mux, webp_data);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
+                    exit_func();
                     return Err(ImageError::TranformError(
                         "fail to WebPMuxAssemble".to_string(),
                     ));
@@ -688,6 +714,7 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             (*webp_data).size,
         )
         .clone();
+        exit_func();
         return Ok(image_result);
     }
 }
