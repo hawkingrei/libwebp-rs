@@ -55,6 +55,7 @@ fn gif_all_resize_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image
         match Command::new("gifsicle")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
+            .arg("--colors=256")
             .arg("--careful")
             .arg(format!("--resize={}x{}", resize.width, resize.height))
             .spawn()
@@ -99,16 +100,18 @@ impl fmt::Debug for GIFInfo {
 }
 
 pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
+    let mut frame_number = 0;
+    let mut loop_count: i32 = 0;
+    let mut gif_err: i32 = 0;
+    let mut code_size: i32 = 0;
+    let mut done = 0;
+    let mut code_block: *mut libwebp_sys::GifByteType = ptr::null_mut();
+    let mut buf_src: *mut libwebp_sys::BufferSource = &mut libwebp_sys::BufferSource {
+        buf: ptr::null_mut(),
+        p: ptr::null_mut(),
+        remain: 0,
+    };
     unsafe {
-        let mut frame_number = 0;
-        let mut loop_count: i32 = 0;
-        let mut gif_err: i32 = 0;
-        let mut code_size: i32 = 0;
-        let mut buf_src: *mut libwebp_sys::BufferSource = &mut libwebp_sys::BufferSource {
-            buf: ptr::null_mut(),
-            p: ptr::null_mut(),
-            remain: 0,
-        };
         (*buf_src).buf = data.as_mut_ptr();
         (*buf_src).p = data.as_mut_ptr();
         (*buf_src).remain = data.len().try_into().unwrap();
@@ -117,11 +120,11 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
             Some(libwebp_sys::readGifBuffer),
             &mut gif_err,
         );
-        let mut done = 0;
-        let mut code_block: *mut libwebp_sys::GifByteType = ptr::null_mut();
         loop {
             let mut gtype: libwebp_sys::GifRecordType = 0;
             if libwebp_sys::DGifGetRecordType(gif, &mut gtype) == 0 {
+                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                libc::free(code_block as *mut core::ffi::c_void);
                 return Err(ImageError::FormatError(
                     "fail to get gif record type".to_string(),
                 ));
@@ -130,6 +133,8 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                 libwebp_sys::GifRecordType_IMAGE_DESC_RECORD_TYPE => {
                     let mut image_desc: libwebp_sys::GifImageDesc = (*gif).Image;
                     if libwebp_sys::DGifGetImageDesc(gif) == 0 {
+                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                        libc::free(code_block as *mut core::ffi::c_void);
                         return Err(ImageError::FormatError("fail to get gif desc".to_string()));
                     }
                     if frame_number == 0 {
@@ -139,6 +144,8 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                             (*gif).SWidth = image_desc.Width;
                             (*gif).SHeight = image_desc.Height;
                             if (*gif).SWidth <= 0 || (*gif).SHeight <= 0 {
+                                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                                libc::free(code_block as *mut core::ffi::c_void);
                                 return Err(ImageError::FormatError(
                                     "illagel gif size".to_string(),
                                 ));
@@ -147,10 +154,14 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                     }
                     frame_number = frame_number + 1;
                     if libwebp_sys::DGifGetCode(gif, &mut code_size, &mut code_block) == 0 {
+                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                        libc::free(code_block as *mut core::ffi::c_void);
                         return Err(ImageError::FormatError("fail to get gif code".to_string()));
                     }
                     while !code_block.is_null() {
                         if libwebp_sys::DGifGetCodeNext(gif, &mut code_block) == 0 {
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                            libc::free(code_block as *mut core::ffi::c_void);
                             return Err(ImageError::FormatError(
                                 "fail to get gif code next".to_string(),
                             ));
@@ -159,54 +170,61 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                 }
                 libwebp_sys::GifRecordType_EXTENSION_RECORD_TYPE => {
                     let mut extension: i32 = 0;
-                    let mut data: *mut libwebp_sys::GifByteType = ptr::null_mut();
-                    if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 0 {
+                    let mut gif_data: *mut libwebp_sys::GifByteType = ptr::null_mut();
+                    if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut gif_data) == 0 {
+                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                        libc::free(code_block as *mut core::ffi::c_void);
                         return Err(ImageError::FormatError(
                             "fail to get gif extension".to_string(),
                         ));
                     }
-                    if data.is_null() {
+                    if gif_data.is_null() {
                         continue;
                     }
                     match extension {
                         0xf2 | 0xf9 | 0x01 => {}
                         0xff => {
-                            if *(data.offset(0)) == 11 {
+                            if *(gif_data.offset(0)) == 11 {
                                 if libc::memcmp(
-                                    data.offset(1) as *const libc::c_void,
+                                    gif_data.offset(1) as *const libc::c_void,
                                     "NETSCAPE2.0".as_ptr() as *const libc::c_void,
                                     11,
                                 ) == 0
                                     || libc::memcmp(
-                                        data.offset(1) as *const libc::c_void,
+                                        gif_data.offset(1) as *const libc::c_void,
                                         "ANIMEXTS1.0".as_ptr() as *const libc::c_void,
                                         11,
                                     ) == 0
                                 {
                                     if libwebp_sys::GIFReadLoopCount(
                                         gif,
-                                        &mut data,
+                                        &mut gif_data,
                                         &mut loop_count,
                                     ) == 0
                                     {
+                                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                                        libc::free(code_block as *mut core::ffi::c_void);
                                         return Err(ImageError::FormatError(
                                             "fail to read gif loop count".to_string(),
                                         ));
                                     }
                                 } else {
                                     let is_xmp: bool = libc::memcmp(
-                                        data.offset(1) as *const libc::c_void,
+                                        gif_data.offset(1) as *const libc::c_void,
                                         "XMP DataXMP".as_ptr() as *const libc::c_void,
                                         11,
                                     ) == 0;
                                     let is_icc: bool = libc::memcmp(
-                                        data.offset(1) as *const libc::c_void,
+                                        gif_data.offset(1) as *const libc::c_void,
                                         "ICCRGBG1012".as_ptr() as *const libc::c_void,
                                         11,
                                     ) == 0;
                                     if is_icc || is_xmp {
-                                        if libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 0 {
-                                            // goto end
+                                        if libwebp_sys::DGifGetExtensionNext(gif, &mut gif_data)
+                                            == 0
+                                        {
+                                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                                            libc::free(code_block as *mut core::ffi::c_void);
                                             return Err(ImageError::FormatError(
                                                 "fail to get gif extension next".to_string(),
                                             ));
@@ -218,9 +236,10 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                         _ => {}
                     }
 
-                    while !data.is_null() {
-                        if libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 0 {
-                            // goto end
+                    while !gif_data.is_null() {
+                        if libwebp_sys::DGifGetExtensionNext(gif, &mut gif_data) == 0 {
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                            libc::free(code_block as *mut core::ffi::c_void);
                             return Err(ImageError::FormatError(
                                 "fail to get gif extension next".to_string(),
                             ));
@@ -231,6 +250,8 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                     done = 1;
                 }
                 _ => {
+                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                    libc::free(code_block as *mut core::ffi::c_void);
                     return Err(ImageError::FormatError(
                         "unknow gif record type".to_string(),
                     ));
@@ -240,18 +261,21 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
                 break;
             }
         }
+        let height = (*gif).SHeight;
+        let width = (*gif).SWidth;
+        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+        libc::free(code_block as *mut core::ffi::c_void);
         return Ok(GIFInfo {
             frame_count: frame_number,
-            height: (*gif).SHeight,
-            width: (*gif).SWidth,
+            height: height,
+            width: width,
         });
     }
 }
 
 fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+    let mut image_result: Image = Default::default();
     unsafe {
-        let mut image_result: Image = Default::default();
-
         let mut frame_duration: i32 = 0;
         let mut transparent_index: i32 = -1;
         let loop_compatibility: i32 = 0;
@@ -281,15 +305,6 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             &mut enc_options,
             libwebp_sys::WEBP_MUX_ABI_VERSION,
         );
-
-        let exit_func = move || {
-            libwebp_sys::WebPMuxDelete(mux);
-            //libwebp_sys::PWebPDataClear(webp_data);
-            libwebp_sys::WebPPictureFree(frame);
-            libwebp_sys::WebPPictureFree(curr_canvas);
-            libwebp_sys::WebPPictureFree(prev_canvas);
-            libwebp_sys::WebPAnimEncoderDelete(enc);
-        };
         if p.quality() > 0 {
             libwebp_sys::WebPConfigInitInternal(
                 config,
@@ -324,14 +339,28 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             &mut gif_err,
         );
         if gif.is_null() {
-            exit_func();
+            libwebp_sys::WebPMuxDelete(mux);
+            (*webp_data).bytes = ptr::null_mut();
+            libwebp_sys::PWebPDataClear(webp_data);
+            libwebp_sys::WebPPictureFree(frame);
+            libwebp_sys::WebPPictureFree(curr_canvas);
+            libwebp_sys::WebPPictureFree(prev_canvas);
+            libwebp_sys::WebPAnimEncoderDelete(enc);
+            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
             return Err(ImageError::FormatError("fail to open gif".to_string()));
         }
         let mut done = 0;
         loop {
             let mut gtype: libwebp_sys::GifRecordType = 0;
             if libwebp_sys::DGifGetRecordType(gif, &mut gtype) == 0 {
-                exit_func();
+                libwebp_sys::WebPMuxDelete(mux);
+                (*webp_data).bytes = ptr::null_mut();
+                libwebp_sys::PWebPDataClear(webp_data);
+                libwebp_sys::WebPPictureFree(frame);
+                libwebp_sys::WebPPictureFree(curr_canvas);
+                libwebp_sys::WebPPictureFree(prev_canvas);
+                libwebp_sys::WebPAnimEncoderDelete(enc);
+                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                 return Err(ImageError::FormatError(
                     "fail to get gif recode type".to_string(),
                 ));
@@ -341,7 +370,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     let mut gif_rect: libwebp_sys::GIFFrameRect = Default::default();
                     let mut image_desc: libwebp_sys::GifImageDesc = (*gif).Image;
                     if libwebp_sys::DGifGetImageDesc(gif) == 0 {
-                        exit_func();
+                        libwebp_sys::WebPMuxDelete(mux);
+                        (*webp_data).bytes = ptr::null_mut();
+                        libwebp_sys::PWebPDataClear(webp_data);
+                        libwebp_sys::WebPPictureFree(frame);
+                        libwebp_sys::WebPPictureFree(curr_canvas);
+                        libwebp_sys::WebPPictureFree(prev_canvas);
+                        libwebp_sys::WebPAnimEncoderDelete(enc);
+                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                         return Err(ImageError::FormatError(
                             "fail to get gif image desc".to_string(),
                         ));
@@ -353,7 +389,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                             (*gif).SWidth = image_desc.Width;
                             (*gif).SHeight = image_desc.Height;
                             if (*gif).SWidth <= 0 || (*gif).SHeight <= 0 {
-                                exit_func();
+                                libwebp_sys::WebPMuxDelete(mux);
+                                (*webp_data).bytes = ptr::null_mut();
+                                libwebp_sys::PWebPDataClear(webp_data);
+                                libwebp_sys::WebPPictureFree(frame);
+                                libwebp_sys::WebPPictureFree(curr_canvas);
+                                libwebp_sys::WebPPictureFree(prev_canvas);
+                                libwebp_sys::WebPAnimEncoderDelete(enc);
+                                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                                 return Err(ImageError::FormatError(
                                     "illagel gif size".to_string(),
                                 ));
@@ -365,7 +408,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         (*frame).height = (*gif).SHeight;
                         (*frame).use_argb = 1;
                         if libwebp_sys::WebPPictureAlloc(frame) == 0 {
-                            exit_func();
+                            libwebp_sys::WebPMuxDelete(mux);
+                            (*webp_data).bytes = ptr::null_mut();
+                            libwebp_sys::PWebPDataClear(webp_data);
+                            libwebp_sys::WebPPictureFree(frame);
+                            libwebp_sys::WebPPictureFree(curr_canvas);
+                            libwebp_sys::WebPPictureFree(prev_canvas);
+                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                             return Err(ImageError::TranformError(
                                 "fail to alloc webp picture".to_string(),
                             ));
@@ -411,9 +461,15 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                 libwebp_sys::WEBP_MUX_ABI_VERSION,
                             ),
                         };
-
                         if enc.is_null() {
-                            exit_func();
+                            libwebp_sys::WebPMuxDelete(mux);
+                            (*webp_data).bytes = ptr::null_mut();
+                            libwebp_sys::PWebPDataClear(webp_data);
+                            libwebp_sys::WebPPictureFree(frame);
+                            libwebp_sys::WebPPictureFree(curr_canvas);
+                            libwebp_sys::WebPPictureFree(prev_canvas);
+                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                             return Err(ImageError::TranformError(
                                 "fail to init WebPAnimEncoder".to_string(),
                             ));
@@ -423,7 +479,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         if libwebp_sys::GIFReadFrame(gif, transparent_index, &mut gif_rect, frame)
                             == 0
                         {
-                            exit_func();
+                            libwebp_sys::WebPMuxDelete(mux);
+                            (*webp_data).bytes = ptr::null_mut();
+                            libwebp_sys::PWebPDataClear(webp_data);
+                            libwebp_sys::WebPPictureFree(frame);
+                            libwebp_sys::WebPPictureFree(curr_canvas);
+                            libwebp_sys::WebPPictureFree(prev_canvas);
+                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                             return Err(ImageError::FormatError(
                                 "fail to read gif frame".to_string(),
                             ));
@@ -438,7 +501,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         if libwebp_sys::GIFReadFrame(gif, transparent_index, &mut gif_rect, frame)
                             == 0
                         {
-                            exit_func();
+                            libwebp_sys::WebPMuxDelete(mux);
+                            (*webp_data).bytes = ptr::null_mut();
+                            libwebp_sys::PWebPDataClear(webp_data);
+                            libwebp_sys::WebPPictureFree(frame);
+                            libwebp_sys::WebPPictureFree(curr_canvas);
+                            libwebp_sys::WebPPictureFree(prev_canvas);
+                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                             return Err(ImageError::FormatError(
                                 "fail to read gif frame".to_string(),
                             ));
@@ -456,7 +526,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             r.height,
                                         ) != 1
                                         {
-                                            exit_func();
+                                            libwebp_sys::WebPMuxDelete(mux);
+                                            (*webp_data).bytes = ptr::null_mut();
+                                            libwebp_sys::PWebPDataClear(webp_data);
+                                            libwebp_sys::WebPPictureFree(frame);
+                                            libwebp_sys::WebPPictureFree(curr_canvas);
+                                            libwebp_sys::WebPPictureFree(prev_canvas);
+                                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                                             return Err(ImageError::FormatError(
                                                 "gif WebPPictureRescale error".to_string(),
                                             ));
@@ -473,7 +550,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                             config,
                         ) == 0
                         {
-                            exit_func();
+                            libwebp_sys::WebPMuxDelete(mux);
+                            (*webp_data).bytes = ptr::null_mut();
+                            libwebp_sys::PWebPDataClear(webp_data);
+                            libwebp_sys::WebPPictureFree(frame);
+                            libwebp_sys::WebPPictureFree(curr_canvas);
+                            libwebp_sys::WebPPictureFree(prev_canvas);
+                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                             return Err(ImageError::TranformError(
                                 "fail to WebPAnimEncoderAdd".to_string(),
                             ));
@@ -490,7 +574,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             r.height,
                                         ) != 1
                                         {
-                                            exit_func();
+                                            libwebp_sys::WebPMuxDelete(mux);
+                                            (*webp_data).bytes = ptr::null_mut();
+                                            libwebp_sys::PWebPDataClear(webp_data);
+                                            libwebp_sys::WebPPictureFree(frame);
+                                            libwebp_sys::WebPPictureFree(curr_canvas);
+                                            libwebp_sys::WebPPictureFree(prev_canvas);
+                                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                                             return Err(ImageError::TranformError(
                                                 "gif WebPPictureRescale error".to_string(),
                                             ));
@@ -533,7 +624,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     let mut extension: i32 = 0;
                     let mut data: *mut libwebp_sys::GifByteType = ptr::null_mut();
                     if libwebp_sys::DGifGetExtension(gif, &mut extension, &mut data) == 0 {
-                        exit_func();
+                        libwebp_sys::WebPMuxDelete(mux);
+                        (*webp_data).bytes = ptr::null_mut();
+                        libwebp_sys::PWebPDataClear(webp_data);
+                        libwebp_sys::WebPPictureFree(frame);
+                        libwebp_sys::WebPPictureFree(curr_canvas);
+                        libwebp_sys::WebPPictureFree(prev_canvas);
+                        libwebp_sys::WebPAnimEncoderDelete(enc);
+                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                         return Err(ImageError::FormatError(
                             "fail to get gif extension".to_string(),
                         ));
@@ -552,7 +650,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                     &mut transparent_index,
                                 ) == 0
                                 {
-                                    exit_func();
+                                    libwebp_sys::WebPMuxDelete(mux);
+                                    (*webp_data).bytes = ptr::null_mut();
+                                    libwebp_sys::PWebPDataClear(webp_data);
+                                    libwebp_sys::WebPPictureFree(frame);
+                                    libwebp_sys::WebPPictureFree(curr_canvas);
+                                    libwebp_sys::WebPPictureFree(prev_canvas);
+                                    libwebp_sys::WebPAnimEncoderDelete(enc);
+                                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                                     return Err(ImageError::FormatError(
                                         "fail to read gif Graphics extension".to_string(),
                                     ));
@@ -578,7 +683,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             &mut loop_count,
                                         ) == 0
                                         {
-                                            exit_func();
+                                            libwebp_sys::WebPMuxDelete(mux);
+                                            (*webp_data).bytes = ptr::null_mut();
+                                            libwebp_sys::PWebPDataClear(webp_data);
+                                            libwebp_sys::WebPPictureFree(frame);
+                                            libwebp_sys::WebPPictureFree(curr_canvas);
+                                            libwebp_sys::WebPPictureFree(prev_canvas);
+                                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                                             return Err(ImageError::FormatError(
                                                 "fail to read gif loop".to_string(),
                                             ));
@@ -607,7 +719,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             if libwebp_sys::DGifGetExtensionNext(gif, &mut data)
                                                 == 0
                                             {
-                                                exit_func();
+                                                libwebp_sys::WebPMuxDelete(mux);
+                                                (*webp_data).bytes = ptr::null_mut();
+                                                libwebp_sys::PWebPDataClear(webp_data);
+                                                libwebp_sys::WebPPictureFree(frame);
+                                                libwebp_sys::WebPPictureFree(curr_canvas);
+                                                libwebp_sys::WebPPictureFree(prev_canvas);
+                                                libwebp_sys::WebPAnimEncoderDelete(enc);
+                                                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                                                 return Err(ImageError::FormatError(
                                                     "fail to get gif extension next".to_string(),
                                                 ));
@@ -622,7 +741,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
 
                     while !data.is_null() {
                         if libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 0 {
-                            exit_func();
+                            libwebp_sys::WebPMuxDelete(mux);
+                            (*webp_data).bytes = ptr::null_mut();
+                            libwebp_sys::PWebPDataClear(webp_data);
+                            libwebp_sys::WebPPictureFree(frame);
+                            libwebp_sys::WebPPictureFree(curr_canvas);
+                            libwebp_sys::WebPPictureFree(prev_canvas);
+                            libwebp_sys::WebPAnimEncoderDelete(enc);
+                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                             return Err(ImageError::FormatError(
                                 "fail to get Gif Extension Next".to_string(),
                             ));
@@ -633,7 +759,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                     done = 1;
                 }
                 _ => {
-                    exit_func();
+                    libwebp_sys::WebPMuxDelete(mux);
+                    (*webp_data).bytes = ptr::null_mut();
+                    libwebp_sys::PWebPDataClear(webp_data);
+                    libwebp_sys::WebPPictureFree(frame);
+                    libwebp_sys::WebPPictureFree(curr_canvas);
+                    libwebp_sys::WebPPictureFree(prev_canvas);
+                    libwebp_sys::WebPAnimEncoderDelete(enc);
+                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                     return Err(ImageError::FormatError(
                         "unknown gif record type".to_string(),
                     ));
@@ -646,7 +779,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
 
         libwebp_sys::WebPAnimEncoderAdd(enc, ptr::null_mut(), frame_timestamp, ptr::null_mut());
         if libwebp_sys::WebPAnimEncoderAssemble(enc, webp_data) == 0 {
-            exit_func();
+            libwebp_sys::WebPMuxDelete(mux);
+            (*webp_data).bytes = ptr::null_mut();
+            libwebp_sys::PWebPDataClear(webp_data);
+            libwebp_sys::WebPPictureFree(frame);
+            libwebp_sys::WebPPictureFree(curr_canvas);
+            libwebp_sys::WebPPictureFree(prev_canvas);
+            libwebp_sys::WebPAnimEncoderDelete(enc);
+            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
             return Err(ImageError::TranformError(
                 "fail to WebPAnimEncoderAssemble".to_string(),
             ));
@@ -674,18 +814,32 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             mux =
                 libwebp_sys::WebPMuxCreateInternal(webp_data, 1, libwebp_sys::WEBP_MUX_ABI_VERSION);
             if mux.is_null() {
-                exit_func();
+                libwebp_sys::WebPMuxDelete(mux);
+                (*webp_data).bytes = ptr::null_mut();
+                libwebp_sys::PWebPDataClear(webp_data);
+                libwebp_sys::WebPPictureFree(frame);
+                libwebp_sys::WebPPictureFree(curr_canvas);
+                libwebp_sys::WebPPictureFree(prev_canvas);
+                libwebp_sys::WebPAnimEncoderDelete(enc);
+                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                 return Err(ImageError::TranformError(
                     "fail to WebPMuxCreate".to_string(),
                 ));
             }
-            //libwebp_sys::PWebPDataClear(webp_data);
+            libwebp_sys::PWebPDataClear(webp_data);
 
             if stored_loop_count == 0 {
                 let mut new_params: libwebp_sys::WebPMuxAnimParams = Default::default();
                 let mut err = libwebp_sys::WebPMuxGetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
-                    exit_func();
+                    libwebp_sys::WebPMuxDelete(mux);
+                    (*webp_data).bytes = ptr::null_mut();
+                    libwebp_sys::PWebPDataClear(webp_data);
+                    libwebp_sys::WebPPictureFree(frame);
+                    libwebp_sys::WebPPictureFree(curr_canvas);
+                    libwebp_sys::WebPPictureFree(prev_canvas);
+                    libwebp_sys::WebPAnimEncoderDelete(enc);
+                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                     return Err(ImageError::TranformError(
                         "fail to WebPMuxGetAnimationParams".to_string(),
                     ));
@@ -693,7 +847,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                 new_params.loop_count = loop_count;
                 err = libwebp_sys::WebPMuxSetAnimationParams(mux, &mut new_params);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
-                    exit_func();
+                    libwebp_sys::WebPMuxDelete(mux);
+                    (*webp_data).bytes = ptr::null_mut();
+                    libwebp_sys::PWebPDataClear(webp_data);
+                    libwebp_sys::WebPPictureFree(frame);
+                    libwebp_sys::WebPPictureFree(curr_canvas);
+                    libwebp_sys::WebPPictureFree(prev_canvas);
+                    libwebp_sys::WebPAnimEncoderDelete(enc);
+                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                     return Err(ImageError::TranformError(
                         "fail to WebPMuxSetAnimationParams".to_string(),
                     ));
@@ -701,7 +862,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
 
                 err = libwebp_sys::WebPMuxAssemble(mux, webp_data);
                 if err != libwebp_sys::WebPMuxError_WEBP_MUX_OK {
-                    exit_func();
+                    libwebp_sys::WebPMuxDelete(mux);
+                    (*webp_data).bytes = ptr::null_mut();
+                    libwebp_sys::PWebPDataClear(webp_data);
+                    libwebp_sys::WebPPictureFree(frame);
+                    libwebp_sys::WebPPictureFree(curr_canvas);
+                    libwebp_sys::WebPPictureFree(prev_canvas);
+                    libwebp_sys::WebPAnimEncoderDelete(enc);
+                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
                     return Err(ImageError::TranformError(
                         "fail to WebPMuxAssemble".to_string(),
                     ));
@@ -714,7 +882,14 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             (*webp_data).size,
         )
         .clone();
-        exit_func();
+        libwebp_sys::WebPMuxDelete(mux);
+        (*webp_data).bytes = ptr::null_mut();
+        libwebp_sys::PWebPDataClear(webp_data);
+        libwebp_sys::WebPPictureFree(frame);
+        libwebp_sys::WebPPictureFree(curr_canvas);
+        libwebp_sys::WebPPictureFree(prev_canvas);
+        libwebp_sys::WebPAnimEncoderDelete(enc);
+        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
         return Ok(image_result);
     }
 }
