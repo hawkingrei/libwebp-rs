@@ -1,0 +1,12 @@
+[package]
+name = "pic-fuzz"
+version = "0.1.0"
+authors = ["Wangweizhen <wangweizhen@bilibili.com>"]
+edition = "2018"
+
+[dependencies]
+afl = "0.4"
+http = "0.1"
+
+[dependencies.imagers]
+path = "../.."

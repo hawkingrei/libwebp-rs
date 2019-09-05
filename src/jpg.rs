@@ -55,6 +55,8 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
             Some(r) => {
                 if r.width != 0 && r.height != 0 {
                     if libwebp_sys::WebPPictureRescale(wp, r.width, r.height) != 1 {
+                        libwebp_sys::MetadataFree(metadata);
+                        libwebp_sys::WebPPictureFree(wp);
                         return Err(ImageError::FormatError(
                             "jpg WebPPictureRescale error".to_string(),
                         ));
@@ -68,6 +70,8 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         match param.crop {
             Some(c) => {
                 if libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp) != 1 {
+                    libwebp_sys::MetadataFree(metadata);
+                    libwebp_sys::WebPPictureFree(wp);
                     return Err(ImageError::FormatError(
                         "jpg WebPPictureView error".to_string(),
                     ));
