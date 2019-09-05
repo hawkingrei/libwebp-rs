@@ -21,7 +21,6 @@ members = [
   "./"
 ]
 default-members = [
-  "fuzz/pic-fuzz",
   "libwebp-sys",
   "cwebp",
   "./"
