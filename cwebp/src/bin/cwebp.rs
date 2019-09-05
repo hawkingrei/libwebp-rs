@@ -151,13 +151,13 @@ fn main() {
                         }
                         Err(e) => println!("{}", e),
                     }
-                    return;
-                }
-                let result = gif_encode_webp(&mut data.clone(), param).unwrap();
-                if !profile {
-                    dbg!(result.width);
-                    dbg!(result.height);
-                    fs::write(output, result.pic).unwrap();
+                } else {
+                    let result = gif_encode_webp(&mut data.clone(), param).unwrap();
+                    if !profile {
+                        dbg!(result.width);
+                        dbg!(result.height);
+                        fs::write(output, result.pic).unwrap();
+                    }
                 }
             }
             _ => println!("not support"),
