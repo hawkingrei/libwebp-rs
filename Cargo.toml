@@ -15,11 +15,13 @@ crc = "1.8.1"
 
 [workspace]
 members = [
+  "fuzz/pic-fuzz",
   "libwebp-sys",
   "cwebp",
   "./"
 ]
 default-members = [
+  "fuzz/pic-fuzz",
   "libwebp-sys",
   "cwebp",
   "./"
