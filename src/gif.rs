@@ -323,6 +323,18 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
         }
         enc_options.allow_mixed = 1;
         (*config).lossless = 0;
+        (*config).thread_level += 1;
+        enc_options.kmin = if (*config).lossless == 0 {
+            3
+        } else {
+            9
+        };
+        enc_options.kmax = if (*config).lossless == 0 {
+            5
+        } else {
+            17
+        };
+        
         let mut frame_timestamp: i32 = 0;
         let mut frame_number = 0;
         let mut gif_err: i32 = 0;
