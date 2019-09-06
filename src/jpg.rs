@@ -51,35 +51,30 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         libwebp_sys::WebPMemoryWriterInit(writer);
         (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
         (*wp).custom_ptr = writer as *mut libc::c_void;
-        match param.resize {
-            Some(r) => {
-                if r.width != 0 && r.height != 0 {
-                    if libwebp_sys::WebPPictureRescale(wp, r.width, r.height) != 1 {
-                        libwebp_sys::MetadataFree(metadata);
-                        libwebp_sys::WebPPictureFree(wp);
-                        return Err(ImageError::FormatError(
-                            "jpg WebPPictureRescale error".to_string(),
-                        ));
-                    }
-                    image_result.set_height(r.height);
-                    image_result.set_width(r.width);
-                }
-            }
-            None => {}
-        }
-        match param.crop {
-            Some(c) => {
-                if libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp) != 1 {
+        if let Some(r) = param.resize {
+            if r.width != 0 && r.height != 0 {
+                if libwebp_sys::WebPPictureRescale(wp, r.width, r.height) != 1 {
                     libwebp_sys::MetadataFree(metadata);
                     libwebp_sys::WebPPictureFree(wp);
                     return Err(ImageError::FormatError(
-                        "jpg WebPPictureView error".to_string(),
+                        "jpg WebPPictureRescale error".to_string(),
                     ));
                 }
-                image_result.set_height(c.height);
-                image_result.set_width(c.width);
+                image_result.set_height(r.height);
+                image_result.set_width(r.width);
             }
-            None => {}
+        }
+
+        if let Some(c) = param.crop {
+            if libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp) != 1 {
+                libwebp_sys::MetadataFree(metadata);
+                libwebp_sys::WebPPictureFree(wp);
+                return Err(ImageError::FormatError(
+                    "jpg WebPPictureView error".to_string(),
+                ));
+            }
+            image_result.set_height(c.height);
+            image_result.set_width(c.width);
         }
 
         if libwebp_sys::WebPEncode(config, wp) == 1 {
@@ -93,6 +88,6 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
         libwebp_sys::MetadataFree(metadata);
         libwebp_sys::WebPPictureFree(wp);
 
-        return Err(ImageError::FormatError("jpg encode jpg error".to_string()));
+        Err(ImageError::FormatError("jpg encode jpg error".to_string()))
     }
 }

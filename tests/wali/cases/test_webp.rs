@@ -59,7 +59,7 @@ fn tranform_webp_to_webp(config: &TestConfig, case: Case<ImageHandler>) -> Resul
     if digest_expected.sum32() != digest_output.sum32() {
         return Err(format!("{} fail to test", input));
     }
-    return Ok(());
+    Ok(())
 }
 
 wali_test!(

@@ -6,10 +6,9 @@ static WEBP_INCLUDE_DIR: &'static str = "/usr/local/include";
 
 fn generate_bindings() {
     let webp_include_path = env::var("WEBP_INCLUDE").unwrap_or(WEBP_INCLUDE_DIR.to_string());
-    let output_path = "./src/";
     let generator = Generator {
         webp_include_path: Path::new(&webp_include_path),
-        output_path: Path::new(&output_path),
+        output_path: &PathBuf::from(env::var("OUT_DIR").unwrap()),
     };
 
     let headers = ["mux", "encode", "decode", "types"];
@@ -89,7 +88,7 @@ impl<'a> Generator<'a> {
             .expect("Unable to generate bindings");
 
         bindings
-            .write_to_file(self.output_path.join("webp_bindings.rs"))
+            .write_to_file(self.output_path.join("bindings.rs"))
             .expect("Couldn't write bindings!");
     }
 }

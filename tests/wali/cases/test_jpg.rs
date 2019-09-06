@@ -58,7 +58,7 @@ fn tranform_jpg_to_webp(config: &TestConfig, case: Case<ImageHandler>) -> Result
     if digest_expected.sum32() != digest_output.sum32() {
         return Err(format!("{} fail to test", input));
     }
-    return Ok(());
+    Ok(())
 }
 
 // article/f946c1d2884e16301d5d43f3ccf917cc14015619.jpg@702w_212h_1e_1c.webp

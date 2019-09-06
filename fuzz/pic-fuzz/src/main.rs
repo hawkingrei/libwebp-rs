@@ -1,17 +1,13 @@
+#![allow(unused_must_use)]
 #[macro_use]
 extern crate afl;
-extern crate http;
-extern crate imagers;
 
 use imagers::gif_encode_webp;
-use imagers::gif_info;
 use imagers::jpg_encode_webp;
 use imagers::png_encode_webp;
 use imagers::webp_encode_webp;
-use imagers::Crop;
 use imagers::ImageFormat;
 use imagers::ImageHandlerBuilder;
-use imagers::RegionCrop;
 use imagers::Resize;
 
 fn main() {
@@ -35,16 +31,16 @@ fn main() {
         match ptype {
             ImageFormat::PNG => {
                 png_encode_webp(&data.to_vec().clone(), param);
-            },
+            }
             ImageFormat::JPEG => {
                 jpg_encode_webp(&data.to_vec().clone(), param);
-            },
+            }
             ImageFormat::WEBP => {
                 webp_encode_webp(&data.to_vec().clone(), param);
-            },
+            }
             ImageFormat::GIF => {
-                gif_encode_webp(&mut data.to_vec().clone(), param);
-            },
+                gif_encode_webp(&data.to_vec().clone(), param);
+            }
             _ => println!("not support"),
         };
     });
