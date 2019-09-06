@@ -80,7 +80,7 @@ pub enum ImageFormat {
     HDR,
 }
 
-static MAGIC_BYTES: [(&'static [u8], ImageFormat); 17] = [
+static MAGIC_BYTES: [(&[u8], ImageFormat); 17] = [
     (b"\x89PNG\r\n\x1a\n", ImageFormat::PNG),
     (&[0xff, 0xd8, 0xff], ImageFormat::JPEG),
     (b"GIF89a", ImageFormat::GIF),
@@ -132,7 +132,7 @@ impl fmt::Debug for ImageError {
 }
 
 impl fmt::Display for ImageError {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
         match *self {
             ImageError::FormatError(ref e) => write!(fmt, "Format error: {}", e),
             ImageError::UnsupportedError(ref f) => {
@@ -176,9 +176,9 @@ impl ResponseError for ImageError {
     fn error_response(&self) -> HttpResponse {
         match self {
             ImageError::UnsupportedError(_) => {
-                HttpResponse::UnsupportedMediaType().body(format!("{}", self.description()))
+                HttpResponse::UnsupportedMediaType().body(self.description().to_string())
             }
-            _ => HttpResponse::Conflict().body(format!("{}", self.description())),
+            _ => HttpResponse::Conflict().body(self.description().to_string()),
         }
     }
 }

@@ -231,22 +231,17 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
         libwebp_sys::WebPMemoryWriterInit(writer);
         (*wp).writer = Some(libwebp_sys::WebPMemoryWrite);
         (*wp).custom_ptr = writer as *mut libc::c_void;
-        match param.resize {
-            Some(r) => {
-                libwebp_sys::WebPPictureRescale(wp, r.width, r.height);
-                image_result.set_height(r.height);
-                image_result.set_width(r.width);
-            }
-            None => {}
+
+        if let Some(r) = param.resize {
+            libwebp_sys::WebPPictureRescale(wp, r.width, r.height);
+            image_result.set_height(r.height);
+            image_result.set_width(r.width);
         }
 
-        match param.crop {
-            Some(c) => {
-                libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
-                image_result.set_height(c.height);
-                image_result.set_width(c.width);
-            }
-            None => {}
+        if let Some(c) = param.crop {
+            libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp);
+            image_result.set_height(c.height);
+            image_result.set_width(c.width);
         }
 
         if libwebp_sys::WebPEncode(config, wp) == 1 {
@@ -256,6 +251,6 @@ pub fn webp_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Imag
             return Ok(image_result);
         }
         libwebp_sys::WebPPictureFree(wp);
-        return Err(ImageError::FormatError("webp format error".to_string()));
+        Err(ImageError::FormatError("webp format error".to_string()))
     }
 }

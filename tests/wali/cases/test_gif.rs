@@ -32,7 +32,7 @@ fn tranform_gif_to_webp(config: &TestConfig, case: Case<ImageHandler>) -> Result
         Err(err) => return Err(format!("{} fail to read. {}", fact_input, err)),
     };
 
-    let result = match gif_encode_webp(&mut data.clone(), im) {
+    let result = match gif_encode_webp(&data.clone(), im) {
         Ok(result) => result,
         Err(err) => {
             if is_corrupted {
@@ -58,7 +58,7 @@ fn tranform_gif_to_webp(config: &TestConfig, case: Case<ImageHandler>) -> Result
     if digest_expected.sum32() != digest_output.sum32() {
         return Err(format!("{} fail to test", input));
     }
-    return Ok(());
+    Ok(())
 }
 
 wali_test!(

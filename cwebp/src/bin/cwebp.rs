@@ -144,14 +144,14 @@ fn main() {
             }
             ImageFormat::GIF => {
                 if get_frame_count {
-                    match gif_info(&mut data.clone()) {
+                    match gif_info(&data.clone()) {
                         Ok(result) => {
                             println!("frame count: {:?}", result);
                         }
                         Err(e) => println!("{}", e),
                     }
                 } else {
-                    let result = gif_encode_webp(&mut data.clone(), param).unwrap();
+                    let result = gif_encode_webp(&data.clone(), param).unwrap();
                     if !profile {
                         dbg!(result.width);
                         dbg!(result.height);

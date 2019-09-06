@@ -82,7 +82,7 @@ impl fmt::Debug for ImageHandler {
 
 impl ImageHandler {
     pub fn new() -> Self {
-        return Default::default();
+        Default::default()
     }
 
     pub fn quality(&self) -> i32 {
@@ -158,15 +158,15 @@ impl ImageHandler {
         let mut result: ImageHandler = Default::default();
         result.first_frame = self.first_frame;
         result.resize = match &self.resize {
-            Some(r) => Some(r.clone()),
+            Some(r) => Some(*r),
             None => Some(Resize {
                 width: 0,
                 height: 0,
             }),
         };
 
-        let crop = self.crop.clone();
-        let region_crop = self.region_crop.clone();
+        let crop = self.crop;
+        let region_crop = self.region_crop;
 
         let ori_h: i32 = self.height;
         let ori_w: i32 = self.width;
@@ -273,138 +273,129 @@ impl ImageHandler {
             check_h = result.height();
             check_w = result.width();
         }
-        if !crop.is_none() {
-            match crop {
-                Some(mut crop) => {
-                    if crop.x > result.width() || crop.x < 0 {
-                        crop.x = 0;
-                    }
-                    if crop.y > result.height() || crop.y < 0 {
-                        crop.y = 0
-                    }
-                    if crop.height < 0 || crop.height > result.height() {
-                        crop.height = result.height()
-                    }
-                    if crop.width < 0 || crop.width > result.width() {
-                        crop.width = result.width()
-                    }
+        if crop.is_some() {
+            if let Some(mut crop) = crop {
+                if crop.x > result.width() || crop.x < 0 {
+                    crop.x = 0;
+                }
+                if crop.y > result.height() || crop.y < 0 {
+                    crop.y = 0
+                }
+                if crop.height < 0 || crop.height > result.height() {
+                    crop.height = result.height()
+                }
+                if crop.width < 0 || crop.width > result.width() {
+                    crop.width = result.width()
+                }
 
-                    if crop.width == 0 || crop.width > (result.width() - crop.x) {
-                        crop.width = result.width() - crop.x
+                if crop.width == 0 || crop.width > (result.width() - crop.x) {
+                    crop.width = result.width() - crop.x
+                }
+                if crop.height == 0 || crop.height > (result.height() - crop.y) {
+                    crop.height = result.height() - crop.y
+                }
+                if crop.height > check_h {
+                    crop.height = check_h
+                }
+                if crop.width > check_w {
+                    crop.width = check_w
+                }
+                result.crop = Some(crop);
+            }
+        } else if region_crop.is_some() {
+            if let Some(regionc) = region_crop {
+                let mut rc_w = regionc.width;
+                let mut rc_h = regionc.height;
+
+                if rc_w < 0 || rc_h < 0 {
+                    return Err(ParamError::ErrCropParams);
+                }
+                if rc_h == 0 {
+                    rc_h = self.height();
+                }
+                if rc_w == 0 {
+                    rc_w = self.width();
+                }
+                let region_h = self.height() / 3;
+                let region_w = self.width() / 3;
+
+                if rc_h > region_h {
+                    rc_h = region_h;
+                }
+                let rc_xst = (regionc.region - 1) % 3;
+                let rc_yst = (regionc.region - 1) / 3;
+                let mut crop_pos_x = 0;
+                let mut crop_pos_y = 0;
+
+                match rc_xst {
+                    0 => crop_pos_x = 0,
+                    1 => crop_pos_x = (rc_xst + region_w) + ((region_w - rc_w) / 2),
+                    2 => crop_pos_x = (rc_xst * region_w) + (region_w - rc_w),
+                    _ => {}
+                }
+
+                match rc_yst {
+                    0 => crop_pos_y = 0,
+                    1 => crop_pos_y = (rc_yst * region_h) + ((region_h - rc_h) / 2),
+                    2 => crop_pos_y = (rc_yst * region_h) + (region_h - rc_h),
+                    _ => {}
+                }
+                if rc_h > check_h {
+                    rc_h = check_h
+                }
+                if rc_w > check_w {
+                    rc_w = check_w
+                }
+                result.crop = Some(Crop {
+                    x: crop_pos_x,
+                    y: crop_pos_y,
+                    height: rc_h,
+                    width: rc_w,
+                });
+            }
+        } else if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
+            match result.long_side {
+                1 => {
+                    let mut crop_w = fw;
+                    let mut crop_h = result.height();
+                    let crop_pos_x = (result.width() - crop_w) / 2;
+                    let crop_pos_y = 0;
+                    if crop_h > check_h {
+                        crop_h = check_h
                     }
-                    if crop.height == 0 || crop.height > (result.height() - crop.y) {
-                        crop.height = result.height() - crop.y
+                    if crop_w > check_w {
+                        crop_w = check_w
                     }
-                    if crop.height > check_h {
-                        crop.height = check_h
+                    result.crop = Some(Crop {
+                        x: crop_pos_x,
+                        y: crop_pos_y,
+                        height: crop_h,
+                        width: crop_w,
+                    });
+                }
+                2 => {
+                    let mut crop_w = result.width();
+                    let mut crop_h = fh;
+
+                    let crop_pos_x = 0;
+                    let crop_pos_y = (result.height() - crop_h) / 2;
+                    if crop_h > check_h {
+                        crop_h = check_h
                     }
-                    if crop.width > check_w {
-                        crop.width = check_w
+                    if crop_w > check_w {
+                        crop_w = check_w
                     }
-                    result.crop = Some(crop.clone());
+                    result.crop = Some(Crop {
+                        x: crop_pos_x,
+                        y: crop_pos_y,
+                        height: crop_h,
+                        width: crop_w,
+                    });
                 }
                 _ => {}
             }
-        } else {
-            if !region_crop.is_none() {
-                match region_crop {
-                    Some(regionc) => {
-                        let mut rc_w = regionc.width;
-                        let mut rc_h = regionc.height;
-
-                        if rc_w < 0 || rc_h < 0 {
-                            return Err(ParamError::ErrCropParams);
-                        }
-                        if rc_h == 0 {
-                            rc_h = self.height();
-                        }
-                        if rc_w == 0 {
-                            rc_w = self.width();
-                        }
-                        let region_h = self.height() / 3;
-                        let region_w = self.width() / 3;
-
-                        if rc_h > region_h {
-                            rc_h = region_h;
-                        }
-                        let rc_xst = (regionc.region - 1) % 3;
-                        let rc_yst = (regionc.region - 1) / 3;
-                        let mut crop_pos_x = 0;
-                        let mut crop_pos_y = 0;
-
-                        match rc_xst {
-                            0 => crop_pos_x = 0,
-                            1 => crop_pos_x = (rc_xst + region_w) + ((region_w - rc_w) / 2),
-                            2 => crop_pos_x = (rc_xst * region_w) + (region_w - rc_w),
-                            _ => {}
-                        }
-
-                        match rc_yst {
-                            0 => crop_pos_y = 0,
-                            1 => crop_pos_y = (rc_yst * region_h) + ((region_h - rc_h) / 2),
-                            2 => crop_pos_y = (rc_yst * region_h) + (region_h - rc_h),
-                            _ => {}
-                        }
-                        if rc_h > check_h {
-                            rc_h = check_h
-                        }
-                        if rc_w > check_w {
-                            rc_w = check_w
-                        }
-                        result.crop = Some(Crop {
-                            x: crop_pos_x,
-                            y: crop_pos_y,
-                            height: rc_h,
-                            width: rc_w,
-                        });
-                    }
-                    _ => {}
-                }
-            } else {
-                if self.c == 1 && self.edge == 1 || (result.c == 1 && result.edge == 1) {
-                    match result.long_side {
-                        1 => {
-                            let mut crop_w = fw;
-                            let mut crop_h = result.height();
-                            let crop_pos_x = (result.width() - crop_w) / 2;
-                            let crop_pos_y = 0;
-                            if crop_h > check_h {
-                                crop_h = check_h
-                            }
-                            if crop_w > check_w {
-                                crop_w = check_w
-                            }
-                            result.crop = Some(Crop {
-                                x: crop_pos_x,
-                                y: crop_pos_y,
-                                height: crop_h,
-                                width: crop_w,
-                            });
-                        }
-                        2 => {
-                            let mut crop_w = result.width();
-                            let mut crop_h = fh;
-
-                            let crop_pos_x = 0;
-                            let crop_pos_y = (result.height() - crop_h) / 2;
-                            if crop_h > check_h {
-                                crop_h = check_h
-                            }
-                            if crop_w > check_w {
-                                crop_w = check_w
-                            }
-                            result.crop = Some(Crop {
-                                x: crop_pos_x,
-                                y: crop_pos_y,
-                                height: crop_h,
-                                width: crop_w,
-                            });
-                        }
-                        _ => {}
-                    }
-                }
-            }
         }
+
         Ok(result)
     }
 }
@@ -427,9 +418,9 @@ fn caluat_size(ori_h: i32, ori_w: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, 
         return (h, w, 0);
     }
     if e >= 0 && h > 0 && w > 0 {
-        ratio_h = ori_h as f64 / h as f64;
+        ratio_h = f64::from(ori_h) as f64 / f64::from(h);
         // 1.222493888
-        ratio_w = ori_w as f64 / w as f64;
+        ratio_w = f64::from(ori_w) as f64 / f64::from(w);
 
         longside = 1;
         ratio = ratio_h;
@@ -445,10 +436,10 @@ fn caluat_size(ori_h: i32, ori_w: i32, h: i32, w: i32, e: i32, p: i32) -> (i32, 
                 longside = 2;
             }
         }
-        ref_h = (ori_h as f64 / ratio) as i32;
-        ref_w = (ori_w as f64 / ratio) as i32;
+        ref_h = (f64::from(ori_h) / ratio) as i32;
+        ref_w = (f64::from(ori_w) / ratio) as i32;
     }
-    return (ref_h, ref_w, longside);
+    (ref_h, ref_w, longside)
 }
 
 #[derive(Default, Copy, Clone)]
@@ -456,7 +447,7 @@ pub struct ImageHandlerBuilder(ImageHandler);
 
 impl ImageHandlerBuilder {
     pub fn new() -> Self {
-        return Default::default();
+        Default::default()
     }
 
     pub fn set_first_frame(mut self, f: bool) -> Self {
@@ -520,6 +511,6 @@ impl ImageHandlerBuilder {
     }
 
     pub fn finish(self) -> ImageHandler {
-        return self.0;
+        self.0
     }
 }
