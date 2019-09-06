@@ -14,7 +14,7 @@ use libc;
 const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
 
-pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
+pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
         Ok(info) => {
             if info.frame_count > GIF_MAX_FRAME
@@ -50,7 +50,7 @@ pub fn gif_encode_webp(data: &mut Vec<u8>, mut p: ImageHandler) -> ImageResult<I
     }
 }
 
-fn gif_all_resize_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+fn gif_all_resize_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
     if let Some(resize) = p.resize {
         match Command::new("gifsicle")
             .stdin(Stdio::piped())
@@ -100,7 +100,7 @@ impl fmt::Debug for GIFInfo {
     }
 }
 
-pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
+pub fn gif_info(data: &Vec<u8>) -> ImageResult<GIFInfo> {
     let mut frame_number = 0;
     let mut loop_count: i32 = 0;
     let mut gif_err: i32 = 0;
@@ -113,9 +113,10 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
         remain: 0,
     };
     unsafe {
-        (*buf_src).buf = data.as_mut_ptr();
-        (*buf_src).p = data.as_mut_ptr();
-        (*buf_src).remain = data.len().try_into().unwrap();
+        let mut data_tmp = data.clone();
+        (*buf_src).buf = data_tmp.as_mut_ptr();
+        (*buf_src).p = data_tmp.as_mut_ptr();
+        (*buf_src).remain = data_tmp.len().try_into().unwrap();
         let mut gif: *mut libwebp_sys::GifFileType = libwebp_sys::DGifOpen(
             buf_src as *mut core::ffi::c_void,
             Some(libwebp_sys::readGifBuffer),
@@ -274,7 +275,7 @@ pub fn gif_info(data: &mut Vec<u8>) -> ImageResult<GIFInfo> {
     }
 }
 
-fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
     let mut image_result: Image = Default::default();
     unsafe {
         let mut frame_duration: i32 = 0;
@@ -343,9 +344,10 @@ fn gif_to_webp(data: &mut Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
             p: ptr::null_mut(),
             remain: 0,
         };
-        (*buf_src).buf = data.as_mut_ptr();
-        (*buf_src).p = data.as_mut_ptr();
-        (*buf_src).remain = data.len().try_into().unwrap();
+        let mut data_tmp = data.clone();
+        (*buf_src).buf = data_tmp.as_mut_ptr();
+        (*buf_src).p = data_tmp.as_mut_ptr();
+        (*buf_src).remain = data_tmp.len().try_into().unwrap();
         let mut gif: *mut libwebp_sys::GifFileType = libwebp_sys::DGifOpen(
             buf_src as *mut core::ffi::c_void,
             Some(libwebp_sys::readGifBuffer),
