@@ -20,6 +20,7 @@ pub use webp::WebPConfig;
 pub use webp::WebPPicture;
 
 use actix_web::{client::SendRequestError, HttpResponse, ResponseError};
+use actix_http::error::PayloadError;
 
 use std::error::Error;
 use std::fmt;
@@ -201,6 +202,12 @@ impl From<SendRequestError> for ImageError {
     fn from(err: SendRequestError) -> Self {
         ImageError::ServiceError(format!("actix http client error: {}", err.to_string()))
     }
+}
+
+impl From<PayloadError> For ImageError {
+    fn from(err: PayloadError) -> Self {
+        ImageError::ServiceError(format!("actix http client error: {}", err.to_string()))
+    }  
 }
 
 impl From<ParamError> for ImageError {
