@@ -196,7 +196,7 @@ impl From<SendRequestError> for ImageError {
     }
 }
 
-impl From<PayloadError> For ImageError {
+impl From<PayloadError> for ImageError {
     fn from(err: PayloadError) -> Self {
         ImageError::ServiceError(format!("actix http client error: {}", err.to_string()))
     }  
