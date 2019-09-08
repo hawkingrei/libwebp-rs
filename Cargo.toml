@@ -5,7 +5,8 @@ authors = ["vagrant"]
 edition = "2018"
 
 [dependencies]
-actix-web = "1.0.7"
+actix-web = "1.0"
+actix-http = "0.2"
 bindgen = "0.49"
 libwebp-sys = { path = "libwebp-sys" }
 libc = "0.2"

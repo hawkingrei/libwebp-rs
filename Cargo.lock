@@ -727,6 +727,7 @@ dependencies = [
 name = "imagers"
 version = "0.1.0"
 dependencies = [
+ "actix-http 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "actix-web 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "bindgen 0.49.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "crc 1.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
