@@ -153,3 +153,11 @@ wali_test!(
         .set_expected("b8a58f3bbf8f926ec10c042ea997f01f9fe926ab.webp")
         .set_param(ImageHandlerBuilder::new().finish())
 );
+wali_test!(
+    test_94c09c118f5c131e98c05a6e3294ff75a684fd82,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("94c09c118f5c131e98c05a6e3294ff75a684fd82.gif")
+        .set_expected("94c09c118f5c131e98c05a6e3294ff75a684fd82.webp")
+        .set_param(ImageHandlerBuilder::new().finish())
+);
