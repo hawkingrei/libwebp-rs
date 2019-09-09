@@ -18,7 +18,18 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
     match gif_info(data) {
         Ok(info) => {
             if info.frame_count > GIF_MAX_FRAME
-                || info.width * info.height > GIF_LIMIT_SIZE && !p.first_frame
+                || info
+                    .width
+                    .checked_mul(info.height)
+                    .map(|result| {
+                        if result > GIF_LIMIT_SIZE {
+                            None
+                        } else {
+                            Some(result)
+                        }
+                    })
+                    .is_none()
+                    && !p.first_frame
             {
                 let mut image_result: Image = Default::default();
                 image_result.pic = (*data).clone();
@@ -157,7 +168,6 @@ pub fn gif_info(data: &Vec<u8>) -> ImageResult<GIFInfo> {
                     while !code_block.is_null() {
                         if libwebp_sys::DGifGetCodeNext(gif, &mut code_block) == 0 {
                             libwebp_sys::DGifCloseFile(gif, &mut gif_err);
-                            libc::free(code_block as *mut core::ffi::c_void);
                             return Err(ImageError::FormatError(
                                 "fail to get gif code next".to_string(),
                             ));
@@ -709,8 +719,7 @@ fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                             "ICCRGBG1012".as_ptr() as *const libc::c_void,
                                             11,
                                         ) == 0;
-                                        if (is_icc
-                                            || is_xmp)
+                                        if (is_icc || is_xmp)
                                             && libwebp_sys::DGifGetExtensionNext(gif, &mut data)
                                                 == 0
                                         {

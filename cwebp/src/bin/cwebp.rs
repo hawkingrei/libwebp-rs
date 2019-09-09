@@ -151,11 +151,17 @@ fn main() {
                         Err(e) => println!("{}", e),
                     }
                 } else {
-                    let result = gif_encode_webp(&data.clone(), param).unwrap();
-                    if !profile {
-                        dbg!(result.width);
-                        dbg!(result.height);
-                        fs::write(output, result.pic).unwrap();
+                    match gif_encode_webp(&data.clone(), param) {
+                        Ok(result) => {
+                            if !profile {
+                                dbg!(result.width);
+                                dbg!(result.height);
+                                fs::write(output, result.pic).unwrap();
+                            }
+                        }
+                        Err(e) => {
+                            println!("{}", e.to_string());
+                        }
                     }
                 }
             }
