@@ -691,9 +691,9 @@ fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                         }
                                         stored_loop_count = if loop_compatibility == 0 {
                                             if loop_count != 0 {
-                                                0
-                                            } else {
                                                 1
+                                            } else {
+                                                0
                                             }
                                         } else {
                                             1
@@ -803,7 +803,7 @@ fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
         if loop_count == 0 && !p.first_frame {
             stored_loop_count = 0;
         }
-        if stored_loop_count == 0 {
+        if stored_loop_count != 0 {
             // Re-mux to add loop count and/or metadata as needed.
             mux =
                 libwebp_sys::WebPMuxCreateInternal(webp_data, 1, libwebp_sys::WEBP_MUX_ABI_VERSION);
