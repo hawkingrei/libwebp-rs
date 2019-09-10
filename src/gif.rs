@@ -595,15 +595,16 @@ fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                                 }
                             }
                         }
-
                         // Update canvases.
-                        libwebp_sys::GIFDisposeFrame(
-                            orig_dispose,
-                            &gif_rect,
-                            prev_canvas,
-                            curr_canvas,
-                        );
-                        libwebp_sys::GIFCopyPixels(curr_canvas, prev_canvas);
+                        if !p.first_frame {
+                            libwebp_sys::GIFDisposeFrame(
+                                orig_dispose,
+                                &gif_rect,
+                                prev_canvas,
+                                curr_canvas,
+                            );
+                            libwebp_sys::GIFCopyPixels(curr_canvas, prev_canvas);
+                        }
 
                         // Force frames with a small or no duration to 100ms to be consistent
                         // with web browsers and other transcoding tools. This also avoids

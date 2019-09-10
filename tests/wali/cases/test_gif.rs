@@ -144,6 +144,24 @@ wali_test!(
         .set_expected("608782fe6fe8eaf6105f41f3131157877af9de2b.webp")
         .set_param(ImageHandlerBuilder::new().finish())
 );
+wali_test!(
+    test_608782fe6fe8eaf6105f41f3131157877af9de2b_100w_100h_1e_1c_1s,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("608782fe6fe8eaf6105f41f3131157877af9de2b.gif")
+        .set_expected("608782fe6fe8eaf6105f41f3131157877af9de2b_100w_100h_1e_1c_1s.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 100,
+                    height: 100,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .set_first_frame(true)
+                .finish()
+        )
+);
 // /bfs/face/b8a58f3bbf8f926ec10c042ea997f01f9fe926ab.gif@90w_90h_1e_1c_85q
 wali_test!(
     test_b8a58f3bbf8f926ec10c042ea997f01f9fe926ab,
@@ -154,10 +172,63 @@ wali_test!(
         .set_param(ImageHandlerBuilder::new().finish())
 );
 wali_test!(
+    test_b8a58f3bbf8f926ec10c042ea997f01f9fe926ab_100w_100h_1e_1c_1s,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("b8a58f3bbf8f926ec10c042ea997f01f9fe926ab.gif")
+        .set_expected("b8a58f3bbf8f926ec10c042ea997f01f9fe926ab_100w_100h_1e_1c_1s.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 100,
+                    height: 100,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .set_first_frame(true)
+                .finish()
+        )
+);
+wali_test!(
     test_94c09c118f5c131e98c05a6e3294ff75a684fd82,
     tranform_gif_to_webp,
     Case::<ImageHandler>::new()
         .set_input("94c09c118f5c131e98c05a6e3294ff75a684fd82.gif")
         .set_expected("94c09c118f5c131e98c05a6e3294ff75a684fd82.webp")
         .set_param(ImageHandlerBuilder::new().finish())
+);
+wali_test!(
+    test_94c09c118f5c131e98c05a6e3294ff75a684fd82_100w_100h_1e_1c,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("94c09c118f5c131e98c05a6e3294ff75a684fd82.gif")
+        .set_expected("94c09c118f5c131e98c05a6e3294ff75a684fd82_100w_100h_1e_1c.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 100,
+                    height: 100,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .finish()
+        )
+);
+wali_test!(
+    test_94c09c118f5c131e98c05a6e3294ff75a684fd82_100w_100h_1e_1c_1s,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("94c09c118f5c131e98c05a6e3294ff75a684fd82.gif")
+        .set_expected("94c09c118f5c131e98c05a6e3294ff75a684fd82_100w_100h_1e_1c_1s.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 100,
+                    height: 100,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .set_first_frame(true)
+                .finish()
+        )
 );
