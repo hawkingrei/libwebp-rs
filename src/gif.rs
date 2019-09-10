@@ -47,7 +47,9 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
                 return gif_to_webp(data, param);
             }
             if let Some(resize) = param.resize {
-                if resize.height != 0 || resize.width != 0 {
+                if resize.height != 0
+                    || resize.width != 0 && info.width * info.height > resize.height * resize.width
+                {
                     return gif_all_resize_webp(data, param);
                 } else {
                     return gif_to_webp(data, param);
