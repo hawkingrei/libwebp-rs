@@ -14,7 +14,7 @@ use libc;
 const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
 
-pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
+pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
         Ok(info) => {
             if info.frame_count > GIF_MAX_FRAME
@@ -32,7 +32,7 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
                     && !p.first_frame
             {
                 let mut image_result: Image = Default::default();
-                image_result.pic = (*data).clone();
+                image_result.pic = data.to_vec();
                 image_result.width = info.width;
                 image_result.height = info.height;
                 return Err(ImageError::LimitError(
@@ -61,7 +61,7 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
     }
 }
 
-fn gif_all_resize_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+fn gif_all_resize_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
     if let Some(resize) = p.resize {
         match Command::new("gifsicle")
             .stdin(Stdio::piped())
@@ -111,7 +111,7 @@ impl fmt::Debug for GIFInfo {
     }
 }
 
-pub fn gif_info(data: &Vec<u8>) -> ImageResult<GIFInfo> {
+pub fn gif_info(data: &[u8]) -> ImageResult<GIFInfo> {
     let mut frame_number = 0;
     let mut loop_count: i32 = 0;
     let mut gif_err: i32 = 0;
@@ -280,7 +280,7 @@ pub fn gif_info(data: &Vec<u8>) -> ImageResult<GIFInfo> {
     }
 }
 
-fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
+fn gif_to_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
     let mut image_result: Image = Default::default();
     unsafe {
         let mut frame_duration: i32 = 0;

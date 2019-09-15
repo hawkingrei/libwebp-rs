@@ -291,6 +291,13 @@ static void ContextSetup(volatile struct jpeg_decompress_struct *const cinfo,
   ctx->pub.next_input_byte = NULL;
 }
 
+void cmyk_to_rgb(JSAMPLE c, JSAMPLE m, JSAMPLE y, JSAMPLE k, JSAMPLE *r, JSAMPLE *g, JSAMPLE *b)
+{
+  *r = (JSAMPLE)((double)c * (double)k / 255.0 + 0.5);
+  *g = (JSAMPLE)((double)m * (double)k / 255.0 + 0.5);
+  *b = (JSAMPLE)((double)y * (double)k / 255.0 + 0.5);
+}
+
 int ReadJPEG(const uint8_t *const data, size_t data_size,
              WebPPicture *const pic, int keep_alpha,
              Metadata *const metadata)
@@ -298,10 +305,13 @@ int ReadJPEG(const uint8_t *const data, size_t data_size,
   volatile int ok = 0;
   int width, height;
   int64_t stride;
+  int64_t cmky_stride;
   volatile struct jpeg_decompress_struct dinfo;
   struct my_error_mgr jerr;
   uint8_t *volatile rgb = NULL;
+  uint8_t *volatile cmky_buffer = NULL;
   JSAMPROW buffer[1];
+  JSAMPROW input_buffer[1];
   JPEGReadContext ctx;
 
   if (data == NULL || data_size == 0 || pic == NULL)
@@ -329,42 +339,108 @@ int ReadJPEG(const uint8_t *const data, size_t data_size,
   if (metadata != NULL)
     SaveMetadataMarkers((j_decompress_ptr)&dinfo);
   jpeg_read_header((j_decompress_ptr)&dinfo, TRUE);
+  switch (dinfo.jpeg_color_space) {
+    case JCS_CMYK:
+    case JCS_YCCK:
+      // libjpeg can convert YCCK to CMYK, but neither to RGB, so we
+      // manually convert CMKY to RGB.
+      dinfo.out_color_space = JCS_CMYK;
+      dinfo.do_fancy_upsampling = TRUE;
 
-  dinfo.out_color_space = JCS_RGB;
-  dinfo.do_fancy_upsampling = TRUE;
+      jpeg_start_decompress((j_decompress_ptr)&dinfo);
+      if (dinfo.output_components != 4)
+      {
+        goto Error;
+      }
 
-  jpeg_start_decompress((j_decompress_ptr)&dinfo);
+      width = dinfo.output_width;
+      height = dinfo.output_height;
+      stride = (int64_t)dinfo.output_width * 3 * sizeof(*rgb);
+      cmky_stride = (int64_t)dinfo.output_width * dinfo.output_components * sizeof(*cmky_buffer);
+      if (cmky_stride != (int)cmky_stride ||
+          !ImgIoUtilCheckSizeArgumentsOverflow(cmky_stride, height))
+      {
+        goto Error;
+      }
+      if (stride != (int)stride ||
+          !ImgIoUtilCheckSizeArgumentsOverflow(stride, height))
+      {
+        goto Error;
+      }
 
-  if (dinfo.output_components != 3)
-  {
-    goto Error;
+      rgb = (uint8_t *)malloc((size_t)stride * height);
+      cmky_buffer = (uint8_t *)malloc((size_t)cmky_stride * height);
+      if (rgb == NULL)
+      {
+        goto Error;
+      }
+      
+      input_buffer[0] = (JSAMPLE *)cmky_buffer;
+      buffer[0] = (JSAMPLE *)rgb;
+      
+      while (dinfo.output_scanline < dinfo.output_height)
+      {
+        if (jpeg_read_scanlines((j_decompress_ptr)&dinfo, input_buffer, 1) != 1)
+        {
+          goto Error;
+        }
+        volatile unsigned int offset;
+        for (offset = 0; offset < dinfo.output_width; offset++) {
+          JSAMPLE c = *(input_buffer[0]+ 4 * sizeof(*cmky_buffer)*offset);
+          JSAMPLE m = *(input_buffer[0]+ 4 * sizeof(*cmky_buffer)*offset + 1);
+          JSAMPLE y = *(input_buffer[0]+ 4 * sizeof(*cmky_buffer)*offset + 2);
+          JSAMPLE k = *(input_buffer[0]+ 4 * sizeof(*cmky_buffer)*offset + 3);
+          cmyk_to_rgb(c, 
+                      m, 
+                      y, 
+                      k, 
+                      buffer[0] + 3 * sizeof(*rgb) * offset, 
+                      buffer[0] + 3 * sizeof(*rgb) * offset + 1, 
+                      buffer[0] + 3 * sizeof(*rgb) * offset + 2);
+        }
+        
+        buffer[0] += stride;
+        input_buffer[0] += cmky_stride;
+      }
+      break;
+    default:
+      dinfo.out_color_space = JCS_RGB;
+      dinfo.do_fancy_upsampling = TRUE;
+
+      jpeg_start_decompress((j_decompress_ptr)&dinfo);
+
+      if (dinfo.output_components != 3)
+      {
+        goto Error;
+      }
+
+      width = dinfo.output_width;
+      height = dinfo.output_height;
+      stride = (int64_t)dinfo.output_width * dinfo.output_components * sizeof(*rgb);
+
+      if (stride != (int)stride ||
+          !ImgIoUtilCheckSizeArgumentsOverflow(stride, height))
+      {
+        goto Error;
+      }
+
+      rgb = (uint8_t *)malloc((size_t)stride * height);
+      if (rgb == NULL)
+      {
+        goto Error;
+      }
+      buffer[0] = (JSAMPLE *)rgb;
+
+      while (dinfo.output_scanline < dinfo.output_height)
+      {
+        if (jpeg_read_scanlines((j_decompress_ptr)&dinfo, buffer, 1) != 1)
+        {
+          goto Error;
+        }
+        buffer[0] += stride;
+      }
   }
-
-  width = dinfo.output_width;
-  height = dinfo.output_height;
-  stride = (int64_t)dinfo.output_width * dinfo.output_components * sizeof(*rgb);
-
-  if (stride != (int)stride ||
-      !ImgIoUtilCheckSizeArgumentsOverflow(stride, height))
-  {
-    goto Error;
-  }
-
-  rgb = (uint8_t *)malloc((size_t)stride * height);
-  if (rgb == NULL)
-  {
-    goto Error;
-  }
-  buffer[0] = (JSAMPLE *)rgb;
-
-  while (dinfo.output_scanline < dinfo.output_height)
-  {
-    if (jpeg_read_scanlines((j_decompress_ptr)&dinfo, buffer, 1) != 1)
-    {
-      goto Error;
-    }
-    buffer[0] += stride;
-  }
+  //dinfo.out_color_space = JCS_RGB;
 
   if (metadata != NULL)
   {
@@ -388,6 +464,7 @@ int ReadJPEG(const uint8_t *const data, size_t data_size,
 
 End:
   free(rgb);
+  free(cmky_buffer);
   return ok;
 }
 #else  // !WEBP_HAVE_JPEG
