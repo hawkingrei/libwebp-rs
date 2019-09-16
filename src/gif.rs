@@ -66,9 +66,11 @@ fn gif_all_resize_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
         match Command::new("gifsicle")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
+            .arg("-U")
             .arg("--no-warnings")
             .arg("--colors=256")
             .arg("--careful")
+            .arg("--threads=8")
             .arg(format!("--resize={}x{}", resize.width, resize.height))
             .spawn()
         {
