@@ -17,6 +17,9 @@ const GIF_MAX_FRAME: i32 = 300;
 pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
         Ok(info) => {
+            p.set_height(info.height as i32);
+            p.set_width(info.width as i32);
+            let param = p.adapt()?;
             if info.frame_count > GIF_MAX_FRAME
                 || info
                     .width
@@ -40,15 +43,12 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
                     "over the limitation".to_string(),
                 ));
             }
-            p.set_height(info.height as i32);
-            p.set_width(info.width as i32);
-            let param = p.adapt()?;
             if param.first_frame {
                 return gif_to_webp(data, param);
             }
             if let Some(resize) = param.resize {
-                if resize.height != 0
-                    || resize.width != 0 && info.width * info.height > resize.height * resize.width
+                if (resize.height != 0
+                    || resize.width != 0) && info.width * info.height > resize.height * resize.width
                 {
                     return gif_all_resize_webp(data, param);
                 } else {
@@ -450,7 +450,7 @@ fn gif_to_webp(data: &Vec<u8>, p: ImageHandler) -> ImageResult<Image> {
                         // Initialize encoder.
                         enc = match p.resize {
                             Some(r) => {
-                                if r.width != 0 && r.height != 0 {
+                                if r.width != 0 && r.height != 0 && p.first_frame {
                                     image_result.width = r.width;
                                     image_result.height = r.height;
                                     libwebp_sys::WebPAnimEncoderNewInternal(
