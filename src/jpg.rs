@@ -3,6 +3,8 @@ use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
 
+use std::ptr;
+
 pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
@@ -36,7 +38,7 @@ pub fn jpg_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
 
         let metadata: *mut libwebp_sys::Metadata = &mut Default::default();
         libwebp_sys::MetadataInit(metadata);
-        if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, metadata) != 1 {
+        if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, ptr::null_mut()) != 1 {
             return Err(ImageError::FormatError("jpg format error".to_string()));
         }
         image_result.set_height((*wp).height);

@@ -95,3 +95,21 @@ wali_test!(
                 .finish()
         )
 );
+// /bfs/article/f62362ca926c3c4807128309fd1e56729835e9ab.jpg@400w_400h_1e_1c.webp
+wali_test!(
+    test_f62362ca926c3c4807128309fd1e56729835e9ab_400w_400h_1e_1c,
+    tranform_jpg_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("f62362ca926c3c4807128309fd1e56729835e9ab.jpg")
+        .set_expected("f62362ca926c3c4807128309fd1e56729835e9ab_400w_400h_1e_1c.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 400,
+                    height: 400,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .finish()
+        )
+);
