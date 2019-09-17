@@ -232,3 +232,22 @@ wali_test!(
                 .finish()
         )
 );
+// https://i0.hdslb.com/bfs/album/ba9b18b22c9dfcf85e01ba18160e204dc51bfe74.gif@480w_300h_1e_1c_1s.
+wali_test!(
+    test_ba9b18b22c9dfcf85e01ba18160e204dc51bfe74_480w_300h_1e_1c_1s,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("ba9b18b22c9dfcf85e01ba18160e204dc51bfe74.gif")
+        .set_expected("ba9b18b22c9dfcf85e01ba18160e204dc51bfe74_480w_300h_1e_1c_1s.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 480,
+                    height: 300,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .set_first_frame(true)
+                .finish()
+        )
+);
