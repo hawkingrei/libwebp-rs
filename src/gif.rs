@@ -13,6 +13,7 @@ use libc;
 
 const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
+const GIF_MAX_BODY_SIZE :usize= 1024 * 1024 * 5;
 
 pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
@@ -21,6 +22,7 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
             p.set_width(info.width as i32);
             let param = p.adapt()?;
             if info.frame_count > GIF_MAX_FRAME
+                || data.len() > GIF_MAX_BODY_SIZE
                 || info
                     .width
                     .checked_mul(info.height)
