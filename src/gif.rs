@@ -57,7 +57,7 @@ pub fn gif_encode_webp(data: &Vec<u8>, mut p: ImageHandler) -> ImageResult<Image
             }
             gif_to_webp(data, param)
         }
-        Err(e) => Err(ImageError::FormatError(e.to_string())),
+        Err(e) => Err(e),
     }
 }
 
@@ -166,7 +166,6 @@ pub fn gif_info(data: &Vec<u8>) -> ImageResult<GIFInfo> {
                     frame_number += 1;
                     if libwebp_sys::DGifGetCode(gif, &mut code_size, &mut code_block) == 0 {
                         libwebp_sys::DGifCloseFile(gif, &mut gif_err);
-                        libc::free(code_block as *mut core::ffi::c_void);
                         return Err(ImageError::FormatError("fail to get gif code".to_string()));
                     }
                     while !code_block.is_null() {
