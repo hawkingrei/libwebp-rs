@@ -102,6 +102,8 @@ fn main() {
     println!("cargo:rustc-link-lib=static=z");
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=pngwebp");
+    println!("cargo:rerun-if-changed=pngwebp/jpegdec.h");
+    println!("cargo:rerun-if-changed=pngwebp/jpegdec.c");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.h");
     println!("cargo:rerun-if-changed=pngwebp/metadata_write.c");
     println!("cargo:rerun-if-changed=pngwebp/util.h");
