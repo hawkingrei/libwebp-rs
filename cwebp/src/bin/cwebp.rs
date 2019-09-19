@@ -161,6 +161,7 @@ fn main() {
                         }
                         Err(e) => {
                             println!("{}", e.to_string());
+                            break;
                         }
                     }
                 }

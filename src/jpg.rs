@@ -3,6 +3,8 @@ use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
 
+use std::ptr;
+
 pub fn jpg_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     unsafe {
         let wp: *mut libwebp_sys::WebPPicture = &mut Default::default();
@@ -34,9 +36,7 @@ pub fn jpg_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
         *output_buffer = (*decoder_config).output;
         *bitstream = (*decoder_config).input;
 
-        let metadata: *mut libwebp_sys::Metadata = &mut Default::default();
-        libwebp_sys::MetadataInit(metadata);
-        if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, metadata) != 1 {
+        if libwebp_sys::ReadJPEG(data.as_ptr(), data.len(), wp, 1, ptr::null_mut()) != 1 {
             return Err(ImageError::FormatError("jpg format error".to_string()));
         }
         image_result.set_height((*wp).height);
@@ -54,7 +54,6 @@ pub fn jpg_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
         if let Some(r) = param.resize {
             if r.width != 0 && r.height != 0 {
                 if libwebp_sys::WebPPictureRescale(wp, r.width, r.height) != 1 {
-                    libwebp_sys::MetadataFree(metadata);
                     libwebp_sys::WebPPictureFree(wp);
                     return Err(ImageError::FormatError(
                         "jpg WebPPictureRescale error".to_string(),
@@ -67,7 +66,6 @@ pub fn jpg_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
 
         if let Some(c) = param.crop {
             if libwebp_sys::WebPPictureView(wp, c.x, c.y, c.width, c.height, wp) != 1 {
-                libwebp_sys::MetadataFree(metadata);
                 libwebp_sys::WebPPictureFree(wp);
                 return Err(ImageError::FormatError(
                     "jpg WebPPictureView error".to_string(),
@@ -81,11 +79,9 @@ pub fn jpg_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
             image_result.pic =
                 Vec::from_raw_parts((*writer).mem, (*writer).size, (*writer).size).clone();
 
-            libwebp_sys::MetadataFree(metadata);
             libwebp_sys::WebPPictureFree(wp);
             return Ok(image_result);
         }
-        libwebp_sys::MetadataFree(metadata);
         libwebp_sys::WebPPictureFree(wp);
 
         Err(ImageError::FormatError("jpg encode jpg error".to_string()))

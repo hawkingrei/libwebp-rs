@@ -13,11 +13,16 @@ use libc;
 
 const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
+const GIF_MAX_BODY_SIZE :usize= 1024 * 1024 * 5;
 
 pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
         Ok(info) => {
+            p.set_height(info.height as i32);
+            p.set_width(info.width as i32);
+            let param = p.adapt()?;
             if info.frame_count > GIF_MAX_FRAME
+                || data.len() > GIF_MAX_BODY_SIZE
                 || info
                     .width
                     .checked_mul(info.height)
@@ -40,15 +45,12 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     "over the limitation".to_string(),
                 ));
             }
-            p.set_height(info.height as i32);
-            p.set_width(info.width as i32);
-            let param = p.adapt()?;
             if param.first_frame {
                 return gif_to_webp(data, param);
             }
             if let Some(resize) = param.resize {
-                if resize.height != 0
-                    || resize.width != 0 && info.width * info.height > resize.height * resize.width
+                if (resize.height != 0 || resize.width != 0)
+                    && info.width * info.height > resize.height * resize.width
                 {
                     return gif_all_resize_webp(data, param);
                 } else {
@@ -57,7 +59,7 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
             }
             gif_to_webp(data, param)
         }
-        Err(e) => Err(ImageError::FormatError(e.to_string())),
+        Err(e) => Err(e),
     }
 }
 
@@ -66,9 +68,11 @@ fn gif_all_resize_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
         match Command::new("gifsicle")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
+            .arg("-U")
             .arg("--no-warnings")
             .arg("--colors=256")
             .arg("--careful")
+            .arg("--threads=8")
             .arg(format!("--resize={}x{}", resize.width, resize.height))
             .spawn()
         {
@@ -164,7 +168,6 @@ pub fn gif_info(data: &[u8]) -> ImageResult<GIFInfo> {
                     frame_number += 1;
                     if libwebp_sys::DGifGetCode(gif, &mut code_size, &mut code_block) == 0 {
                         libwebp_sys::DGifCloseFile(gif, &mut gif_err);
-                        libc::free(code_block as *mut core::ffi::c_void);
                         return Err(ImageError::FormatError("fail to get gif code".to_string()));
                     }
                     while !code_block.is_null() {
@@ -448,7 +451,7 @@ fn gif_to_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
                         // Initialize encoder.
                         enc = match p.resize {
                             Some(r) => {
-                                if r.width != 0 && r.height != 0 {
+                                if r.width != 0 && r.height != 0 && p.first_frame {
                                     image_result.width = r.width;
                                     image_result.height = r.height;
                                     libwebp_sys::WebPAnimEncoderNewInternal(
@@ -646,103 +649,101 @@ fn gif_to_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
                     if data.is_null() {
                         continue;
                     }
-                    if !(p.first_frame && frame_number >= 1) {
-                        match extension {
-                            0xf2 => {}
-                            0xf9 => {
-                                if libwebp_sys::GIFReadGraphicsExtension(
-                                    data,
-                                    &mut frame_duration,
-                                    &mut orig_dispose,
-                                    &mut transparent_index,
-                                ) == 0
-                                {
-                                    libwebp_sys::WebPMuxDelete(mux);
-                                    (*webp_data).bytes = ptr::null_mut();
-                                    libwebp_sys::PWebPDataClear(webp_data);
-                                    libwebp_sys::WebPPictureFree(frame);
-                                    libwebp_sys::WebPPictureFree(curr_canvas);
-                                    libwebp_sys::WebPPictureFree(prev_canvas);
-                                    libwebp_sys::WebPAnimEncoderDelete(enc);
-                                    libwebp_sys::DGifCloseFile(gif, &mut gif_err);
-                                    return Err(ImageError::FormatError(
-                                        "fail to read gif Graphics extension".to_string(),
-                                    ));
-                                }
+
+                    match extension {
+                        0xf2 => {}
+                        0xf9 => {
+                            if libwebp_sys::GIFReadGraphicsExtension(
+                                data,
+                                &mut frame_duration,
+                                &mut orig_dispose,
+                                &mut transparent_index,
+                            ) == 0
+                            {
+                                libwebp_sys::WebPMuxDelete(mux);
+                                (*webp_data).bytes = ptr::null_mut();
+                                libwebp_sys::PWebPDataClear(webp_data);
+                                libwebp_sys::WebPPictureFree(frame);
+                                libwebp_sys::WebPPictureFree(curr_canvas);
+                                libwebp_sys::WebPPictureFree(prev_canvas);
+                                libwebp_sys::WebPAnimEncoderDelete(enc);
+                                libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                                return Err(ImageError::FormatError(
+                                    "fail to read gif Graphics extension".to_string(),
+                                ));
                             }
-                            0x01 => {}
-                            0xff => {
-                                if *(data.offset(0)) == 11 {
-                                    if libc::memcmp(
+                        }
+                        0x01 => {}
+                        0xff => {
+                            if *(data.offset(0)) == 11 {
+                                if libc::memcmp(
+                                    data.offset(1) as *const libc::c_void,
+                                    "NETSCAPE2.0".as_ptr() as *const libc::c_void,
+                                    11,
+                                ) == 0
+                                    || libc::memcmp(
                                         data.offset(1) as *const libc::c_void,
-                                        "NETSCAPE2.0".as_ptr() as *const libc::c_void,
+                                        "ANIMEXTS1.0".as_ptr() as *const libc::c_void,
                                         11,
                                     ) == 0
-                                        || libc::memcmp(
-                                            data.offset(1) as *const libc::c_void,
-                                            "ANIMEXTS1.0".as_ptr() as *const libc::c_void,
-                                            11,
-                                        ) == 0
+                                {
+                                    if libwebp_sys::GIFReadLoopCount(
+                                        gif,
+                                        &mut data,
+                                        &mut loop_count,
+                                    ) == 0
                                     {
-                                        if libwebp_sys::GIFReadLoopCount(
-                                            gif,
-                                            &mut data,
-                                            &mut loop_count,
-                                        ) == 0
-                                        {
-                                            libwebp_sys::WebPMuxDelete(mux);
-                                            (*webp_data).bytes = ptr::null_mut();
-                                            libwebp_sys::PWebPDataClear(webp_data);
-                                            libwebp_sys::WebPPictureFree(frame);
-                                            libwebp_sys::WebPPictureFree(curr_canvas);
-                                            libwebp_sys::WebPPictureFree(prev_canvas);
-                                            libwebp_sys::WebPAnimEncoderDelete(enc);
-                                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
-                                            return Err(ImageError::FormatError(
-                                                "fail to read gif loop".to_string(),
-                                            ));
-                                        }
-                                        stored_loop_count = if loop_compatibility == 0 {
-                                            if loop_count != 0 {
-                                                1
-                                            } else {
-                                                0
-                                            }
-                                        } else {
+                                        libwebp_sys::WebPMuxDelete(mux);
+                                        (*webp_data).bytes = ptr::null_mut();
+                                        libwebp_sys::PWebPDataClear(webp_data);
+                                        libwebp_sys::WebPPictureFree(frame);
+                                        libwebp_sys::WebPPictureFree(curr_canvas);
+                                        libwebp_sys::WebPPictureFree(prev_canvas);
+                                        libwebp_sys::WebPAnimEncoderDelete(enc);
+                                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                                        return Err(ImageError::FormatError(
+                                            "fail to read gif loop".to_string(),
+                                        ));
+                                    }
+                                    stored_loop_count = if loop_compatibility == 0 {
+                                        if loop_count != 0 {
                                             1
-                                        };
-                                    } else {
-                                        let is_xmp: bool = libc::memcmp(
-                                            data.offset(1) as *const libc::c_void,
-                                            "XMP DataXMP".as_ptr() as *const libc::c_void,
-                                            11,
-                                        ) == 0;
-                                        let is_icc: bool = libc::memcmp(
-                                            data.offset(1) as *const libc::c_void,
-                                            "ICCRGBG1012".as_ptr() as *const libc::c_void,
-                                            11,
-                                        ) == 0;
-                                        if (is_icc || is_xmp)
-                                            && libwebp_sys::DGifGetExtensionNext(gif, &mut data)
-                                                == 0
-                                        {
-                                            libwebp_sys::WebPMuxDelete(mux);
-                                            (*webp_data).bytes = ptr::null_mut();
-                                            libwebp_sys::PWebPDataClear(webp_data);
-                                            libwebp_sys::WebPPictureFree(frame);
-                                            libwebp_sys::WebPPictureFree(curr_canvas);
-                                            libwebp_sys::WebPPictureFree(prev_canvas);
-                                            libwebp_sys::WebPAnimEncoderDelete(enc);
-                                            libwebp_sys::DGifCloseFile(gif, &mut gif_err);
-                                            return Err(ImageError::FormatError(
-                                                "fail to get gif extension next".to_string(),
-                                            ));
+                                        } else {
+                                            0
                                         }
+                                    } else {
+                                        1
+                                    };
+                                } else {
+                                    let is_xmp: bool = libc::memcmp(
+                                        data.offset(1) as *const libc::c_void,
+                                        "XMP DataXMP".as_ptr() as *const libc::c_void,
+                                        11,
+                                    ) == 0;
+                                    let is_icc: bool = libc::memcmp(
+                                        data.offset(1) as *const libc::c_void,
+                                        "ICCRGBG1012".as_ptr() as *const libc::c_void,
+                                        11,
+                                    ) == 0;
+                                    if (is_icc || is_xmp)
+                                        && libwebp_sys::DGifGetExtensionNext(gif, &mut data) == 0
+                                    {
+                                        libwebp_sys::WebPMuxDelete(mux);
+                                        (*webp_data).bytes = ptr::null_mut();
+                                        libwebp_sys::PWebPDataClear(webp_data);
+                                        libwebp_sys::WebPPictureFree(frame);
+                                        libwebp_sys::WebPPictureFree(curr_canvas);
+                                        libwebp_sys::WebPPictureFree(prev_canvas);
+                                        libwebp_sys::WebPAnimEncoderDelete(enc);
+                                        libwebp_sys::DGifCloseFile(gif, &mut gif_err);
+                                        return Err(ImageError::FormatError(
+                                            "fail to get gif extension next".to_string(),
+                                        ));
                                     }
                                 }
                             }
-                            _ => {}
                         }
+                        _ => {}
                     }
 
                     while !data.is_null() {
