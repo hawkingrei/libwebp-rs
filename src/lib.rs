@@ -35,6 +35,14 @@ pub struct Image {
     pub width: i32,
 }
 
+// Optimize level
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum OptLevel {
+    HIGH,
+    NORMAL,
+    LOW,
+}
+
 impl Image {
     pub fn set_height(&mut self, height: i32) {
         self.height = height;

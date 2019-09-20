@@ -2,6 +2,7 @@ use crate::param::ImageHandler;
 use crate::Image;
 use crate::ImageError;
 use crate::ImageResult;
+use crate::OptLevel;
 
 use std::convert::TryInto;
 use std::fmt;
@@ -13,7 +14,7 @@ use libc;
 
 const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
-const GIF_MAX_BODY_SIZE :usize= 1024 * 1024 * 5;
+const GIF_MAX_BODY_SIZE: usize = 1024 * 1024 * 5;
 
 pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
@@ -46,24 +47,24 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                 ));
             }
             if param.first_frame {
-                return gif_to_webp(data, param);
+                return gif_to_webp(data, param, info.level);
             }
             if let Some(resize) = param.resize {
                 if (resize.height != 0 || resize.width != 0)
                     && info.width * info.height > resize.height * resize.width
                 {
-                    return gif_all_resize_webp(data, param);
+                    return gif_all_resize_webp(data, param, info.level);
                 } else {
-                    return gif_to_webp(data, param);
+                    return gif_to_webp(data, param, info.level);
                 }
             }
-            gif_to_webp(data, param)
+            gif_to_webp(data, param, info.level)
         }
         Err(e) => Err(e),
     }
 }
 
-fn gif_all_resize_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
+fn gif_all_resize_webp(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Image> {
     if let Some(resize) = p.resize {
         match Command::new("gifsicle")
             .stdin(Stdio::piped())
@@ -84,7 +85,7 @@ fn gif_all_resize_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
                 match child.wait_with_output() {
                     Ok(result) => {
                         if result.status.success() {
-                            return gif_to_webp(&result.stdout, p);
+                            return gif_to_webp(&result.stdout, p, level);
                         }
                         return Err(ImageError::TranformError(
                             "exiting not return 0".to_string(),
@@ -99,10 +100,54 @@ fn gif_all_resize_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
     Err(ImageError::TranformError("resize is none".to_string()))
 }
 
+#[derive(Clone, Copy)]
 pub struct GIFInfo {
     pub frame_count: i32,
     pub height: i32,
     pub width: i32,
+    pub level: OptLevel,
+}
+
+impl Default for GIFInfo {
+    fn default() -> Self {
+        GIFInfo {
+            frame_count: 0,
+            height: 0,
+            width: 0,
+            level: OptLevel::LOW,
+        }
+    }
+}
+
+impl GIFInfo {
+    fn builder() -> Self {
+        Default::default()
+    }
+    fn set_frame_count(mut self, frame_count: i32) -> Self {
+        self.frame_count = frame_count;
+        self
+    }
+
+    fn set_height(mut self, height: i32) -> Self {
+        self.height = height;
+        self
+    }
+
+    fn set_width(mut self, width: i32) -> Self {
+        self.width = width;
+        self
+    }
+
+    fn set_level(mut self) -> Self {
+        self.level = if self.frame_count < 10 && self.height * self.width < 120 * 120 {
+            OptLevel::HIGH
+        } else if self.frame_count < 20 && self.height * self.width < 120 * 120 {
+            OptLevel::NORMAL
+        } else {
+            OptLevel::LOW
+        };
+        self
+    }
 }
 
 impl fmt::Debug for GIFInfo {
@@ -111,6 +156,7 @@ impl fmt::Debug for GIFInfo {
             .field("height", &self.height)
             .field("width", &self.width)
             .field("frame count", &self.frame_count)
+            .field("level", &self.level)
             .finish()
     }
 }
@@ -275,15 +321,15 @@ pub fn gif_info(data: &[u8]) -> ImageResult<GIFInfo> {
         let width = (*gif).SWidth;
         libwebp_sys::DGifCloseFile(gif, &mut gif_err);
         libc::free(code_block as *mut core::ffi::c_void);
-        Ok(GIFInfo {
-            frame_count: frame_number,
-            height,
-            width,
-        })
+        Ok(GIFInfo::builder()
+            .set_frame_count(frame_number)
+            .set_height(height)
+            .set_width(width)
+            .set_level())
     }
 }
 
-fn gif_to_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
+fn gif_to_webp(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Image> {
     let mut image_result: Image = Default::default();
     unsafe {
         let mut frame_duration: i32 = 0;
@@ -333,6 +379,11 @@ fn gif_to_webp(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
         enc_options.allow_mixed = 1;
         (*config).lossless = 0;
         (*config).thread_level += 1;
+        (*config).method = match level {
+            OptLevel::HIGH => 6,
+            OptLevel::NORMAL => 5,
+            OptLevel::LOW => 4,
+        };
         enc_options.kmin = if (*config).lossless == 0 { 3 } else { 9 };
         enc_options.kmax = if (*config).lossless == 0 { 5 } else { 17 };
 
