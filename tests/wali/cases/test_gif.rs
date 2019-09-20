@@ -251,6 +251,7 @@ wali_test!(
                 .finish()
         )
 );
+<<<<<<< HEAD
 // /bfs/album/6b4613b2200a25ca33461e50fc696fb0013f0de6.gif@200w_200h_1e_1c_1s.webp
 wali_test!(
     test_6b4613b2200a25ca33461e50fc696fb0013f0de6_200w_200h_1e_1c_1s,
@@ -270,3 +271,5 @@ wali_test!(
                 .finish()
         )
 );
+=======
+>>>>>>> 9a1e699f601d9854fb0b4ca0d5c97a4ec086a847

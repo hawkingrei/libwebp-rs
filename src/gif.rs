@@ -19,7 +19,6 @@ const GIF_MAX_BODY_SIZE: usize = 1024 * 1024 * 5;
 pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
         Ok(info) => {
-            dbg!(p.first_frame);
             p.set_height(info.height as i32);
             p.set_width(info.width as i32);
             let mut param = p.adapt()?;
@@ -53,8 +52,6 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     param.resize = None;
                 }
             }
-            dbg!(info.level);
-            dbg!(param.resize);
             if !param.first_frame {
                 if let Some(resize) = param.resize {
                     if resize.height != 0 && resize.width != 0 {
