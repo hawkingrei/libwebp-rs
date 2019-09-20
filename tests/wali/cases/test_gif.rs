@@ -251,3 +251,22 @@ wali_test!(
                 .finish()
         )
 );
+// /bfs/album/6b4613b2200a25ca33461e50fc696fb0013f0de6.gif@200w_200h_1e_1c_1s.webp
+wali_test!(
+    test_6b4613b2200a25ca33461e50fc696fb0013f0de6_200w_200h_1e_1c_1s,
+    tranform_gif_to_webp,
+    Case::<ImageHandler>::new()
+        .set_input("6b4613b2200a25ca33461e50fc696fb0013f0de6.gif")
+        .set_expected("6b4613b2200a25ca33461e50fc696fb0013f0de6_200w_200h_1e_1c_1s.webp")
+        .set_param(
+            ImageHandlerBuilder::new()
+                .set_resize(Some(Resize {
+                    width: 200,
+                    height: 200,
+                }))
+                .set_edge(1)
+                .set_auto_crop(true)
+                .set_first_frame(true)
+                .finish()
+        )
+);

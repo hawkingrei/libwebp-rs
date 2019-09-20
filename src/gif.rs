@@ -21,21 +21,22 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
         Ok(info) => {
             p.set_height(info.height as i32);
             p.set_width(info.width as i32);
-            let param = p.adapt()?;
-            if info.frame_count > GIF_MAX_FRAME
+            let mut param = p.adapt()?;
+            let is_more_than_limit_size = |result| {
+                if result > GIF_LIMIT_SIZE {
+                    None
+                } else {
+                    Some(result)
+                }
+            };
+            if (info.frame_count > GIF_MAX_FRAME
                 || data.len() > GIF_MAX_BODY_SIZE
                 || info
                     .width
                     .checked_mul(info.height)
-                    .map(|result| {
-                        if result > GIF_LIMIT_SIZE {
-                            None
-                        } else {
-                            Some(result)
-                        }
-                    })
-                    .is_none()
-                    && !p.first_frame
+                    .map(is_more_than_limit_size)
+                    .is_none())
+                && !p.first_frame
             {
                 let mut image_result: Image = Default::default();
                 image_result.pic = data.to_vec();
@@ -46,16 +47,17 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     "over the limitation".to_string(),
                 ));
             }
-            if param.first_frame {
-                return gif_to_webp(data, param, info.level);
-            }
             if let Some(resize) = param.resize {
-                if (resize.height != 0 || resize.width != 0)
-                    && info.width * info.height > resize.height * resize.width
+                if resize.height == 0
+                    || resize.width == 0
+                    || info.width * info.height < resize.height * resize.width
                 {
+                    param.resize = None;
+                }
+            }
+            if !param.first_frame {
+                if let Some(_) = param.resize {
                     return gif_all_resize_webp(data, param, info.level);
-                } else {
-                    return gif_to_webp(data, param, info.level);
                 }
             }
             gif_to_webp(data, param, info.level)
