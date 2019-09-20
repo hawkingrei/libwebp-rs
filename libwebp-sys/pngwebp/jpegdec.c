@@ -282,6 +282,7 @@ static void ContextSetup(volatile struct jpeg_decompress_struct *const cinfo,
                          JPEGReadContext *const ctx)
 {
   cinfo->src = (struct jpeg_source_mgr *)ctx;
+  cinfo->mem->max_memory_to_use = 2*1024*1024;
   ctx->pub.init_source = ContextInit;
   ctx->pub.fill_input_buffer = ContextFill;
   ctx->pub.skip_input_data = ContextSkip;
