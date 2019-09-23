@@ -55,10 +55,8 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     param.resize = None;
                 }
             }
-            if !param.first_frame {
-                if let Some(_) = param.resize {
-                    return gif_all_resize_webp(data, param, info.level);
-                }
+            if !param.first_frame && param.resize.is_some() {
+                return gif_all_resize_webp(data, param, info.level);
             }
             gif_to_webp(data, param, info.level)
         }
@@ -141,7 +139,7 @@ impl GIFInfo {
     }
 
     fn set_level(mut self) -> Self {
-        self.level = if self.frame_count < 10 && self.height * self.width < 120 * 120 {
+        self.level = if self.frame_count < 5 && self.height * self.width < 120 * 120 {
             OptLevel::HIGH
         } else if self.frame_count < 20 && self.height * self.width < 120 * 120 {
             OptLevel::NORMAL
@@ -382,8 +380,8 @@ fn gif_to_webp(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Ima
         (*config).lossless = 0;
         (*config).thread_level += 1;
         (*config).method = match level {
-            OptLevel::HIGH => 6,
-            OptLevel::NORMAL => 5,
+            OptLevel::HIGH => 5,
+            OptLevel::NORMAL => 4,
             OptLevel::LOW => 4,
         };
         enc_options.kmin = if (*config).lossless == 0 { 3 } else { 9 };
