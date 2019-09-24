@@ -13,6 +13,7 @@ use std::ptr;
 use libc;
 
 const GIF_LIMIT_SIZE: i32 = 640 * 640;
+const GIF_FIRST_FRAME_LIMIT_SIZE: i32 = 1024 * 800;
 const GIF_MAX_FRAME: i32 = 300;
 const GIF_MAX_BODY_SIZE: usize = 1024 * 1024 * 5;
 
@@ -29,6 +30,13 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     Some(result)
                 }
             };
+            let is_more_than_first_frame_limit_size = |result| {
+                if result > GIF_FIRST_FRAME_LIMIT_SIZE {
+                    None
+                } else {
+                    Some(result)
+                }
+            };
             if (info.frame_count > GIF_MAX_FRAME
                 || data.len() > GIF_MAX_BODY_SIZE
                 || info
@@ -36,7 +44,12 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     .checked_mul(info.height)
                     .map(is_more_than_limit_size)
                     .is_none())
-                && !p.first_frame
+                && (!p.first_frame
+                    || info
+                        .width
+                        .checked_mul(info.height)
+                        .map(is_more_than_first_frame_limit_size)
+                        .is_none())
             {
                 let mut image_result: Image = Default::default();
                 image_result.pic = data.to_vec();
