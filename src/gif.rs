@@ -16,6 +16,42 @@ const GIF_LIMIT_SIZE: i32 = 640 * 640;
 const GIF_MAX_FRAME: i32 = 300;
 const GIF_MAX_BODY_SIZE: usize = 1024 * 1024 * 5;
 
+pub fn gif_encode_gif(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
+    match gif_info(data) {
+        Ok(info) => {
+            p.set_height(info.height as i32);
+            p.set_width(info.width as i32);
+            let mut param = p.adapt()?;
+            if (info.frame_count > GIF_MAX_FRAME
+                || data.len() > GIF_MAX_BODY_SIZE
+                || info
+                    .width
+                    .checked_mul(info.height)
+                    .map(is_more_than_limit_size)
+                    .is_none())
+                && !p.first_frame
+            {
+                let mut image_result: Image = Default::default();
+                image_result.pic = data.to_vec();
+                image_result.width = info.width;
+                image_result.height = info.height;
+                return Err(ImageError::LimitError(
+                    image_result,
+                    "over the limitation".to_string(),
+                ));
+            }
+            if param.first_frame {
+                if param.resize.is_some() {
+                    return gif_all_resize_webp(data, param, info.level);
+                }
+                return;
+            }
+            gif_to_webp(data, param, info.level)
+        }
+        Err(e) => Err(e),
+    }
+}
+
 pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     match gif_info(data) {
         Ok(info) => {
@@ -64,6 +100,51 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
         }
         Err(e) => Err(e),
     }
+}
+
+fn gif_all_resize_gif(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Image> {
+    if let Some(resize) = p.resize {
+        let mut cmd = Command::new("gifsicle")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .arg("--no-warnings")
+            .arg("--colors=256")
+            .arg(format!("--resize={}x{}", resize.width, resize.height));
+        match level {
+            OptLevel::HIGH => cmd.arg("--optimize=2"),
+            OptLevel::NORMAL => cmd.arg("--careful")
+            OptLevel::LOW => cmd.arg("--careful"),
+        }
+        match cmd.spawn() {
+            Ok(mut child) => {
+                let child_stdin = child.stdin.as_mut().unwrap();
+                child_stdin
+                    .write_all(data)
+                    .map_err(|e| ImageError::TranformError(e.to_string()))?;
+                match child.wait_with_output() {
+                    Ok(result) => {
+                        if result.status.success() {
+                            let mut image_result: Image = Default::default();
+                            image_result.pic = Vec::from_raw_parts(
+                                &result.stdout,
+                                &result.stdout.len(),
+                                &result.stdout.len(),
+                            );
+                            image_result.width = resize.width;
+                            image_result.height = resize.height;
+                            return image_result;
+                        }
+                        return Err(ImageError::TranformError(
+                            "exiting not return 0".to_string(),
+                        ));
+                    }
+                    Err(e) => return Err(ImageError::TranformError(e.to_string())),
+                }
+            }
+            Err(e) => return Err(ImageError::TranformError(e.to_string())),
+        }
+    }
+    Err(ImageError::TranformError("resize is none".to_string()))
 }
 
 fn gif_all_resize_webp(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Image> {
