@@ -22,6 +22,13 @@ pub fn gif_encode_gif(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
             p.set_height(info.height as i32);
             p.set_width(info.width as i32);
             let mut param = p.adapt()?;
+            let is_more_than_limit_size = |result| {
+                if result > GIF_LIMIT_SIZE {
+                    None
+                } else {
+                    Some(result)
+                }
+            };
             if (info.frame_count > GIF_MAX_FRAME
                 || data.len() > GIF_MAX_BODY_SIZE
                 || info
@@ -40,13 +47,22 @@ pub fn gif_encode_gif(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
                     "over the limitation".to_string(),
                 ));
             }
+            if let Some(resize) = param.resize {
+                if resize.height == 0
+                    || resize.width == 0
+                    || info.width * info.height < resize.height * resize.width
+                {
+                    param.resize = None;
+                }
+            }
             if param.first_frame {
                 if param.resize.is_some() {
-                    return gif_all_resize_webp(data, param, info.level);
+                    return gif_resize_first_frame(data, param);
+                } else {
+                    return gif_first_frame(data, info.width, info.height);
                 }
-                return;
             }
-            gif_to_webp(data, param, info.level)
+            return gif_all_resize_gif(data, param, info.level);
         }
         Err(e) => Err(e),
     }
@@ -102,37 +118,115 @@ pub fn gif_encode_webp(data: &[u8], mut p: ImageHandler) -> ImageResult<Image> {
     }
 }
 
-fn gif_all_resize_gif(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Image> {
+fn gif_resize_first_frame(data: &[u8], p: ImageHandler) -> ImageResult<Image> {
     if let Some(resize) = p.resize {
-        let mut cmd = Command::new("gifsicle")
+        match Command::new("gifsicle")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
+            .arg("--careful")
+            .arg("#0")
             .arg("--no-warnings")
             .arg("--colors=256")
-            .arg(format!("--resize={}x{}", resize.width, resize.height));
-        match level {
-            OptLevel::HIGH => cmd.arg("--optimize=2"),
-            OptLevel::NORMAL => cmd.arg("--careful")
-            OptLevel::LOW => cmd.arg("--careful"),
-        }
-        match cmd.spawn() {
+            .arg(format!("--resize={}x{}", resize.width, resize.height))
+            .spawn()
+        {
             Ok(mut child) => {
                 let child_stdin = child.stdin.as_mut().unwrap();
                 child_stdin
                     .write_all(data)
                     .map_err(|e| ImageError::TranformError(e.to_string()))?;
                 match child.wait_with_output() {
-                    Ok(result) => {
+                    Ok(mut result) => {
                         if result.status.success() {
                             let mut image_result: Image = Default::default();
-                            image_result.pic = Vec::from_raw_parts(
-                                &result.stdout,
-                                &result.stdout.len(),
-                                &result.stdout.len(),
-                            );
+                            image_result.pic = result.stdout;
                             image_result.width = resize.width;
                             image_result.height = resize.height;
-                            return image_result;
+                            return Ok(image_result);
+                        }
+                        return Err(ImageError::TranformError(
+                            "exiting not return 0".to_string(),
+                        ));
+                    }
+                    Err(e) => return Err(ImageError::TranformError(e.to_string())),
+                }
+            }
+            Err(e) => return Err(ImageError::TranformError(e.to_string())),
+        }
+    }
+    Err(ImageError::TranformError("resize is none".to_string()))
+}
+
+fn gif_first_frame(data: &[u8], width: i32, height: i32) -> ImageResult<Image> {
+    match Command::new("gifsicle")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .arg("--careful")
+        .arg("#0")
+        .arg("--no-warnings")
+        .arg("--colors=256")
+        .spawn()
+    {
+        Ok(mut child) => {
+            let child_stdin = child.stdin.as_mut().unwrap();
+            child_stdin
+                .write_all(data)
+                .map_err(|e| ImageError::TranformError(e.to_string()))?;
+            match child.wait_with_output() {
+                Ok(mut result) => {
+                    if result.status.success() {
+                        let mut image_result: Image = Default::default();
+                        image_result.pic = result.stdout;
+                        image_result.width = width;
+                        image_result.height = height;
+                        return Ok(image_result);
+                    }
+                    return Err(ImageError::TranformError(
+                        "exiting not return 0".to_string(),
+                    ));
+                }
+                Err(e) => return Err(ImageError::TranformError(e.to_string())),
+            }
+        }
+        Err(e) => return Err(ImageError::TranformError(e.to_string())),
+    }
+}
+
+fn gif_all_resize_gif(data: &[u8], p: ImageHandler, level: OptLevel) -> ImageResult<Image> {
+    if let Some(resize) = p.resize {
+        let result = match level {
+            OptLevel::HIGH => Command::new("gifsicle")
+                .stdin(Stdio::piped())
+                .stdout(Stdio::piped())
+                .arg("--no-warnings")
+                .arg("--colors=256")
+                .arg(format!("--resize={}x{}", resize.width, resize.height))
+                .arg("--optimize=2")
+                .spawn(),
+            OptLevel::NORMAL | OptLevel::LOW => Command::new("gifsicle")
+                .stdin(Stdio::piped())
+                .stdout(Stdio::piped())
+                .arg("--no-warnings")
+                .arg("--colors=256")
+                .arg(format!("--resize={}x{}", resize.width, resize.height))
+                .arg("--careful")
+                .spawn(),
+        };
+
+        match result {
+            Ok(mut child) => {
+                let child_stdin = child.stdin.as_mut().unwrap();
+                child_stdin
+                    .write_all(data)
+                    .map_err(|e| ImageError::TranformError(e.to_string()))?;
+                match child.wait_with_output() {
+                    Ok(mut result) => {
+                        if result.status.success() {
+                            let mut image_result: Image = Default::default();
+                            image_result.pic = result.stdout;
+                            image_result.width = resize.width;
+                            image_result.height = resize.height;
+                            return Ok(image_result);
                         }
                         return Err(ImageError::TranformError(
                             "exiting not return 0".to_string(),

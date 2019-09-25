@@ -2,6 +2,7 @@ use clap::{App, Arg};
 
 use std::fs;
 
+use imagers::gif::gif_encode_gif;
 use imagers::gif_encode_webp;
 use imagers::gif_info;
 use imagers::jpg_encode_webp;
@@ -150,7 +151,7 @@ fn main() {
                         }
                         Err(e) => println!("{}", e),
                     }
-                } else {
+                } else if output.ends_with("webp") {
                     match gif_encode_webp(&data.clone(), param) {
                         Ok(result) => {
                             if !profile {
@@ -164,8 +165,25 @@ fn main() {
                             break;
                         }
                     }
+                } else if output.ends_with("gif") {
+                    match gif_encode_gif(&data.clone(), param) {
+                        Ok(result) => {
+                            if !profile {
+                                dbg!(result.width);
+                                dbg!(result.height);
+                                fs::write(output, result.pic).unwrap();
+                            }
+                        }
+                        Err(e) => {
+                            println!("{}", e.to_string());
+                            break;
+                        }
+                    }
+                } else {
+                    println!("not support")
                 }
             }
+
             _ => println!("not support"),
         }
         if !profile {
